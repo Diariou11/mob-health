@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { Search, MapPin, Filter } from 'lucide-react';
+import { Search, MapPin, Filter, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
@@ -205,7 +205,7 @@ const MapPage = () => {
         });
         
         new mapboxgl.Marker(el)
-          .setLngLat(facility.coordinates)
+          .setLngLat(facility.coordinates as [number, number]) // Fixed: Type assertion to correct format
           .addTo(map.current!);
       });
     }
@@ -228,7 +228,7 @@ const MapPage = () => {
       
       if (map.current) {
         new mapboxgl.Marker(el)
-          .setLngLat(facility.coordinates)
+          .setLngLat(facility.coordinates as [number, number]) // Fixed: Type assertion to correct format
           .addTo(map.current);
       }
     });
@@ -238,7 +238,7 @@ const MapPage = () => {
     if (!map.current) return;
     
     map.current.flyTo({
-      center: facility.coordinates,
+      center: facility.coordinates as [number, number], // Fixed: Type assertion to correct format
       zoom: 15,
       essential: true
     });

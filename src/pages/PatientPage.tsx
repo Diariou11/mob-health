@@ -18,7 +18,8 @@ import {
   Heart, 
   ChevronRight, 
   Plus,
-  Copy
+  Copy,
+  MapPin
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
