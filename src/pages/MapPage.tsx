@@ -15,7 +15,7 @@ import { Badge } from '@/components/ui/badge';
 // This would normally be stored in a .env file and accessed via process.env.MAPBOX_ACCESS_TOKEN
 mapboxgl.accessToken = 'pk.eyJ1IjoibG92YWJsZSIsImEiOiJjbHpmaTY2czAwazdmMnFwYXI2OTR2YXd2In0.1sFkY3uEfNUDtYfZH8v6cQ';
 
-// Sample data for health facilities
+// Updated data for health facilities focusing on 5 main hospitals
 const healthFacilities = [
   {
     id: 1,
@@ -23,7 +23,7 @@ const healthFacilities = [
     type: "Hôpital",
     category: "public",
     specialty: ["general", "pediatrie", "cardiologie"],
-    coordinates: [-13.6773, 9.5370],
+    coordinates: [-13.6773, 9.5370] as [number, number],
     address: "Conakry, Guinée",
     phone: "+224 628 12 34 56",
     beds: 15,
@@ -35,59 +35,11 @@ const healthFacilities = [
   },
   {
     id: 2,
-    name: "Clinique Pasteur",
-    type: "Clinique",
-    category: "private",
-    specialty: ["general", "ophtalmologie"],
-    coordinates: [-13.6568, 9.5420],
-    address: "Kaloum, Conakry",
-    phone: "+224 623 45 67 89",
-    beds: 8,
-    doctors: 5,
-    services: ["consultation", "ophtalmologie", "optique"],
-    hasEmergency: false,
-    hasBloodBank: false,
-    languages: ["français", "anglais"]
-  },
-  {
-    id: 3,
-    name: "Centre de Santé Matam",
-    type: "Centre de Santé",
-    category: "public",
-    specialty: ["general", "vaccination"],
-    coordinates: [-13.6670, 9.5520],
-    address: "Matam, Conakry",
-    phone: "+224 622 98 76 54",
-    beds: 4,
-    doctors: 2,
-    services: ["consultation", "vaccination", "planning familial"],
-    hasEmergency: false,
-    hasBloodBank: false,
-    languages: ["français", "malinké"]
-  },
-  {
-    id: 4,
-    name: "Clinique Ambroise Paré",
-    type: "Clinique",
-    category: "private",
-    specialty: ["general", "gynecologie", "pediatrie"],
-    coordinates: [-13.6473, 9.5470],
-    address: "Camayenne, Conakry",
-    phone: "+224 625 11 22 33",
-    beds: 12,
-    doctors: 6,
-    services: ["consultation", "échographie", "maternité"],
-    hasEmergency: true,
-    hasBloodBank: false,
-    languages: ["français", "anglais", "soussou"]
-  },
-  {
-    id: 5,
     name: "Hôpital Ignace Deen",
     type: "Hôpital",
     category: "public",
     specialty: ["general", "pneumologie", "neurologie"],
-    coordinates: [-13.7073, 9.5170],
+    coordinates: [-13.7073, 9.5170] as [number, number],
     address: "Kaloum, Conakry",
     phone: "+224 621 56 78 90",
     beds: 20,
@@ -96,6 +48,54 @@ const healthFacilities = [
     hasEmergency: true,
     hasBloodBank: true,
     languages: ["français", "peul", "soussou", "malinké"]
+  },
+  {
+    id: 3,
+    name: "Centre Hospitalier Régional de Kindia",
+    type: "Hôpital",
+    category: "public",
+    specialty: ["general", "gynecologie", "traumatologie"],
+    coordinates: [-12.8658, 10.0569] as [number, number],
+    address: "Kindia, Guinée",
+    phone: "+224 622 45 67 89",
+    beds: 10,
+    doctors: 5,
+    services: ["urgences", "maternité", "pédiatrie"],
+    hasEmergency: true,
+    hasBloodBank: false,
+    languages: ["français", "soussou"]
+  },
+  {
+    id: 4,
+    name: "Hôpital Régional de Kankan",
+    type: "Hôpital",
+    category: "public",
+    specialty: ["general", "ophtalmologie", "pédiatrie"],
+    coordinates: [-9.3067, 10.3854] as [number, number],
+    address: "Kankan, Guinée",
+    phone: "+224 623 67 89 01",
+    beds: 8,
+    doctors: 6,
+    services: ["consultation", "chirurgie", "pédiatrie"],
+    hasEmergency: true,
+    hasBloodBank: false,
+    languages: ["français", "malinké"]
+  },
+  {
+    id: 5,
+    name: "Centre Médical Communal de N'Zérékoré",
+    type: "Centre de Santé",
+    category: "public",
+    specialty: ["general", "vaccination", "maladies infectieuses"],
+    coordinates: [-8.8179, 7.7579] as [number, number],
+    address: "N'Zérékoré, Guinée",
+    phone: "+224 624 78 90 12",
+    beds: 6,
+    doctors: 3,
+    services: ["consultation", "vaccination", "planning familial"],
+    hasEmergency: false,
+    hasBloodBank: false,
+    languages: ["français", "guerze", "malinké"]
   }
 ];
 
