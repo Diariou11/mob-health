@@ -12,9 +12,16 @@ interface FilterPanelProps {
   distance: number[];
   setDistance: (value: number[]) => void;
   onApplyFilters: () => void;
+  onFilterChange: (filterCategory: keyof FilterState, filterKey: string, value: boolean) => void;
 }
 
-const FilterPanel = ({ filters, distance, setDistance, onApplyFilters }: FilterPanelProps) => {
+const FilterPanel = ({ 
+  filters, 
+  distance, 
+  setDistance, 
+  onApplyFilters, 
+  onFilterChange 
+}: FilterPanelProps) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -48,15 +55,33 @@ const FilterPanel = ({ filters, distance, setDistance, onApplyFilters }: FilterP
             <h3 className="font-medium">Type d'établissement</h3>
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
-                <Checkbox id="hopital" checked={filters.type.hopital} />
+                <Checkbox 
+                  id="hopital" 
+                  checked={filters.type.hopital} 
+                  onCheckedChange={(checked) => 
+                    onFilterChange('type', 'hopital', checked === true)
+                  }
+                />
                 <Label htmlFor="hopital">Hôpital</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <Checkbox id="clinique" checked={filters.type.clinique} />
+                <Checkbox 
+                  id="clinique" 
+                  checked={filters.type.clinique}
+                  onCheckedChange={(checked) => 
+                    onFilterChange('type', 'clinique', checked === true)
+                  }
+                />
                 <Label htmlFor="clinique">Clinique</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <Checkbox id="centre" checked={filters.type.centre} />
+                <Checkbox 
+                  id="centre" 
+                  checked={filters.type.centre}
+                  onCheckedChange={(checked) => 
+                    onFilterChange('type', 'centre', checked === true)
+                  }
+                />
                 <Label htmlFor="centre">Centre de Santé</Label>
               </div>
             </div>
@@ -66,23 +91,53 @@ const FilterPanel = ({ filters, distance, setDistance, onApplyFilters }: FilterP
             <h3 className="font-medium">Spécialités</h3>
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
-                <Checkbox id="general" checked={filters.specialty.general} />
+                <Checkbox 
+                  id="general" 
+                  checked={filters.specialty.general}
+                  onCheckedChange={(checked) => 
+                    onFilterChange('specialty', 'general', checked === true)
+                  }
+                />
                 <Label htmlFor="general">Médecine générale</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <Checkbox id="pediatrie" checked={filters.specialty.pediatrie} />
+                <Checkbox 
+                  id="pediatrie" 
+                  checked={filters.specialty.pediatrie}
+                  onCheckedChange={(checked) => 
+                    onFilterChange('specialty', 'pediatrie', checked === true)
+                  }
+                />
                 <Label htmlFor="pediatrie">Pédiatrie</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <Checkbox id="cardiologie" checked={filters.specialty.cardiologie} />
+                <Checkbox 
+                  id="cardiologie" 
+                  checked={filters.specialty.cardiologie}
+                  onCheckedChange={(checked) => 
+                    onFilterChange('specialty', 'cardiologie', checked === true)
+                  }
+                />
                 <Label htmlFor="cardiologie">Cardiologie</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <Checkbox id="gynecologie" checked={filters.specialty.gynecologie} />
+                <Checkbox 
+                  id="gynecologie" 
+                  checked={filters.specialty.gynecologie}
+                  onCheckedChange={(checked) => 
+                    onFilterChange('specialty', 'gynecologie', checked === true)
+                  }
+                />
                 <Label htmlFor="gynecologie">Gynécologie</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <Checkbox id="ophtalmologie" checked={filters.specialty.ophtalmologie} />
+                <Checkbox 
+                  id="ophtalmologie" 
+                  checked={filters.specialty.ophtalmologie}
+                  onCheckedChange={(checked) => 
+                    onFilterChange('specialty', 'ophtalmologie', checked === true)
+                  }
+                />
                 <Label htmlFor="ophtalmologie">Ophtalmologie</Label>
               </div>
             </div>
@@ -92,19 +147,43 @@ const FilterPanel = ({ filters, distance, setDistance, onApplyFilters }: FilterP
             <h3 className="font-medium">Services</h3>
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
-                <Checkbox id="urgences" checked={filters.services.urgences} />
+                <Checkbox 
+                  id="urgences" 
+                  checked={filters.services.urgences}
+                  onCheckedChange={(checked) => 
+                    onFilterChange('services', 'urgences', checked === true)
+                  }
+                />
                 <Label htmlFor="urgences">Service d'urgence</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <Checkbox id="maternite" checked={filters.services.maternite} />
+                <Checkbox 
+                  id="maternite" 
+                  checked={filters.services.maternite}
+                  onCheckedChange={(checked) => 
+                    onFilterChange('services', 'maternite', checked === true)
+                  }
+                />
                 <Label htmlFor="maternite">Maternité</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <Checkbox id="vaccination" checked={filters.services.vaccination} />
+                <Checkbox 
+                  id="vaccination" 
+                  checked={filters.services.vaccination}
+                  onCheckedChange={(checked) => 
+                    onFilterChange('services', 'vaccination', checked === true)
+                  }
+                />
                 <Label htmlFor="vaccination">Vaccination</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <Checkbox id="bloodBank" checked={filters.services.bloodBank} />
+                <Checkbox 
+                  id="bloodBank" 
+                  checked={filters.services.bloodBank}
+                  onCheckedChange={(checked) => 
+                    onFilterChange('services', 'bloodBank', checked === true)
+                  }
+                />
                 <Label htmlFor="bloodBank">Banque de sang</Label>
               </div>
             </div>
@@ -114,23 +193,53 @@ const FilterPanel = ({ filters, distance, setDistance, onApplyFilters }: FilterP
             <h3 className="font-medium">Langues parlées</h3>
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
-                <Checkbox id="francais" checked={filters.languages.francais} />
+                <Checkbox 
+                  id="francais" 
+                  checked={filters.languages.francais}
+                  onCheckedChange={(checked) => 
+                    onFilterChange('languages', 'francais', checked === true)
+                  }
+                />
                 <Label htmlFor="francais">Français</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <Checkbox id="anglais" checked={filters.languages.anglais} />
+                <Checkbox 
+                  id="anglais" 
+                  checked={filters.languages.anglais}
+                  onCheckedChange={(checked) => 
+                    onFilterChange('languages', 'anglais', checked === true)
+                  }
+                />
                 <Label htmlFor="anglais">Anglais</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <Checkbox id="peul" checked={filters.languages.peul} />
+                <Checkbox 
+                  id="peul" 
+                  checked={filters.languages.peul}
+                  onCheckedChange={(checked) => 
+                    onFilterChange('languages', 'peul', checked === true)
+                  }
+                />
                 <Label htmlFor="peul">Peul</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <Checkbox id="soussou" checked={filters.languages.soussou} />
+                <Checkbox 
+                  id="soussou" 
+                  checked={filters.languages.soussou}
+                  onCheckedChange={(checked) => 
+                    onFilterChange('languages', 'soussou', checked === true)
+                  }
+                />
                 <Label htmlFor="soussou">Soussou</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <Checkbox id="malinke" checked={filters.languages.malinke} />
+                <Checkbox 
+                  id="malinke" 
+                  checked={filters.languages.malinke}
+                  onCheckedChange={(checked) => 
+                    onFilterChange('languages', 'malinke', checked === true)
+                  }
+                />
                 <Label htmlFor="malinke">Malinké</Label>
               </div>
             </div>

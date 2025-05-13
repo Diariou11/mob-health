@@ -18,43 +18,56 @@ const FacilityList = ({
       <div className="px-4 py-3 border-b flex items-center justify-between">
         <h2 className="font-medium">Établissements ({facilities.length})</h2>
         <div className="flex gap-1">
-          <Badge variant="outline" className="bg-slate-50">
-            Filtres actifs: {activeFiltersCount}
-          </Badge>
+          {activeFiltersCount > 0 && (
+            <Badge variant="outline" className="bg-slate-50">
+              Filtres actifs: {activeFiltersCount}
+            </Badge>
+          )}
         </div>
       </div>
       
       <div className="max-h-[30vh] overflow-y-auto">
-        {facilities.map(facility => (
-          <div 
-            key={facility.id} 
-            className="p-3 border-b hover:bg-slate-50 cursor-pointer transition-colors"
-            onClick={() => onSelectFacility(facility)}
-          >
-            <div className="flex justify-between items-start">
-              <div>
-                <h3 className="font-medium">{facility.name}</h3>
-                <p className="text-sm text-foreground/70">{facility.type} • {facility.address}</p>
+        {facilities.length > 0 ? (
+          facilities.map(facility => (
+            <div 
+              key={facility.id} 
+              className="p-3 border-b hover:bg-slate-50 cursor-pointer transition-colors"
+              onClick={() => onSelectFacility(facility)}
+            >
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="font-medium">{facility.name}</h3>
+                  <p className="text-sm text-foreground/70">{facility.type} • {facility.address}</p>
+                </div>
+                {facility.hasEmergency && (
+                  <Badge className="bg-destructive">Urgences</Badge>
+                )}
               </div>
-              {facility.hasEmergency && (
-                <Badge className="bg-destructive">Urgences</Badge>
-              )}
+              
+              <div className="flex gap-2 mt-2 flex-wrap">
+                {facility.hasBloodBank && (
+                  <Badge variant="outline" className="text-xs bg-red-50 text-red-700 border-red-200">
+                    Banque de sang
+                  </Badge>
+                )}
+                {facility.specialty.slice(0, 2).map(spec => (
+                  <Badge key={spec} variant="outline" className="text-xs">
+                    {spec}
+                  </Badge>
+                ))}
+                {facility.services.slice(0, 2).map(service => (
+                  <Badge key={service} variant="outline" className="text-xs">
+                    {service}
+                  </Badge>
+                ))}
+              </div>
             </div>
-            
-            <div className="flex gap-2 mt-2">
-              {facility.hasBloodBank && (
-                <Badge variant="outline" className="text-xs bg-red-50 text-red-700 border-red-200">
-                  Banque de sang
-                </Badge>
-              )}
-              {facility.services.slice(0, 2).map(service => (
-                <Badge key={service} variant="outline" className="text-xs">
-                  {service}
-                </Badge>
-              ))}
-            </div>
+          ))
+        ) : (
+          <div className="p-8 text-center text-muted-foreground">
+            Aucun établissement ne correspond à vos critères de recherche.
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
