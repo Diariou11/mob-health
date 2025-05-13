@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,10 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+        // Custom colors for MOB-Health Africa
+        'health-blue': '#0057A3',
+        'clinic-green': '#4CAF50',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +88,16 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+        'pulse-scale': {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.1)' }
+        }
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+        'pulse-scale': 'pulse-scale 2s infinite'
 			}
 		}
 	},
