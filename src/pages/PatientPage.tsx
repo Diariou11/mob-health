@@ -1,484 +1,699 @@
 
 import { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 import { 
-  User, 
-  FileText, 
-  Calendar, 
-  Activity, 
-  Clock, 
-  Pill, 
-  Clipboard, 
-  Heart, 
-  ChevronRight, 
-  Plus,
-  Copy,
-  MapPin,
-  X
+  User, Calendar, FileText, AlarmClock, 
+  Pill, Heart, Activity, Stethoscope, 
+  ClipboardCheck, MapPin, Phone, AlertCircle 
 } from 'lucide-react';
-import { useToast } from '@/components/ui/use-toast';
+
+// Type définition pour les données médicales
+interface MedicalData {
+  consultations: Consultation[];
+  antecedents: Antecedent[];
+  vaccinations: Vaccination[];
+  metrics: Metric[];
+}
+
+interface Consultation {
+  id: number;
+  date: string;
+  doctor: string;
+  facility: string;
+  reason: string;
+  diagnosis: string;
+  prescription?: string;
+  followUp?: string;
+}
+
+interface Antecedent {
+  id: number;
+  type: string;
+  description: string;
+  date: string;
+  severity: "low" | "medium" | "high";
+}
+
+interface Vaccination {
+  id: number;
+  name: string;
+  date: string;
+  nextDose?: string;
+  facility: string;
+}
+
+interface Metric {
+  id: number;
+  date: string;
+  weight?: number;
+  height?: number;
+  bloodPressure?: string;
+  bloodGlucose?: number;
+  temperature?: number;
+  notes?: string;
+}
+
+const dummyMedicalData: MedicalData = {
+  consultations: [
+    {
+      id: 1,
+      date: "12/04/2025",
+      doctor: "Dr. Mamadou Diallo",
+      facility: "Hôpital National Donka",
+      reason: "Fièvre et maux de tête",
+      diagnosis: "Paludisme non compliqué",
+      prescription: "Coartem 80/480mg - 1 comprimé toutes les 8 heures pendant 3 jours",
+      followUp: "Dans une semaine si les symptômes persistent"
+    },
+    {
+      id: 2,
+      date: "23/02/2025",
+      doctor: "Dr. Aissatou Barry",
+      facility: "Clinique Pasteur",
+      reason: "Douleurs lombaires",
+      diagnosis: "Contracture musculaire",
+      prescription: "Paracetamol 1000mg - 1 comprimé toutes les 6 heures pendant 5 jours\nMyorelaxant - 1 comprimé matin et soir pendant 7 jours",
+    },
+    {
+      id: 3,
+      date: "05/01/2025",
+      doctor: "Dr. Ibrahima Bah",
+      facility: "Centre de Santé Matam",
+      reason: "Consultation de routine",
+      diagnosis: "Examen normal, aucune anomalie détectée",
+    }
+  ],
+  antecedents: [
+    {
+      id: 1,
+      type: "Allergie",
+      description: "Allergie à la pénicilline",
+      date: "Depuis l'enfance",
+      severity: "high"
+    },
+    {
+      id: 2,
+      type: "Chirurgie",
+      description: "Appendicectomie",
+      date: "Juillet 2022",
+      severity: "medium"
+    },
+    {
+      id: 3,
+      type: "Maladie chronique",
+      description: "Hypertension artérielle légère",
+      date: "Diagnostiquée en 2024",
+      severity: "low"
+    }
+  ],
+  vaccinations: [
+    {
+      id: 1,
+      name: "COVID-19 (Pfizer)",
+      date: "15/01/2023",
+      nextDose: "Rappel recommandé en 2026",
+      facility: "Centre de vaccination Kaloum"
+    },
+    {
+      id: 2,
+      name: "Fièvre jaune",
+      date: "20/06/2022",
+      facility: "Hôpital Ignace Deen"
+    },
+    {
+      id: 3,
+      name: "Hépatite B (dose 3/3)",
+      date: "10/12/2021",
+      facility: "Clinique Ambroise Paré"
+    }
+  ],
+  metrics: [
+    {
+      id: 1,
+      date: "12/04/2025",
+      weight: 72.5,
+      height: 175,
+      bloodPressure: "128/82",
+      temperature: 37.2,
+      notes: "Patient stable"
+    },
+    {
+      id: 2,
+      date: "23/02/2025",
+      weight: 73.0,
+      bloodPressure: "130/85",
+      bloodGlucose: 5.4,
+      temperature: 36.8
+    },
+    {
+      id: 3,
+      date: "05/01/2025",
+      weight: 72.8,
+      bloodPressure: "125/80",
+      temperature: 36.5
+    }
+  ]
+};
 
 const PatientPage = () => {
-  const { toast } = useToast();
-  const [patientId] = useState(() => {
-    const savedId = localStorage.getItem('MOBHealth_PatientID');
-    if (savedId) return savedId;
-    
-    const newId = uuidv4().substring(0, 12).toUpperCase();
-    localStorage.setItem('MOBHealth_PatientID', newId);
-    return newId;
-  });
-  
-  const copyPatientId = () => {
-    navigator.clipboard.writeText(patientId);
-    toast({
-      title: "ID copié",
-      description: "Votre identifiant médical a été copié dans le presse-papiers.",
-    });
-  };
-
-  const appointments = [
-    {
-      id: 1,
-      doctor: "Dr. Mamadou Diallo",
-      specialty: "Cardiologie",
-      location: "Hôpital National Donka",
-      date: "12/06/2025",
-      time: "09:30",
-      status: "upcoming"
-    },
-    {
-      id: 2,
-      doctor: "Dr. Fatoumata Camara",
-      specialty: "Pédiatrie",
-      location: "Clinique Ambroise Paré",
-      date: "28/05/2025",
-      time: "14:15",
-      status: "completed"
-    }
-  ];
-
-  const medications = [
-    {
-      id: 1,
-      name: "Paracétamol",
-      dosage: "500mg",
-      frequency: "3 fois par jour",
-      duration: "5 jours",
-      remaining: 12
-    },
-    {
-      id: 2,
-      name: "Amoxicilline",
-      dosage: "250mg",
-      frequency: "2 fois par jour",
-      duration: "7 jours",
-      remaining: 8
-    }
-  ];
-
-  const allergies = ["Pénicilline", "Arachides"];
-  const conditions = ["Hypertension", "Asthme"];
+  const [activeTab, setActiveTab] = useState("profile");
+  const [medicalData, setMedicalData] = useState<MedicalData>(dummyMedicalData);
+  const [selectedConsultation, setSelectedConsultation] = useState<Consultation | null>(null);
+  const [selectedAntecedent, setSelectedAntecedent] = useState<Antecedent | null>(null);
+  const [selectedVaccination, setSelectedVaccination] = useState<Vaccination | null>(null);
+  const [selectedMetric, setSelectedMetric] = useState<Metric | null>(null);
 
   return (
     <div className="container max-w-screen-xl py-8">
-      <div className="flex flex-col md:flex-row gap-8">
-        {/* Patient info sidebar */}
-        <div className="md:w-72 lg:w-80 space-y-6">
-          <Card>
+      <h1 className="text-2xl md:text-3xl font-bold mb-6 flex items-center">
+        <User className="mr-2 h-7 w-7 text-health-blue" />
+        Mon Espace Patient
+      </h1>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        {/* Sidebar */}
+        <div>
+          <Card className="sticky top-24 bg-white dark:bg-card">
             <CardHeader>
-              <div className="flex items-center justify-between">
-                <Avatar className="h-16 w-16">
-                  <AvatarImage src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3" />
-                  <AvatarFallback>MK</AvatarFallback>
-                </Avatar>
-                <Badge className="bg-clinic-green">Vérifié</Badge>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-health-blue flex items-center justify-center text-white font-bold text-xl">
+                  MD
+                </div>
+                <div>
+                  <CardTitle>Mamadou Doumbouya</CardTitle>
+                  <CardDescription>ID: GN-2025-76542</CardDescription>
+                </div>
               </div>
-              <CardTitle className="mt-2">Mariama Keita</CardTitle>
-              <CardDescription>Née le 15/03/1992</CardDescription>
             </CardHeader>
             
             <CardContent>
-              <div className="space-y-4">
-                <div>
-                  <p className="text-sm font-medium mb-1">Identifiant médical unique</p>
-                  <div className="flex items-center gap-2 bg-slate-50 px-3 py-2 rounded-md">
-                    <code className="text-sm font-mono font-bold">{patientId}</code>
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className="h-6 w-6" 
-                      onClick={copyPatientId}
-                    >
-                      <Copy className="h-3.5 w-3.5" />
-                    </Button>
-                  </div>
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-health-blue" />
+                  <span className="text-sm">05/10/1985</span>
                 </div>
-                
-                <div>
-                  <p className="text-sm font-medium mb-1">Groupe sanguin</p>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">
-                      O+
-                    </Badge>
-                    <span className="text-xs text-muted-foreground">(Donneuse universelle)</span>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-4 w-4 text-health-blue" />
+                  <span className="text-sm">Conakry, Guinée</span>
                 </div>
-                
-                <div>
-                  <p className="text-sm font-medium mb-1">Contact d'urgence</p>
-                  <p className="text-sm">Ibrahim Keita (Frère)</p>
-                  <p className="text-sm">+224 621 23 45 67</p>
+                <div className="flex items-center gap-2">
+                  <Phone className="h-4 w-4 text-health-blue" />
+                  <span className="text-sm">+224 621 23 45 67</span>
                 </div>
-              </div>
-              
-              <div className="border-t mt-6 pt-4">
-                <Button 
-                  variant="outline"
-                  className="w-full mb-2"
-                >
-                  Modifier profil
-                </Button>
-                <Button 
-                  variant="outline"
-                  className="w-full border-destructive text-destructive hover:bg-destructive/10"
-                >
-                  Contact d'urgence
-                </Button>
               </div>
             </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Informations médicales</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <p className="text-sm font-medium mb-1">Allergies</p>
-                <div className="flex flex-wrap gap-2">
-                  {allergies.map(allergy => (
-                    <Badge key={allergy} variant="outline" className="bg-amber-50 border-amber-200 text-amber-700">
-                      {allergy}
-                    </Badge>
-                  ))}
-                  <Button variant="ghost" size="icon" className="h-6 w-6 rounded-full">
-                    <Plus className="h-3.5 w-3.5" />
-                  </Button>
-                </div>
-              </div>
-              
-              <div>
-                <p className="text-sm font-medium mb-1">Conditions médicales</p>
-                <div className="flex flex-wrap gap-2">
-                  {conditions.map(condition => (
-                    <Badge key={condition} variant="outline">
-                      {condition}
-                    </Badge>
-                  ))}
-                  <Button variant="ghost" size="icon" className="h-6 w-6 rounded-full">
-                    <Plus className="h-3.5 w-3.5" />
-                  </Button>
-                </div>
-              </div>
-              
-              <Button variant="outline" className="w-full" size="sm">
-                Voir dossier médical complet
-              </Button>
-            </CardContent>
+            
+            <CardFooter>
+              <Button variant="outline" className="w-full">Modifier profil</Button>
+            </CardFooter>
           </Card>
         </div>
         
-        {/* Main content */}
-        <div className="flex-1">
-          <h1 className="text-2xl md:text-3xl font-bold mb-6">Mon Espace Patient</h1>
-          
-          <Tabs defaultValue="appointments" className="space-y-6">
-            <TabsList className="grid grid-cols-4 w-full max-w-xl mb-6">
+        {/* Content */}
+        <div className="lg:col-span-3">
+          <Tabs defaultValue="medical-record" className="space-y-6" value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="grid grid-cols-3 w-full">
+              <TabsTrigger value="profile">Mon Profil</TabsTrigger>
+              <TabsTrigger value="medical-record">Dossier Médical</TabsTrigger>
               <TabsTrigger value="appointments">Rendez-vous</TabsTrigger>
-              <TabsTrigger value="medications">Médicaments</TabsTrigger>
-              <TabsTrigger value="records">Dossiers</TabsTrigger>
-              <TabsTrigger value="results">Résultats</TabsTrigger>
             </TabsList>
             
-            <TabsContent value="appointments" className="space-y-6">
+            {/* Profile Tab */}
+            <TabsContent value="profile" className="space-y-6">
               <Card>
-                <CardHeader className="pb-3">
-                  <div className="flex justify-between items-center">
-                    <CardTitle>Rendez-vous à venir</CardTitle>
-                    <Button>
-                      Nouveau rendez-vous
-                    </Button>
-                  </div>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <User className="mr-2 h-5 w-5 text-health-blue" />
+                    Informations Personnelles
+                  </CardTitle>
                 </CardHeader>
+                
                 <CardContent>
-                  {appointments.filter(app => app.status === 'upcoming').map(appointment => (
-                    <div key={appointment.id} className="flex border-b last:border-0 pb-4 mb-4 last:mb-0 last:pb-0">
-                      <div className="mr-4 bg-health-blue/10 p-2 rounded-full h-fit">
-                        <Calendar className="h-5 w-5 text-health-blue" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex justify-between">
-                          <div>
-                            <h3 className="font-medium">{appointment.doctor}</h3>
-                            <p className="text-sm text-muted-foreground">{appointment.specialty}</p>
-                          </div>
-                          <ChevronRight className="h-5 w-5 text-muted-foreground" />
-                        </div>
-                        
-                        <div className="mt-2 flex items-center gap-3 text-sm">
-                          <div className="flex items-center">
-                            <Clock className="h-4 w-4 mr-1 text-muted-foreground" />
-                            <span>{appointment.time}, {appointment.date}</span>
-                          </div>
-                          <div className="flex items-center">
-                            <MapPin className="h-4 w-4 mr-1 text-muted-foreground" />
-                            <span>{appointment.location}</span>
-                          </div>
-                        </div>
-                      </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <p className="text-sm text-muted-foreground">Nom complet</p>
+                      <p>Mamadou Doumbouya</p>
                     </div>
-                  ))}
-                  
-                  {appointments.filter(app => app.status === 'upcoming').length === 0 && (
-                    <div className="text-center py-6">
-                      <p className="text-muted-foreground">Aucun rendez-vous à venir</p>
-                      <Button variant="link" className="mt-2">
-                        Planifier un rendez-vous
-                      </Button>
+                    <div className="space-y-2">
+                      <p className="text-sm text-muted-foreground">Date de naissance</p>
+                      <p>05/10/1985</p>
                     </div>
-                  )}
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle>Historique des rendez-vous</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {appointments.filter(app => app.status === 'completed').map(appointment => (
-                    <div key={appointment.id} className="flex border-b last:border-0 pb-4 mb-4 last:mb-0 last:pb-0">
-                      <div className="mr-4 bg-muted p-2 rounded-full h-fit">
-                        <Calendar className="h-5 w-5 text-muted-foreground" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex justify-between">
-                          <div>
-                            <h3 className="font-medium">{appointment.doctor}</h3>
-                            <p className="text-sm text-muted-foreground">{appointment.specialty}</p>
-                          </div>
-                          <Badge variant="outline">Terminé</Badge>
-                        </div>
-                        
-                        <div className="mt-2 flex items-center gap-3 text-sm">
-                          <div className="flex items-center">
-                            <Clock className="h-4 w-4 mr-1 text-muted-foreground" />
-                            <span>{appointment.time}, {appointment.date}</span>
-                          </div>
-                          <div className="flex items-center">
-                            <MapPin className="h-4 w-4 mr-1 text-muted-foreground" />
-                            <span>{appointment.location}</span>
-                          </div>
-                        </div>
-                      </div>
+                    <div className="space-y-2">
+                      <p className="text-sm text-muted-foreground">Sexe</p>
+                      <p>Masculin</p>
                     </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="medications" className="space-y-6">
-              <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle>Médicaments actuels</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {medications.map(medication => (
-                    <div key={medication.id} className="flex border-b last:border-0 pb-4 mb-4 last:mb-0 last:pb-0">
-                      <div className="mr-4 bg-clinic-green/10 p-2 rounded-full h-fit">
-                        <Pill className="h-5 w-5 text-clinic-green" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex justify-between">
-                          <div>
-                            <h3 className="font-medium">{medication.name}</h3>
-                            <p className="text-sm text-muted-foreground">
-                              {medication.dosage} • {medication.frequency}
-                            </p>
-                          </div>
-                          <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-                            {medication.remaining} restants
-                          </Badge>
-                        </div>
-                        
-                        <div className="mt-2 text-sm flex items-center">
-                          <Clock className="h-4 w-4 mr-1 text-muted-foreground" />
-                          <span>Durée: {medication.duration}</span>
-                        </div>
-                      </div>
+                    <div className="space-y-2">
+                      <p className="text-sm text-muted-foreground">Groupe sanguin</p>
+                      <p>O+</p>
                     </div>
-                  ))}
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardHeader className="pb-3">
-                  <div className="flex justify-between items-center">
-                    <CardTitle>Renouvellement</CardTitle>
-                    <Button>
-                      Demander
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-center py-6">
-                    <p className="text-muted-foreground">
-                      Vous pouvez demander un renouvellement de vos ordonnances auprès de vos médecins.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="records" className="space-y-6">
-              <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle>Dossier Médical Électronique</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Button variant="outline" className="h-24 flex-col gap-2 justify-center text-left items-start px-4">
-                      <div className="flex items-center gap-2 text-health-blue">
-                        <FileText className="h-5 w-5" />
-                        <span className="font-medium">Consultations</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground">
-                        Historique de toutes vos consultations médicales
-                      </p>
-                    </Button>
-                    
-                    <Button variant="outline" className="h-24 flex-col gap-2 justify-center text-left items-start px-4">
-                      <div className="flex items-center gap-2 text-health-blue">
-                        <Activity className="h-5 w-5" />
-                        <span className="font-medium">Antécédents</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground">
-                        Historique médical personnel et familial
-                      </p>
-                    </Button>
-                    
-                    <Button variant="outline" className="h-24 flex-col gap-2 justify-center text-left items-start px-4">
-                      <div className="flex items-center gap-2 text-health-blue">
-                        <Clipboard className="h-5 w-5" />
-                        <span className="font-medium">Vaccinations</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground">
-                        Carnet de vaccination et rappels
-                      </p>
-                    </Button>
-                    
-                    <Button variant="outline" className="h-24 flex-col gap-2 justify-center text-left items-start px-4">
-                      <div className="flex items-center gap-2 text-health-blue">
-                        <Heart className="h-5 w-5" />
-                        <span className="font-medium">Mesures vitales</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground">
-                        Tension, pouls, température et autres mesures
-                      </p>
-                    </Button>
+                    <div className="space-y-2">
+                      <p className="text-sm text-muted-foreground">Adresse</p>
+                      <p>Quartier Matam, Conakry, Guinée</p>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm text-muted-foreground">Téléphone</p>
+                      <p>+224 621 23 45 67</p>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm text-muted-foreground">Email</p>
+                      <p>m.doumbouya@example.com</p>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm text-muted-foreground">Contact d'urgence</p>
+                      <p>Fanta Camara - +224 660 78 90 12 (Épouse)</p>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
               
               <Card>
-                <CardHeader className="pb-3">
-                  <div className="flex justify-between items-center">
-                    <CardTitle>Documents médicaux</CardTitle>
-                    <Button>
-                      Télécharger
-                    </Button>
-                  </div>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Shield className="mr-2 h-5 w-5 text-health-blue" />
+                    Assurance Maladie
+                  </CardTitle>
                 </CardHeader>
+                
                 <CardContent>
                   <div className="space-y-4">
-                    <div className="flex justify-between items-center p-3 border rounded-md">
-                      <div className="flex items-center gap-3">
-                        <FileText className="h-5 w-5 text-muted-foreground" />
-                        <div>
-                          <p className="font-medium">Résumé médical</p>
-                          <p className="text-xs text-muted-foreground">Ajouté le 25/04/2025</p>
-                        </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <p className="text-sm text-muted-foreground">Organisme</p>
+                        <p>Caisse Nationale d'Assurance Maladie de Guinée</p>
                       </div>
-                      <Button variant="ghost" size="icon">
-                        <ChevronRight className="h-5 w-5" />
-                      </Button>
+                      <div className="space-y-2">
+                        <p className="text-sm text-muted-foreground">Numéro d'assuré</p>
+                        <p>CNAMG-985421-76</p>
+                      </div>
+                      <div className="space-y-2">
+                        <p className="text-sm text-muted-foreground">Type de couverture</p>
+                        <p>Complète (80%)</p>
+                      </div>
+                      <div className="space-y-2">
+                        <p className="text-sm text-muted-foreground">Date d'expiration</p>
+                        <p>31/12/2026</p>
+                      </div>
                     </div>
                     
-                    <div className="flex justify-between items-center p-3 border rounded-md">
-                      <div className="flex items-center gap-3">
-                        <FileText className="h-5 w-5 text-muted-foreground" />
-                        <div>
-                          <p className="font-medium">Ordonnance - Dr. Diallo</p>
-                          <p className="text-xs text-muted-foreground">Ajouté le 12/04/2025</p>
-                        </div>
-                      </div>
-                      <Button variant="ghost" size="icon">
-                        <ChevronRight className="h-5 w-5" />
-                      </Button>
-                    </div>
+                    <Alert>
+                      <AlertCircle className="h-4 w-4" />
+                      <AlertTitle>Information</AlertTitle>
+                      <AlertDescription>
+                        Votre couverture santé est active et à jour. Pensez à renouveler votre adhésion avant décembre 2026.
+                      </AlertDescription>
+                    </Alert>
                   </div>
                 </CardContent>
               </Card>
             </TabsContent>
             
-            <TabsContent value="results" className="space-y-6">
+            {/* Medical Record Tab */}
+            <TabsContent value="medical-record">
               <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle>Résultats d'examens</CardTitle>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <FileText className="mr-2 h-5 w-5 text-health-blue" />
+                    Dossier Médical Électronique
+                  </CardTitle>
+                  <CardDescription>
+                    Consultez votre historique médical et vos informations de santé
+                  </CardDescription>
                 </CardHeader>
+                
+                <CardContent>
+                  <Tabs defaultValue="consultations" className="space-y-4">
+                    <TabsList className="grid grid-cols-2 md:grid-cols-4 w-full">
+                      <TabsTrigger value="consultations" className="flex items-center gap-2">
+                        <Stethoscope className="h-4 w-4" />
+                        <span className="hidden md:inline">Consultations</span>
+                      </TabsTrigger>
+                      <TabsTrigger value="antecedents" className="flex items-center gap-2">
+                        <ClipboardCheck className="h-4 w-4" />
+                        <span className="hidden md:inline">Antécédents</span>
+                      </TabsTrigger>
+                      <TabsTrigger value="vaccinations" className="flex items-center gap-2">
+                        <Pill className="h-4 w-4" />
+                        <span className="hidden md:inline">Vaccinations</span>
+                      </TabsTrigger>
+                      <TabsTrigger value="metrics" className="flex items-center gap-2">
+                        <Activity className="h-4 w-4" />
+                        <span className="hidden md:inline">Mesures vitales</span>
+                      </TabsTrigger>
+                    </TabsList>
+                    
+                    {/* Consultations */}
+                    <TabsContent value="consultations" className="space-y-4">
+                      {medicalData.consultations.map(consultation => (
+                        <Dialog key={consultation.id}>
+                          <DialogTrigger asChild>
+                            <Card className="cursor-pointer hover:bg-blue-50 transition-colors">
+                              <CardContent className="p-4">
+                                <div className="flex justify-between items-start">
+                                  <div>
+                                    <p className="font-medium">{consultation.date}</p>
+                                    <p className="text-sm text-muted-foreground">{consultation.facility}</p>
+                                    <p className="text-sm">{consultation.diagnosis}</p>
+                                  </div>
+                                  <Button variant="ghost" size="sm">Voir détails</Button>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-[500px]">
+                            <DialogHeader>
+                              <DialogTitle className="flex items-center">
+                                <Calendar className="h-5 w-5 mr-2 text-health-blue" />
+                                Consultation du {consultation.date}
+                              </DialogTitle>
+                            </DialogHeader>
+                            <div className="space-y-4 py-4">
+                              <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                  <p className="text-sm text-muted-foreground">Médecin</p>
+                                  <p className="font-medium">{consultation.doctor}</p>
+                                </div>
+                                <div>
+                                  <p className="text-sm text-muted-foreground">Établissement</p>
+                                  <p>{consultation.facility}</p>
+                                </div>
+                              </div>
+                              
+                              <div>
+                                <p className="text-sm text-muted-foreground">Motif de consultation</p>
+                                <p>{consultation.reason}</p>
+                              </div>
+                              
+                              <div>
+                                <p className="text-sm text-muted-foreground">Diagnostic</p>
+                                <p className="font-medium">{consultation.diagnosis}</p>
+                              </div>
+                              
+                              {consultation.prescription && (
+                                <div>
+                                  <p className="text-sm text-muted-foreground">Prescription</p>
+                                  <div className="bg-blue-50 p-3 rounded-md mt-1">
+                                    {consultation.prescription.split('\n').map((line, i) => (
+                                      <p key={i} className="text-sm">{line}</p>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                              
+                              {consultation.followUp && (
+                                <div>
+                                  <p className="text-sm text-muted-foreground">Suivi</p>
+                                  <p>{consultation.followUp}</p>
+                                </div>
+                              )}
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                      ))}
+                    </TabsContent>
+                    
+                    {/* Antécédents */}
+                    <TabsContent value="antecedents" className="space-y-4">
+                      {medicalData.antecedents.map(antecedent => (
+                        <Dialog key={antecedent.id}>
+                          <DialogTrigger asChild>
+                            <Card className="cursor-pointer hover:bg-blue-50 transition-colors">
+                              <CardContent className="p-4">
+                                <div className="flex justify-between items-start">
+                                  <div>
+                                    <div className="flex items-center">
+                                      <p className="font-medium">{antecedent.type}</p>
+                                      <Badge 
+                                        className={
+                                          antecedent.severity === "high" ? "bg-red-500 ml-2" :
+                                          antecedent.severity === "medium" ? "bg-amber-500 ml-2" :
+                                          "bg-green-500 ml-2"
+                                        }
+                                      >
+                                        {antecedent.severity === "high" ? "Grave" : 
+                                          antecedent.severity === "medium" ? "Modéré" : "Léger"}
+                                      </Badge>
+                                    </div>
+                                    <p className="text-sm">{antecedent.description}</p>
+                                    <p className="text-xs text-muted-foreground mt-1">{antecedent.date}</p>
+                                  </div>
+                                  <Button variant="ghost" size="sm">Voir détails</Button>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-[500px]">
+                            <DialogHeader>
+                              <DialogTitle className="flex items-center">
+                                <ClipboardCheck className="h-5 w-5 mr-2 text-health-blue" />
+                                {antecedent.type}
+                              </DialogTitle>
+                            </DialogHeader>
+                            <div className="space-y-4 py-4">
+                              <div>
+                                <p className="text-sm text-muted-foreground">Description</p>
+                                <p className="font-medium">{antecedent.description}</p>
+                              </div>
+                              
+                              <div>
+                                <p className="text-sm text-muted-foreground">Date</p>
+                                <p>{antecedent.date}</p>
+                              </div>
+                              
+                              <div>
+                                <p className="text-sm text-muted-foreground">Gravité</p>
+                                <Badge 
+                                  className={
+                                    antecedent.severity === "high" ? "bg-red-500" :
+                                    antecedent.severity === "medium" ? "bg-amber-500" :
+                                    "bg-green-500"
+                                  }
+                                >
+                                  {antecedent.severity === "high" ? "Grave" : 
+                                    antecedent.severity === "medium" ? "Modéré" : "Léger"}
+                                </Badge>
+                              </div>
+                              
+                              <div className="bg-amber-50 p-3 rounded-md border border-amber-200">
+                                <p className="text-sm flex items-center">
+                                  <AlertCircle className="h-4 w-4 mr-2 text-amber-600" />
+                                  Cette information sera visible par tout médecin qui vous soigne via la plateforme MOB-Health.
+                                </p>
+                              </div>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                      ))}
+                    </TabsContent>
+                    
+                    {/* Vaccinations */}
+                    <TabsContent value="vaccinations" className="space-y-4">
+                      {medicalData.vaccinations.map(vaccination => (
+                        <Dialog key={vaccination.id}>
+                          <DialogTrigger asChild>
+                            <Card className="cursor-pointer hover:bg-blue-50 transition-colors">
+                              <CardContent className="p-4">
+                                <div className="flex justify-between items-start">
+                                  <div>
+                                    <p className="font-medium">{vaccination.name}</p>
+                                    <p className="text-sm text-muted-foreground">{vaccination.date}</p>
+                                    <p className="text-sm">{vaccination.facility}</p>
+                                  </div>
+                                  <Button variant="ghost" size="sm">Voir détails</Button>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-[500px]">
+                            <DialogHeader>
+                              <DialogTitle className="flex items-center">
+                                <Pill className="h-5 w-5 mr-2 text-health-blue" />
+                                Vaccination: {vaccination.name}
+                              </DialogTitle>
+                            </DialogHeader>
+                            <div className="space-y-4 py-4">
+                              <div>
+                                <p className="text-sm text-muted-foreground">Date d'administration</p>
+                                <p className="font-medium">{vaccination.date}</p>
+                              </div>
+                              
+                              <div>
+                                <p className="text-sm text-muted-foreground">Établissement</p>
+                                <p>{vaccination.facility}</p>
+                              </div>
+                              
+                              {vaccination.nextDose && (
+                                <div>
+                                  <p className="text-sm text-muted-foreground">Prochaine dose</p>
+                                  <p>{vaccination.nextDose}</p>
+                                </div>
+                              )}
+                              
+                              <div className="bg-clinic-green/10 p-3 rounded-md border border-clinic-green/20">
+                                <p className="text-sm flex items-center text-clinic-green-700">
+                                  <Heart className="h-4 w-4 mr-2 text-clinic-green" />
+                                  Cette vaccination est à jour dans votre carnet de vaccination numérique.
+                                </p>
+                              </div>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                      ))}
+                    </TabsContent>
+                    
+                    {/* Mesures Vitales */}
+                    <TabsContent value="metrics" className="space-y-4">
+                      {medicalData.metrics.map(metric => (
+                        <Dialog key={metric.id}>
+                          <DialogTrigger asChild>
+                            <Card className="cursor-pointer hover:bg-blue-50 transition-colors">
+                              <CardContent className="p-4">
+                                <div className="flex justify-between items-start">
+                                  <div>
+                                    <p className="font-medium">{metric.date}</p>
+                                    {metric.bloodPressure && (
+                                      <div className="flex items-center gap-2">
+                                        <Heart className="h-4 w-4 text-health-blue" />
+                                        <p className="text-sm">{metric.bloodPressure} mmHg</p>
+                                      </div>
+                                    )}
+                                    {metric.weight && (
+                                      <div className="flex items-center gap-2">
+                                        <Activity className="h-4 w-4 text-health-blue" />
+                                        <p className="text-sm">{metric.weight} kg</p>
+                                      </div>
+                                    )}
+                                  </div>
+                                  <Button variant="ghost" size="sm">Voir détails</Button>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-[500px]">
+                            <DialogHeader>
+                              <DialogTitle className="flex items-center">
+                                <Activity className="h-5 w-5 mr-2 text-health-blue" />
+                                Mesures vitales du {metric.date}
+                              </DialogTitle>
+                            </DialogHeader>
+                            <div className="space-y-4 py-4">
+                              <div className="grid grid-cols-2 gap-4">
+                                {metric.weight && (
+                                  <div>
+                                    <p className="text-sm text-muted-foreground">Poids</p>
+                                    <p className="font-medium">{metric.weight} kg</p>
+                                  </div>
+                                )}
+                                
+                                {metric.height && (
+                                  <div>
+                                    <p className="text-sm text-muted-foreground">Taille</p>
+                                    <p className="font-medium">{metric.height} cm</p>
+                                  </div>
+                                )}
+                                
+                                {metric.bloodPressure && (
+                                  <div>
+                                    <p className="text-sm text-muted-foreground">Tension artérielle</p>
+                                    <p className="font-medium">{metric.bloodPressure} mmHg</p>
+                                  </div>
+                                )}
+                                
+                                {metric.temperature && (
+                                  <div>
+                                    <p className="text-sm text-muted-foreground">Température</p>
+                                    <p className="font-medium">{metric.temperature} °C</p>
+                                  </div>
+                                )}
+                                
+                                {metric.bloodGlucose && (
+                                  <div>
+                                    <p className="text-sm text-muted-foreground">Glycémie</p>
+                                    <p className="font-medium">{metric.bloodGlucose} mmol/L</p>
+                                  </div>
+                                )}
+                              </div>
+                              
+                              {metric.notes && (
+                                <div>
+                                  <p className="text-sm text-muted-foreground">Notes</p>
+                                  <p>{metric.notes}</p>
+                                </div>
+                              )}
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                      ))}
+                    </TabsContent>
+                  </Tabs>
+                </CardContent>
+              </Card>
+            </TabsContent>
+            
+            {/* Appointments Tab */}
+            <TabsContent value="appointments">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Calendar className="mr-2 h-5 w-5 text-health-blue" />
+                    Mes Rendez-vous
+                  </CardTitle>
+                  <CardDescription>
+                    Gérez vos rendez-vous médicaux et consultations à venir
+                  </CardDescription>
+                </CardHeader>
+                
                 <CardContent>
                   <div className="space-y-4">
-                    <div className="flex justify-between items-center p-3 border rounded-md">
-                      <div className="flex items-center gap-3">
-                        <FileText className="h-5 w-5 text-health-blue" />
-                        <div>
-                          <p className="font-medium">Analyse de sang complète</p>
-                          <p className="text-xs text-muted-foreground">
-                            Hôpital National Donka • 28/04/2025
-                          </p>
+                    <Card>
+                      <CardContent className="p-4">
+                        <div className="flex flex-col sm:flex-row justify-between gap-4">
+                          <div className="flex items-start gap-4">
+                            <div className="w-12 h-12 rounded-full bg-health-blue/10 flex items-center justify-center text-health-blue">
+                              <Calendar className="h-6 w-6" />
+                            </div>
+                            <div>
+                              <p className="font-medium">Consultation Dr. Mamadou Diallo</p>
+                              <p className="text-sm text-muted-foreground">Vendredi 25 mai 2025, 10:30</p>
+                              <p className="text-sm">Hôpital National Donka</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2 sm:self-center">
+                            <Button variant="outline" size="sm">Reporter</Button>
+                            <Button variant="destructive" size="sm">Annuler</Button>
+                          </div>
                         </div>
-                      </div>
-                      <Badge>Nouveau</Badge>
-                    </div>
+                      </CardContent>
+                    </Card>
                     
-                    <div className="flex justify-between items-center p-3 border rounded-md">
-                      <div className="flex items-center gap-3">
-                        <FileText className="h-5 w-5 text-muted-foreground" />
-                        <div>
-                          <p className="font-medium">Radiographie pulmonaire</p>
-                          <p className="text-xs text-muted-foreground">
-                            Clinique Pasteur • 15/03/2025
-                          </p>
+                    <Card>
+                      <CardContent className="p-4">
+                        <div className="flex flex-col sm:flex-row justify-between gap-4">
+                          <div className="flex items-start gap-4">
+                            <div className="w-12 h-12 rounded-full bg-health-blue/10 flex items-center justify-center text-health-blue">
+                              <AlarmClock className="h-6 w-6" />
+                            </div>
+                            <div>
+                              <p className="font-medium">Suivi post-opératoire</p>
+                              <p className="text-sm text-muted-foreground">Mercredi 12 juin 2025, 14:00</p>
+                              <p className="text-sm">Clinique Pasteur</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2 sm:self-center">
+                            <Button variant="outline" size="sm">Reporter</Button>
+                            <Button variant="destructive" size="sm">Annuler</Button>
+                          </div>
                         </div>
-                      </div>
-                      <Button variant="ghost" size="icon">
-                        <ChevronRight className="h-5 w-5" />
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-6">
-                    <h3 className="font-medium mb-2">Ajouter de nouveaux résultats</h3>
-                    <div className="flex gap-2">
-                      <Input type="file" className="flex-1" />
-                      <Button>
-                        Téléverser
+                      </CardContent>
+                    </Card>
+                    
+                    <div className="text-center py-4">
+                      <Button className="bg-health-blue hover:bg-health-blue/90">
+                        Prendre un nouveau rendez-vous
                       </Button>
                     </div>
                   </div>
@@ -489,6 +704,15 @@ const PatientPage = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const Shield = ({ className }: { className?: string }) => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M12 2s8 3 8 10v3.5c0 1.4-.7 2.7-1.8 3.5l-3.1 2.4a4.8 4.8 0 0 1-6.2 0l-3.1-2.4C4.7 18.2 4 16.9 4 15.5V12c0-7 8-10 8-10z" />
+      <path d="m9 12 2 2 4-4" />
+    </svg>
   );
 };
 

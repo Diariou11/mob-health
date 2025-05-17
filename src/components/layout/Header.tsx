@@ -1,14 +1,16 @@
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Bell } from 'lucide-react';
+import { Menu, X, Bell, UserPlus, LogIn } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useToast } from '@/components/ui/use-toast';
+import { cn } from '@/lib/utils';
 
 const Header = () => {
   const [notifications, setNotifications] = useState(2);
   const { toast } = useToast();
+  const location = useLocation();
 
   const showNotification = () => {
     toast({
@@ -26,12 +28,18 @@ const Header = () => {
     { name: 'Mon Espace', path: '/patient' },
   ];
 
+  const isActive = (path: string) => {
+    if (path === '/' && location.pathname === '/') return true;
+    if (path !== '/' && location.pathname.startsWith(path)) return true;
+    return false;
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 max-w-screen-xl items-center">
         <Link to="/" className="flex items-center gap-2 mr-4">
           <img src="/lovable-uploads/c19a2797-156b-4d8d-9bb3-e52cde9300e0.png" alt="MOB-Health Africa Logo" className="h-9 w-auto" />
-          <span className="font-bold text-xl hidden md:inline-block">MOB-Health</span>
+          <span className="font-bold text-xl font-ubuntu hidden md:inline-block">MOB-Health</span>
         </Link>
         
         <nav className="hidden md:flex items-center gap-5 text-sm font-medium flex-1">
@@ -39,7 +47,12 @@ const Header = () => {
             <Link 
               key={link.path}
               to={link.path}
-              className="text-foreground/70 transition-colors hover:text-foreground hover:text-health-blue"
+              className={cn(
+                "transition-colors hover:text-foreground relative py-2",
+                isActive(link.path)
+                  ? "text-health-blue font-bold after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-health-blue"
+                  : "text-foreground/70 hover:text-health-blue"
+              )}
             >
               {link.name}
             </Link>
@@ -47,6 +60,23 @@ const Header = () => {
         </nav>
         
         <div className="flex items-center gap-2 ml-auto">
+          {location.pathname === '/' && (
+            <div className="hidden md:flex items-center gap-2 mr-4">
+              <Link to="/login">
+                <Button variant="ghost" size="sm" className="flex items-center gap-2">
+                  <LogIn className="h-4 w-4" />
+                  Se connecter
+                </Button>
+              </Link>
+              <Link to="/register">
+                <Button size="sm" className="bg-health-blue hover:bg-health-blue/80 flex items-center gap-2">
+                  <UserPlus className="h-4 w-4" />
+                  S'inscrire
+                </Button>
+              </Link>
+            </div>
+          )}
+
           <Button 
             variant="ghost" 
             size="icon" 
@@ -73,7 +103,12 @@ const Header = () => {
                   <Link 
                     key={link.path}
                     to={link.path}
-                    className="text-foreground/70 transition-colors hover:text-foreground px-2 py-1 rounded-md hover:bg-accent"
+                    className={cn(
+                      "transition-colors px-2 py-1 rounded-md",
+                      isActive(link.path)
+                        ? "bg-health-blue/10 text-health-blue font-bold"
+                        : "text-foreground/70 hover:bg-accent"
+                    )}
                   >
                     {link.name}
                   </Link>

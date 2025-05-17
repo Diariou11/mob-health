@@ -1,8 +1,27 @@
+
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
+import { User, LogIn, Heart, Phone, Clock, MapPin, UserPlus } from 'lucide-react';
+
 const Home = () => {
-  return <div className="container max-w-screen-xl py-8 md:py-12">
+  return <div className="container max-w-screen-xl py-8 md:py-12 bg-gradient-to-br from-background to-blue-50/20 dark:from-background dark:to-blue-950/10">
+      {/* Authentication Buttons */}
+      <div className="flex justify-end gap-3 mb-8">
+        <Link to="/login">
+          <Button variant="ghost" className="flex items-center gap-2">
+            <LogIn className="w-4 h-4" />
+            Se connecter
+          </Button>
+        </Link>
+        <Link to="/register">
+          <Button className="bg-health-blue hover:bg-health-blue/80 flex items-center gap-2">
+            <UserPlus className="w-4 h-4" />
+            S'inscrire
+          </Button>
+        </Link>
+      </div>
+      
       {/* Hero Section */}
       <section className="flex flex-col-reverse md:flex-row items-center gap-8 md:gap-12">
         <div className="flex-1 space-y-6">
@@ -20,10 +39,15 @@ const Home = () => {
               <span className="text-clinic-green">soins de santé</span> en Guinée
             </h1>
             
-            <p className="text-xl text-foreground/80 leading-relaxed mb-8">
+            <motion.p 
+              className="text-xl text-foreground/80 leading-relaxed mb-8"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+            >
               MOB-Health Africa est l'annuaire numérique unifié des établissements de santé guinéens. 
               Trouvez rapidement des services médicaux, gérez vos urgences, et accédez à votre dossier médical.
-            </p>
+            </motion.p>
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Link to="/map">
@@ -41,14 +65,13 @@ const Home = () => {
           </motion.div>
         </div>
         
-        <motion.div className="flex-1 flex justify-center" initial={{
-        opacity: 0
-      }} animate={{
-        opacity: 1
-      }} transition={{
-        duration: 0.8,
-        delay: 0.3
-      }}>
+        <motion.div 
+          className="flex-1 flex justify-center" 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.3 }}
+          whileHover={{ scale: 1.05 }}
+        >
           <img alt="MOB-Health Africa" className="w-full max-w-[280px] md:max-w-[320px] lg:max-w-[400px]" src="/lovable-uploads/8a7d8c0d-abc8-4d14-b2eb-3a451e9dff45.png" />
         </motion.div>
       </section>
@@ -60,14 +83,35 @@ const Home = () => {
         </h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-          <FeatureCard title="Annuaire médical complet" description="Accédez à tous les établissements de santé en Guinée avec des informations détaillées et à jour." color="bg-health-blue" />
-          <FeatureCard title="Services d'urgence" description="Trouvez des services d'urgence proches, demandez du sang ou une ambulance en quelques clics." color="bg-destructive" />
-          <FeatureCard title="Dossier médical numérique" description="Gérez votre dossier médical et partagez-le avec les professionnels de santé autorisés." color="bg-clinic-green" />
+          <Link to="/map">
+            <FeatureCard 
+              title="Annuaire médical complet" 
+              description="Accédez à tous les établissements de santé en Guinée avec des informations détaillées et à jour." 
+              color="bg-health-blue"
+              icon={<MapPin className="text-white" />} 
+            />
+          </Link>
+          <Link to="/emergency">
+            <FeatureCard 
+              title="Services d'urgence" 
+              description="Trouvez des services d'urgence proches, demandez du sang ou une ambulance en quelques clics." 
+              color="bg-destructive"
+              icon={<Phone className="text-white" />} 
+            />
+          </Link>
+          <Link to="/patient">
+            <FeatureCard 
+              title="Dossier médical numérique" 
+              description="Gérez votre dossier médical et partagez-le avec les professionnels de santé autorisés." 
+              color="bg-clinic-green"
+              icon={<User className="text-white" />} 
+            />
+          </Link>
         </div>
       </section>
       
       {/* Access Offline Section */}
-      <section className="py-12 bg-slate-50 rounded-lg p-8">
+      <section className="py-12 bg-blue-50/50 dark:bg-blue-950/10 rounded-lg p-8">
         <div className="flex flex-col md:flex-row items-center gap-8">
           <div className="flex-1">
             <h2 className="text-2xl font-bold mb-4">Accessible même sans internet</h2>
@@ -82,7 +126,11 @@ const Home = () => {
             </Link>
           </div>
           <div className="flex-1 flex justify-center">
-            <div className="bg-white p-4 rounded-lg shadow-lg max-w-[220px] border">
+            <motion.div 
+              className="bg-white p-4 rounded-lg shadow-lg max-w-[220px] border"
+              whileHover={{ y: -5 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
               <div className="border-b pb-2 text-center font-medium">Service USSD</div>
               <div className="py-4 text-center">
                 <p className="mb-2">Pour accéder aux services:</p>
@@ -91,25 +139,35 @@ const Home = () => {
               <div className="text-center text-sm text-foreground/70 pt-2 border-t">
                 Sans frais • Disponible 24/7
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
     </div>;
 };
+
 const FeatureCard = ({
   title,
   description,
-  color
+  color,
+  icon
 }: {
   title: string;
   description: string;
   color: string;
-}) => <div className="border rounded-lg p-6 hover:shadow-md transition-shadow">
+  icon: React.ReactNode;
+}) => (
+  <motion.div 
+    className="border rounded-lg p-6 hover:shadow-md transition-shadow bg-gradient-to-br from-white to-blue-50/30 dark:from-background dark:to-blue-950/10"
+    whileHover={{ y: -5 }}
+    transition={{ type: "spring", stiffness: 300 }}
+  >
     <div className={`w-12 h-12 rounded-full ${color} flex items-center justify-center mb-4`}>
-      <div className="w-5 h-5 bg-white rounded-sm" />
+      {icon}
     </div>
     <h3 className="text-lg font-medium mb-2">{title}</h3>
     <p className="text-foreground/70">{description}</p>
-  </div>;
+  </motion.div>
+);
+
 export default Home;
