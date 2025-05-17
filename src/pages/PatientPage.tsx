@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -429,7 +428,7 @@ const PatientPage = () => {
                       </div>
                       <Button variant="ghost" size="icon">
                         <ChevronRight className="h-5 w-5" />
-                      </Button>
+                      Button>
                     </div>
                   </div>
                 </CardContent>
