@@ -8,13 +8,13 @@ const Layout = () => {
     <div 
       className="flex flex-col min-h-screen font-ubuntu"
       style={{
-        background: "linear-gradient(135deg, #0057A3 0%, #4CAF50 100%)",
+        background: "linear-gradient(135deg, rgba(0,87,163,0.95) 0%, rgba(76,175,80,0.95) 100%)",
         backgroundSize: "cover",
         backgroundAttachment: "fixed",
       }}
     >
       <Header />
-      <main className="flex-1 backdrop-blur-sm bg-black/10">
+      <main className="flex-1 backdrop-blur-sm bg-black/20">
         <Outlet />
       </main>
       <Footer />
