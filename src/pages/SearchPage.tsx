@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -196,7 +195,7 @@ const SearchPage = () => {
                 <SelectValue placeholder="Toutes les spécialités" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Toutes les spécialités</SelectItem>
+                <SelectItem value="all">Toutes les spécialités</SelectItem>
                 <SelectItem value="cardiology">Cardiologie</SelectItem>
                 <SelectItem value="pediatrics">Pédiatrie</SelectItem>
                 <SelectItem value="ophthalmology">Ophtalmologie</SelectItem>
@@ -213,7 +212,7 @@ const SearchPage = () => {
                 <SelectValue placeholder="Toutes les langues" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Toutes les langues</SelectItem>
+                <SelectItem value="all">Toutes les langues</SelectItem>
                 <SelectItem value="french">Français</SelectItem>
                 <SelectItem value="peul">Peul</SelectItem>
                 <SelectItem value="soussou">Soussou</SelectItem>
@@ -230,7 +229,7 @@ const SearchPage = () => {
                 <SelectValue placeholder="Tous les types" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Tous les types</SelectItem>
+                <SelectItem value="all">Tous les types</SelectItem>
                 <SelectItem value="hospital">Hôpital</SelectItem>
                 <SelectItem value="clinic">Clinique</SelectItem>
                 <SelectItem value="center">Centre de santé</SelectItem>
