@@ -48,15 +48,17 @@ const Home = () => {
         <motion.div 
           className="flex-1 flex justify-center" 
           initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.3 }}
           animate={{ 
+            opacity: 1,
+            scale: 1,
             y: [0, -10, 0],
             rotate: [0, 2, 0, -2, 0]
           }}
           transition={{ 
+            duration: 1,
+            delay: 0.3,
             repeat: Infinity, 
-            duration: 5,
+            repeatDelay: 0.5,
             ease: "easeInOut"
           }}
         >
