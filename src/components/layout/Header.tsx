@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -6,6 +5,7 @@ import { Menu, X, Bell, UserPlus, LogIn } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useToast } from '@/components/ui/use-toast';
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 
 const Header = () => {
   const [notifications, setNotifications] = useState(2);
@@ -35,11 +35,36 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-white/20 bg-black/40 backdrop-blur supports-[backdrop-filter]:bg-black/30">
       <div className="container flex h-16 max-w-screen-xl items-center">
         <Link to="/" className="flex items-center gap-2 mr-4">
-          <img src="/lovable-uploads/c19a2797-156b-4d8d-9bb3-e52cde9300e0.png" alt="MOB-Health Africa Logo" className="h-9 w-auto" />
-          <span className="font-bold text-xl font-ubuntu hidden md:inline-block">MOB-Health</span>
+          <motion.img 
+            src="/lovable-uploads/c19a2797-156b-4d8d-9bb3-e52cde9300e0.png" 
+            alt="MOB-Health Africa Logo" 
+            className="h-9 w-auto" 
+            animate={{ 
+              rotate: [0, 5, 0, -5, 0]
+            }}
+            transition={{ 
+              repeat: Infinity, 
+              duration: 5,
+              ease: "easeInOut"
+            }}
+          />
+          <motion.span 
+            className="font-bold text-xl font-ubuntu hidden md:inline-block text-white"
+            animate={{ 
+              y: [0, -3, 0], 
+              opacity: [1, 0.8, 1]
+            }}
+            transition={{ 
+              repeat: Infinity, 
+              duration: 3,
+              ease: "easeInOut"
+            }}
+          >
+            MOB-Health
+          </motion.span>
         </Link>
         
         <nav className="hidden md:flex items-center gap-5 text-sm font-medium flex-1">
@@ -48,10 +73,10 @@ const Header = () => {
               key={link.path}
               to={link.path}
               className={cn(
-                "transition-colors hover:text-foreground relative py-2",
+                "transition-colors hover:text-white relative py-2",
                 isActive(link.path)
-                  ? "text-health-blue font-bold after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-health-blue"
-                  : "text-foreground/70 hover:text-health-blue"
+                  ? "text-white font-bold after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-health-blue before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-0.5 before:bg-clinic-green"
+                  : "text-white/70 hover:text-white"
               )}
             >
               {link.name}
@@ -63,7 +88,7 @@ const Header = () => {
           {location.pathname === '/' && (
             <div className="hidden md:flex items-center gap-2 mr-4">
               <Link to="/login">
-                <Button variant="ghost" size="sm" className="flex items-center gap-2">
+                <Button variant="ghost" size="sm" className="flex items-center gap-2 text-white hover:bg-white/10">
                   <LogIn className="h-4 w-4" />
                   Se connecter
                 </Button>
@@ -80,7 +105,7 @@ const Header = () => {
           <Button 
             variant="ghost" 
             size="icon" 
-            className="relative"
+            className="relative text-white hover:bg-white/10"
             onClick={showNotification}
           >
             <Bell className="h-5 w-5" />
@@ -93,11 +118,11 @@ const Header = () => {
           
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden">
+              <Button variant="ghost" size="icon" className="md:hidden text-white hover:bg-white/10">
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[250px] sm:w-[300px]">
+            <SheetContent side="right" className="w-[250px] sm:w-[300px] bg-black/80 backdrop-blur-lg border-white/20">
               <nav className="flex flex-col gap-4 mt-8">
                 {navLinks.map((link) => (
                   <Link 
@@ -106,8 +131,8 @@ const Header = () => {
                     className={cn(
                       "transition-colors px-2 py-1 rounded-md",
                       isActive(link.path)
-                        ? "bg-health-blue/10 text-health-blue font-bold"
-                        : "text-foreground/70 hover:bg-accent"
+                        ? "bg-health-blue/30 text-white font-bold border-l-4 border-health-blue"
+                        : "text-white/70 hover:bg-white/10"
                     )}
                   >
                     {link.name}
@@ -118,7 +143,7 @@ const Header = () => {
           </Sheet>
           
           <Link to="/patient" className="hidden md:block">
-            <Button variant="outline" className="border-health-blue text-health-blue hover:bg-health-blue hover:text-white">
+            <Button variant="outline" className="border-health-blue text-white hover:bg-health-blue hover:text-white bg-white/10">
               Mon Espace
             </Button>
           </Link>

@@ -100,10 +100,15 @@
 
   html {
     font-family: 'Ubuntu', sans-serif;
+    font-weight: 500;
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-bold, .font-semibold {
+    font-weight: 700;
   }
 
   body {
-    @apply bg-gradient-to-b from-background to-blue-50/30 dark:from-background dark:to-blue-950/10 text-foreground min-h-screen;
+    @apply font-ubuntu bg-transparent text-foreground min-h-screen;
   }
 
   .font-ubuntu {
