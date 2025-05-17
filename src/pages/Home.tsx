@@ -1,19 +1,20 @@
-
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-
 const Home = () => {
-  return (
-    <div className="container max-w-screen-xl py-8 md:py-12">
+  return <div className="container max-w-screen-xl py-8 md:py-12">
       {/* Hero Section */}
       <section className="flex flex-col-reverse md:flex-row items-center gap-8 md:gap-12">
         <div className="flex-1 space-y-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
+          <motion.div initial={{
+          opacity: 0,
+          y: 20
+        }} animate={{
+          opacity: 1,
+          y: 0
+        }} transition={{
+          duration: 0.6
+        }}>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
               <span className="text-health-blue">Connecter</span> les patients aux{' '}
               <span className="text-clinic-green">soins de santé</span> en Guinée
@@ -40,17 +41,15 @@ const Home = () => {
           </motion.div>
         </div>
         
-        <motion.div 
-          className="flex-1 flex justify-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-        >
-          <img 
-            src="/lovable-uploads/becb538b-e791-4139-88b0-06cd63958edc.png" 
-            alt="MOB-Health Africa" 
-            className="w-full max-w-[280px] md:max-w-[320px] lg:max-w-[400px]"
-          />
+        <motion.div className="flex-1 flex justify-center" initial={{
+        opacity: 0
+      }} animate={{
+        opacity: 1
+      }} transition={{
+        duration: 0.8,
+        delay: 0.3
+      }}>
+          <img alt="MOB-Health Africa" className="w-full max-w-[280px] md:max-w-[320px] lg:max-w-[400px]" src="/lovable-uploads/8a7d8c0d-abc8-4d14-b2eb-3a451e9dff45.png" />
         </motion.div>
       </section>
       
@@ -61,21 +60,9 @@ const Home = () => {
         </h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-          <FeatureCard 
-            title="Annuaire médical complet" 
-            description="Accédez à tous les établissements de santé en Guinée avec des informations détaillées et à jour."
-            color="bg-health-blue"
-          />
-          <FeatureCard 
-            title="Services d'urgence" 
-            description="Trouvez des services d'urgence proches, demandez du sang ou une ambulance en quelques clics."
-            color="bg-destructive"
-          />
-          <FeatureCard 
-            title="Dossier médical numérique" 
-            description="Gérez votre dossier médical et partagez-le avec les professionnels de santé autorisés."
-            color="bg-clinic-green"
-          />
+          <FeatureCard title="Annuaire médical complet" description="Accédez à tous les établissements de santé en Guinée avec des informations détaillées et à jour." color="bg-health-blue" />
+          <FeatureCard title="Services d'urgence" description="Trouvez des services d'urgence proches, demandez du sang ou une ambulance en quelques clics." color="bg-destructive" />
+          <FeatureCard title="Dossier médical numérique" description="Gérez votre dossier médical et partagez-le avec les professionnels de santé autorisés." color="bg-clinic-green" />
         </div>
       </section>
       
@@ -108,22 +95,21 @@ const Home = () => {
           </div>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
-
-const FeatureCard = ({ title, description, color }: { 
-  title: string; 
+const FeatureCard = ({
+  title,
+  description,
+  color
+}: {
+  title: string;
   description: string;
   color: string;
-}) => (
-  <div className="border rounded-lg p-6 hover:shadow-md transition-shadow">
+}) => <div className="border rounded-lg p-6 hover:shadow-md transition-shadow">
     <div className={`w-12 h-12 rounded-full ${color} flex items-center justify-center mb-4`}>
       <div className="w-5 h-5 bg-white rounded-sm" />
     </div>
     <h3 className="text-lg font-medium mb-2">{title}</h3>
     <p className="text-foreground/70">{description}</p>
-  </div>
-);
-
+  </div>;
 export default Home;
