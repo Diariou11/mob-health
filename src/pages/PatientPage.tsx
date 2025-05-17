@@ -19,7 +19,8 @@ import {
   ChevronRight, 
   Plus,
   Copy,
-  MapPin
+  MapPin,
+  X
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 

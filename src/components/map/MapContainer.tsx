@@ -81,7 +81,7 @@ const MapContainer = ({ facilities, onFacilitySelect }: MapContainerProps) => {
       
       if (map.current) {
         new mapboxgl.Marker(el)
-          .setLngLat(facility.coordinates)
+          .setLngLat(facility.coordinates as mapboxgl.LngLatLike)
           .addTo(map.current);
       }
     });
@@ -91,7 +91,7 @@ const MapContainer = ({ facilities, onFacilitySelect }: MapContainerProps) => {
     if (!map.current) return;
     
     map.current.flyTo({
-      center: facility.coordinates,
+      center: facility.coordinates as mapboxgl.LngLatLike,
       zoom: 15,
       essential: true
     });
