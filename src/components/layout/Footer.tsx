@@ -6,7 +6,7 @@ const Footer = () => {
     <footer className="border-t bg-background py-6 md:py-8">
       <div className="container max-w-screen-xl flex flex-col md:flex-row justify-between items-center gap-4">
         <div className="flex items-center gap-2">
-          <img src="/lovable-uploads/becb538b-e791-4139-88b0-06cd63958edc.png" alt="MOB-Health Africa Logo" className="h-8 w-auto" />
+          <img src="/lovable-uploads/c19a2797-156b-4d8d-9bb3-e52cde9300e0.png" alt="MOB-Health Africa Logo" className="h-8 w-auto" />
           <div className="text-sm">
             <p className="font-medium">MOB-Health Africa</p>
             <p className="text-foreground/70 text-xs">© 2025 Tous droits réservés</p>

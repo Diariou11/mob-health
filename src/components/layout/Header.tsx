@@ -30,7 +30,7 @@ const Header = () => {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 max-w-screen-xl items-center">
         <Link to="/" className="flex items-center gap-2 mr-4">
-          <img src="/lovable-uploads/becb538b-e791-4139-88b0-06cd63958edc.png" alt="MOB-Health Africa Logo" className="h-9 w-auto" />
+          <img src="/lovable-uploads/c19a2797-156b-4d8d-9bb3-e52cde9300e0.png" alt="MOB-Health Africa Logo" className="h-9 w-auto" />
           <span className="font-bold text-xl hidden md:inline-block">MOB-Health</span>
         </Link>
         
