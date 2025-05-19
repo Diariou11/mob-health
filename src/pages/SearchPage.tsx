@@ -12,6 +12,8 @@ import { useToast } from '@/components/ui/use-toast';
 import { motion } from 'framer-motion';
 import FacilityDetailCard from '@/components/facilities/FacilityDetailCard';
 import DoctorProfileModal from '@/components/doctors/DoctorProfileModal';
+import { healthFacilities } from '@/data/healthFacilities';
+import { HealthFacility } from '@/types/facility';
 
 // Sample data for doctors - Enhanced with more details
 const doctors = [
@@ -337,7 +339,7 @@ const SearchPage = () => {
     });
   };
 
-  const filteredFacilities = healthFacilities.filter(facility => 
+  const filteredFacilities = healthFacilities.filter((facility: HealthFacility) => 
     facility.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     facility.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
     facility.services.some(service => service.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -355,6 +357,28 @@ const SearchPage = () => {
 
   const handleViewDoctorProfile = (doctor: any) => {
     setSelectedDoctor(doctor);
+  };
+
+  const mapHealthFacilityToDisplayFormat = (facility: HealthFacility) => {
+    return {
+      id: facility.id,
+      name: facility.name,
+      type: facility.type,
+      category: facility.category,
+      address: facility.address,
+      phone: facility.phone,
+      email: "contact@" + facility.name.toLowerCase().replace(/\s/g, "-") + ".gn",
+      website: "https://" + facility.name.toLowerCase().replace(/\s/g, "-") + ".gn",
+      openingHours: `${facility.hours.weekday} (Lun-Ven), ${facility.hours.saturday} (Sam), ${facility.hours.sunday} (Dim)`,
+      beds: facility.beds,
+      doctors: facility.doctors,
+      services: facility.services,
+      doctorsList: [],
+      hasEmergency: facility.hasEmergency,
+      distance: Math.round(Math.random() * 10 * 10) / 10,
+      image: facility.imageUrl || "https://images.unsplash.com/photo-1538108149855-05943f469b5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=350&h=200&q=80",
+      description: `${facility.name} est un établissement de santé ${facility.category === 'public' ? 'public' : 'privé'} situé à ${facility.address}. Il offre des services spécialisés en ${facility.specialty.join(', ')}.`
+    };
   };
 
   return (
@@ -470,7 +494,7 @@ const SearchPage = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {filteredFacilities.map(facility => (
+              {filteredFacilities.map((facility: HealthFacility) => (
                 <motion.div 
                   key={facility.id} 
                   whileHover={{ y: -5 }}
@@ -479,7 +503,7 @@ const SearchPage = () => {
                   <Card className="overflow-hidden bg-white dark:bg-card">
                     <div className="aspect-video w-full overflow-hidden">
                       <img 
-                        src={facility.image} 
+                        src={facility.imageUrl || "https://images.unsplash.com/photo-1538108149855-05943f469b5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=350&h=200&q=80"} 
                         alt={facility.name} 
                         className="w-full h-full object-cover"
                       />
@@ -503,7 +527,7 @@ const SearchPage = () => {
                     <CardContent className="space-y-3">
                       <div className="flex items-center gap-2 text-sm">
                         <MapPin className="h-4 w-4 text-health-blue" />
-                        <span>{facility.address} • {facility.distance} km</span>
+                        <span>{facility.address}</span>
                       </div>
                       <div className="flex items-center gap-2 text-sm">
                         <Phone className="h-4 w-4 text-health-blue" />
@@ -511,7 +535,7 @@ const SearchPage = () => {
                       </div>
                       <div className="flex items-center gap-2 text-sm">
                         <Clock className="h-4 w-4 text-health-blue" />
-                        <span>{facility.openingHours}</span>
+                        <span>{facility.hours.weekday} (Lun-Ven)</span>
                       </div>
                       
                       <div className="flex gap-2 flex-wrap mt-2">
@@ -544,7 +568,7 @@ const SearchPage = () => {
                         <DialogTrigger asChild>
                           <Button 
                             className="w-full bg-health-blue hover:bg-health-blue/90"
-                            onClick={() => handleViewDetails(facility)}
+                            onClick={() => handleViewDetails(mapHealthFacilityToDisplayFormat(facility))}
                           >
                             Voir détails
                           </Button>
@@ -552,17 +576,17 @@ const SearchPage = () => {
                         <DialogContent className="max-w-4xl p-0">
                           {selectedFacility && (
                             <FacilityDetailCard 
-                              id={facility.id}
-                              name={facility.name}
-                              type={facility.type}
-                              address={facility.address}
-                              description={facility.description}
-                              phone={facility.phone}
-                              email={facility.email}
-                              website={facility.website}
-                              openingHours={facility.openingHours}
-                              services={facility.services}
-                              doctors={facility.doctorsList.length > 0 ? facility.doctorsList : [
+                              id={selectedFacility.id}
+                              name={selectedFacility.name}
+                              type={selectedFacility.type}
+                              address={selectedFacility.address}
+                              description={selectedFacility.description}
+                              phone={selectedFacility.phone}
+                              email={selectedFacility.email}
+                              website={selectedFacility.website}
+                              openingHours={selectedFacility.openingHours}
+                              services={selectedFacility.services}
+                              doctors={selectedFacility.doctorsList.length > 0 ? selectedFacility.doctorsList : [
                                 {
                                   name: "Dr. Emmanuel Koné",
                                   specialty: "Médecine générale",
@@ -574,7 +598,7 @@ const SearchPage = () => {
                                   available: false
                                 }
                               ]}
-                              image={facility.image}
+                              image={selectedFacility.image}
                               onClose={() => setSelectedFacility(null)}
                             />
                           )}
