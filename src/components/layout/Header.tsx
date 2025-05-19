@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -43,23 +44,23 @@ const Header = () => {
             alt="MOB-Health Africa Logo" 
             className="h-9 w-auto" 
             animate={{ 
-              rotate: [0, 5, 0, -5, 0]
+              rotate: [0, 2, 0, -2, 0]
             }}
             transition={{ 
               repeat: Infinity, 
-              duration: 5,
+              duration: 8,
               ease: "easeInOut"
             }}
           />
           <motion.span 
             className="font-bold text-xl font-ubuntu hidden md:inline-block text-white"
             animate={{ 
-              y: [0, -3, 0], 
-              opacity: [1, 0.8, 1]
+              y: [0, -1, 0], 
+              opacity: [1, 0.9, 1]
             }}
             transition={{ 
               repeat: Infinity, 
-              duration: 3,
+              duration: 5,
               ease: "easeInOut"
             }}
           >

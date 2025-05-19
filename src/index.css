@@ -117,12 +117,12 @@
   }
   
   .animate-health-beat {
-    animation: health-beat 2s infinite ease-in-out;
+    animation: health-beat 4s infinite ease-in-out;
   }
 
   @keyframes health-beat {
     0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
+    50% { transform: scale(1.02); }
   }
   
   .text-shadow {
@@ -142,7 +142,7 @@
   }
   
   .animate-pulse-scale {
-    animation: pulse-scale 3s infinite ease-in-out;
+    animation: pulse-scale 6s infinite ease-in-out;
   }
   
   @keyframes pulse-scale {
@@ -151,8 +151,34 @@
       filter: brightness(1);
     }
     50% { 
-      transform: scale(1.05); 
-      filter: brightness(1.1);
+      transform: scale(1.02); 
+      filter: brightness(1.05);
+    }
+  }
+  
+  .animate-gentle-float {
+    animation: gentle-float 8s infinite ease-in-out;
+  }
+  
+  @keyframes gentle-float {
+    0%, 100% { 
+      transform: translateY(0); 
+    }
+    50% { 
+      transform: translateY(-5px); 
+    }
+  }
+  
+  .animate-subtle-glow {
+    animation: subtle-glow 6s infinite ease-in-out;
+  }
+  
+  @keyframes subtle-glow {
+    0%, 100% { 
+      filter: drop-shadow(0 0 2px rgba(0, 87, 163, 0.2));
+    }
+    50% { 
+      filter: drop-shadow(0 0 5px rgba(0, 87, 163, 0.4));
     }
   }
 }

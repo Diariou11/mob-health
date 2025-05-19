@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
@@ -30,7 +29,7 @@ const Home = () => {
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4 text-white drop-shadow-lg">
               <span className="text-white">Connecter</span> les patients aux{' '}
@@ -41,7 +40,7 @@ const Home = () => {
               className="text-xl text-white drop-shadow-md leading-relaxed mb-8"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
+              transition={{ delay: 0.4, duration: 1 }}
             >
               MOB-Health Africa est l'annuaire numérique unifié des établissements de santé guinéens. 
               Trouvez rapidement des services médicaux, gérez vos urgences, et accédez à votre dossier médical.
@@ -65,22 +64,21 @@ const Home = () => {
         
         <motion.div 
           className="flex-1 flex justify-center" 
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ 
             opacity: 1,
             scale: 1,
-            y: [0, -10, 0],
-            rotate: [0, 2, 0, -2, 0]
+            y: [0, -5, 0],
           }}
           transition={{ 
-            duration: 1,
-            delay: 0.3,
+            duration: 6,
+            delay: 0.5,
             repeat: Infinity, 
-            repeatDelay: 0.5,
+            repeatDelay: 1,
             ease: "easeInOut"
           }}
         >
-          <img alt="MOB-Health Africa" className="w-full max-w-[280px] md:max-w-[320px] lg:max-w-[400px] animate-pulse-scale" src="/lovable-uploads/8a7d8c0d-abc8-4d14-b2eb-3a451e9dff45.png" />
+          <img alt="MOB-Health Africa" className="w-full max-w-[280px] md:max-w-[320px] lg:max-w-[400px]" src="/lovable-uploads/8a7d8c0d-abc8-4d14-b2eb-3a451e9dff45.png" />
         </motion.div>
       </section>
       
