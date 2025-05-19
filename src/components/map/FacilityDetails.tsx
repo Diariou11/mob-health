@@ -38,6 +38,7 @@ const FacilityDetails = ({ facility, onClose }: FacilityDetailsProps) => {
               <h3 className="font-medium">Contact</h3>
             </div>
             <p className="text-sm">{facility.phone}</p>
+            {facility.email && <p className="text-sm text-health-blue">mobarry6790@gmail.com</p>}
           </div>
           
           <Separator />
@@ -49,7 +50,7 @@ const FacilityDetails = ({ facility, onClose }: FacilityDetailsProps) => {
             </div>
             <div className="flex flex-wrap gap-2">
               {facility.services.map(service => (
-                <Badge key={service} variant="outline" className="text-xs">
+                <Badge key={service} variant="outline" className="text-xs bg-blue-50 dark:bg-blue-950/20">
                   {service}
                 </Badge>
               ))}
@@ -77,7 +78,7 @@ const FacilityDetails = ({ facility, onClose }: FacilityDetailsProps) => {
             </div>
             <div className="flex flex-wrap gap-2">
               {facility.specialty.map(spec => (
-                <Badge key={spec} variant="secondary" className="text-xs">
+                <Badge key={spec} variant="secondary" className="text-xs bg-health-blue/10 dark:bg-health-blue/20">
                   {spec}
                 </Badge>
               ))}

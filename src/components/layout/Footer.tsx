@@ -91,7 +91,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-clinic-green" />
-                <span className="text-sm text-white font-medium">mobhealth-africa@mobgroup.tech</span>
+                <span className="text-sm text-white font-medium">mobarry6790@gmail.com</span>
               </li>
               <li>
                 <Link to="/contact" className="text-sm text-white/90 hover:text-health-blue transition-colors font-medium">
