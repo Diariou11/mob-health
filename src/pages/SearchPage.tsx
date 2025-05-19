@@ -133,8 +133,8 @@ const doctors = [
   }
 ];
 
-// Sample data for health facilities
-const healthFacilities = [
+// Sample data for local display facilities
+const localFacilities = [
   {
     id: 1,
     name: "Hôpital National Donka",
@@ -339,7 +339,8 @@ const SearchPage = () => {
     });
   };
 
-  const filteredFacilities = healthFacilities.filter((facility: HealthFacility) => 
+  // Filtrer les établissements de la liste importée
+  const filteredFacilities = healthFacilities.filter((facility) => 
     facility.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     facility.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
     facility.services.some(service => service.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -494,7 +495,7 @@ const SearchPage = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {filteredFacilities.map((facility: HealthFacility) => (
+              {filteredFacilities.map((facility) => (
                 <motion.div 
                   key={facility.id} 
                   whileHover={{ y: -5 }}
