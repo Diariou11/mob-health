@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,10 +10,12 @@ import { Switch } from '@/components/ui/switch';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Check, ChevronRight, AlertTriangle, Phone, UserRound, CalendarClock, MapPin, Activity, ClipboardList, Ambulance as AmbulanceIcon, Loader, Clock, ThumbsUp } from 'lucide-react';
+import { Checkbox } from "@/components/ui/checkbox";
+import { Check, ChevronRight, AlertTriangle, Phone, UserRound, CalendarClock, MapPin, Activity, ClipboardList, Ambulance as AmbulanceIcon, Loader, Clock, ThumbsUp, Droplet } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { motion } from 'framer-motion';
 import { Separator } from '@/components/ui/separator';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
 const ambulanceTypes = [
   {
@@ -94,12 +95,25 @@ const accidentTypes = [
   }
 ];
 
+const bloodGroups = [
+  { id: 'a-pos', label: 'A+', color: 'bg-red-100 text-red-800' },
+  { id: 'a-neg', label: 'A-', color: 'bg-red-100 text-red-800' },
+  { id: 'b-pos', label: 'B+', color: 'bg-red-100 text-red-800' },
+  { id: 'b-neg', label: 'B-', color: 'bg-red-100 text-red-800' },
+  { id: 'ab-pos', label: 'AB+', color: 'bg-purple-100 text-purple-800' },
+  { id: 'ab-neg', label: 'AB-', color: 'bg-purple-100 text-purple-800' },
+  { id: 'o-pos', label: 'O+', color: 'bg-blue-100 text-blue-800' },
+  { id: 'o-neg', label: 'O-', color: 'bg-blue-100 text-blue-800' },
+];
+
 const EmergencyPage = () => {
   const [activeTab, setActiveTab] = useState('ambulance');
   const [selectedService, setSelectedService] = useState<string>('');
   const [selectedAccidentType, setSelectedAccidentType] = useState<string>('');
   const [selectedSeverity, setSelectedSeverity] = useState<string>('');
   const [successDialogOpen, setSuccessDialogOpen] = useState(false);
+  const [selectedBloodGroups, setSelectedBloodGroups] = useState<string[]>([]);
+  const [unknownBloodGroup, setUnknownBloodGroup] = useState(false);
   const { toast } = useToast();
   
   const handleSubmitAmbulance = (e: React.FormEvent) => {
@@ -119,6 +133,36 @@ const EmergencyPage = () => {
     });
     setSuccessDialogOpen(true);
   };
+  
+  const handleSubmitBloodRequest = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast({
+      title: "Demande de sang envoyée",
+      description: "Votre demande a été enregistrée et sera traitée en urgence.",
+    });
+    setSuccessDialogOpen(true);
+  };
+
+  const toggleBloodGroup = (groupId: string) => {
+    if (unknownBloodGroup) {
+      setUnknownBloodGroup(false);
+    }
+    
+    if (selectedBloodGroups.includes(groupId)) {
+      setSelectedBloodGroups(selectedBloodGroups.filter(g => g !== groupId));
+    } else {
+      setSelectedBloodGroups([...selectedBloodGroups, groupId]);
+    }
+  };
+  
+  const toggleUnknownGroup = () => {
+    if (unknownBloodGroup) {
+      setUnknownBloodGroup(false);
+    } else {
+      setSelectedBloodGroups([]);
+      setUnknownBloodGroup(true);
+    }
+  };
 
   return (
     <div className="container max-w-screen-xl py-8 bg-gradient-to-b from-background to-blue-50/30 dark:from-background dark:to-blue-950/10 min-h-screen">
@@ -137,7 +181,7 @@ const EmergencyPage = () => {
         </Alert>
         
         <Tabs defaultValue="ambulance" className="mb-8" onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-2 w-full mb-8">
+          <TabsList className="grid grid-cols-3 w-full mb-8">
             <TabsTrigger value="ambulance" className="text-base py-3 data-[state=active]:bg-health-blue data-[state=active]:text-white">
               <AmbulanceIcon className="mr-2 h-5 w-5" />
               Ambulance
@@ -145,6 +189,10 @@ const EmergencyPage = () => {
             <TabsTrigger value="accident" className="text-base py-3 data-[state=active]:bg-health-blue data-[state=active]:text-white">
               <AlertTriangle className="mr-2 h-5 w-5" />
               Accident
+            </TabsTrigger>
+            <TabsTrigger value="blood" className="text-base py-3 data-[state=active]:bg-health-blue data-[state=active]:text-white">
+              <Droplet className="mr-2 h-5 w-5" />
+              Sang
             </TabsTrigger>
           </TabsList>
           
@@ -373,6 +421,145 @@ const EmergencyPage = () => {
               </Button>
             </form>
           </TabsContent>
+          
+          {/* Blood Request Content */}
+          <TabsContent value="blood" className="space-y-6">
+            <div className="bg-white dark:bg-slate-900 p-6 rounded-lg shadow mb-8">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="bg-red-100 dark:bg-red-900/30 p-2 rounded-full">
+                  <Droplet className="h-6 w-6 text-red-600 dark:text-red-400" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-health-blue">Don de sang</h3>
+                  <p className="text-muted-foreground">Votre don peut sauver des vies</p>
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <p>
+                  En cas d'urgence médicale nécessitant du sang, vous pouvez faire une demande rapide 
+                  auprès des donneurs compatibles à proximité. Notre système contactera immédiatement 
+                  les donneurs disponibles correspondant au groupe sanguin requis.
+                </p>
+                
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-6">
+                  {bloodGroups.map((group) => (
+                    <div 
+                      key={group.id}
+                      className={`p-3 ${group.color} border rounded-lg text-center cursor-pointer transition-all ${
+                        selectedBloodGroups.includes(group.id) 
+                          ? 'ring-2 ring-red-500 dark:ring-red-400 shadow-md' 
+                          : 'opacity-70 hover:opacity-100'
+                      }`}
+                      onClick={() => toggleBloodGroup(group.id)}
+                    >
+                      <div className="font-bold text-2xl mb-1">{group.label}</div>
+                      <div className="text-xs">
+                        {selectedBloodGroups.includes(group.id) ? (
+                          <span className="flex items-center justify-center gap-1">
+                            <Check className="h-3 w-3" /> Sélectionné
+                          </span>
+                        ) : 'Cliquez pour sélectionner'}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            
+            <form onSubmit={handleSubmitBloodRequest} className="space-y-6 bg-white dark:bg-slate-900 p-6 rounded-lg shadow">
+              <h3 className="text-xl font-semibold mb-6 text-health-blue">Formulaire de demande de sang</h3>
+              
+              <div className="space-y-4 mb-6">
+                <Label className="text-base font-medium">Groupe(s) sanguin(s) requis:</Label>
+                
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-2">
+                  {bloodGroups.map((group) => (
+                    <div key={group.id} className="flex items-center space-x-2">
+                      <Checkbox 
+                        id={`group-${group.id}`} 
+                        checked={selectedBloodGroups.includes(group.id)}
+                        onCheckedChange={() => toggleBloodGroup(group.id)}
+                        disabled={unknownBloodGroup}
+                        className={selectedBloodGroups.includes(group.id) ? "bg-red-600 text-white border-red-600" : ""}
+                      />
+                      <Label 
+                        htmlFor={`group-${group.id}`}
+                        className={`font-medium ${selectedBloodGroups.includes(group.id) ? "text-red-600" : ""}`}
+                      >
+                        {group.label}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="flex items-center space-x-2 mt-2 border-t pt-3">
+                  <Checkbox 
+                    id="unknown-group" 
+                    checked={unknownBloodGroup}
+                    onCheckedChange={() => toggleUnknownGroup()}
+                  />
+                  <Label htmlFor="unknown-group">Je ne connais pas le groupe sanguin requis</Label>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-3">
+                  <Label htmlFor="patient-name">Nom du patient</Label>
+                  <Input id="patient-name" placeholder="Prénom et Nom" required />
+                </div>
+                
+                <div className="space-y-3">
+                  <Label htmlFor="requester-phone">Votre téléphone</Label>
+                  <Input id="requester-phone" placeholder="+224 XXX XX XX XX" required />
+                </div>
+              </div>
+              
+              <div className="space-y-3">
+                <Label htmlFor="hospital">Établissement médical</Label>
+                <Input id="hospital" placeholder="Nom de l'hôpital ou de la clinique" required />
+              </div>
+              
+              <div className="space-y-3">
+                <Label htmlFor="urgency-level">Niveau d'urgence</Label>
+                <RadioGroup defaultValue="urgent">
+                  <div className="flex flex-wrap gap-4">
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="urgent" id="urgency-urgent" />
+                      <Label htmlFor="urgency-urgent" className="text-red-600 font-medium">Très urgent (immédiat)</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="high" id="urgency-high" />
+                      <Label htmlFor="urgency-high" className="text-orange-600">Urgent (24h)</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="medium" id="urgency-medium" />
+                      <Label htmlFor="urgency-medium">Modéré (48-72h)</Label>
+                    </div>
+                  </div>
+                </RadioGroup>
+              </div>
+              
+              <div className="space-y-3">
+                <Label htmlFor="units">Nombre d'unités requises</Label>
+                <Input id="units" type="number" min="1" defaultValue="1" required />
+              </div>
+              
+              <div className="space-y-3">
+                <Label htmlFor="additional-info">Informations supplémentaires</Label>
+                <Textarea 
+                  id="additional-info" 
+                  placeholder="Précisez la raison de la demande (chirurgie, accident, etc.) et tout détail pertinent" 
+                  rows={3} 
+                />
+              </div>
+              
+              <Button type="submit" className="w-full bg-red-600 hover:bg-red-700">
+                <Droplet className="mr-2 h-5 w-5" />
+                Soumettre la demande de sang
+              </Button>
+            </form>
+          </TabsContent>
         </Tabs>
       </div>
       
@@ -386,12 +573,16 @@ const EmergencyPage = () => {
               </div>
             </DialogTitle>
             <DialogTitle className="text-center text-2xl">
-              {activeTab === 'ambulance' ? 'Ambulance en route' : 'Signalement envoyé'}
+              {activeTab === 'ambulance' ? 'Ambulance en route' : 
+               activeTab === 'accident' ? 'Signalement envoyé' : 
+               'Demande de sang envoyée'}
             </DialogTitle>
             <DialogDescription className="text-center text-base">
               {activeTab === 'ambulance' ? 
                 'Une équipe médicale sera bientôt en route vers votre position.' : 
-                'Les services d\'urgence ont été alertés et sont en route.'}
+               activeTab === 'accident' ?
+                'Les services d\'urgence ont été alertés et sont en route.' :
+                'Votre demande de sang a été enregistrée et nous contactons les donneurs disponibles.'}
             </DialogDescription>
           </DialogHeader>
           
@@ -423,7 +614,7 @@ const EmergencyPage = () => {
                     </div>
                   </div>
                 </>
-              ) : (
+              ) : activeTab === 'accident' ? (
                 <>
                   <div className="flex items-start gap-3">
                     <div className="bg-health-blue/10 p-2 rounded-full">
@@ -445,6 +636,34 @@ const EmergencyPage = () => {
                     <div>
                       <h4 className="font-medium">Temps d'intervention estimé</h4>
                       <p className="text-sm text-muted-foreground">10-15 minutes</p>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-start gap-3">
+                    <div className="bg-red-100 p-2 rounded-full">
+                      <Droplet className="h-5 w-5 text-red-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium">Groupes sanguins demandés</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {unknownBloodGroup 
+                          ? "À déterminer par le personnel médical"
+                          : selectedBloodGroups.length > 0
+                            ? selectedBloodGroups.map(id => bloodGroups.find(g => g.id === id)?.label).join(', ')
+                            : "Aucun groupe spécifié"}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <div className="bg-red-100 p-2 rounded-full">
+                      <Clock className="h-5 w-5 text-red-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium">Temps de réponse estimé</h4>
+                      <p className="text-sm text-muted-foreground">1-2 heures</p>
                     </div>
                   </div>
                 </>
