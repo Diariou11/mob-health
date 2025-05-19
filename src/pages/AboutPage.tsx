@@ -112,49 +112,6 @@ const AboutPage = () => {
           </motion.div>
         </div>
       </section>
-
-      {/* Partners Section */}
-      <section>
-        <h2 className="text-3xl font-bold mb-12 text-center text-white">Nos <span className="text-clinic-green">partenaires</span></h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card className="bg-white/10 backdrop-blur-lg border-white/20">
-            <CardContent className="p-6 text-center">
-              <div className="bg-health-blue/20 p-4 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-health-blue"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-white">Ministère de la Santé</h3>
-              <p className="text-white/80">
-                Collaboration étroite avec le ministère pour intégrer les données officielles des établissements de santé.
-              </p>
-            </CardContent>
-          </Card>
-          
-          <Card className="bg-white/10 backdrop-blur-lg border-white/20">
-            <CardContent className="p-6 text-center">
-              <div className="bg-clinic-green/20 p-4 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-clinic-green"><path d="M8 19h8a4 4 0 0 0 0-8h-8a4 4 0 0 1 0-8h8"/><line x1="8" x2="8" y1="19" y2="5"/><line x1="12" x2="12" y1="19" y2="5"/></svg>
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-white">OMS Guinée</h3>
-              <p className="text-white/80">
-                Soutien technique et partage d'expertise pour améliorer l'accès aux soins de santé.
-              </p>
-            </CardContent>
-          </Card>
-          
-          <Card className="bg-white/10 backdrop-blur-lg border-white/20">
-            <CardContent className="p-6 text-center">
-              <div className="bg-health-blue/20 p-4 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-health-blue"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"/></svg>
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-white">Ordre National des Médecins</h3>
-              <p className="text-white/80">
-                Validation des données des professionnels de santé et conseil sur les normes médicales.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
     </div>
   );
 };
