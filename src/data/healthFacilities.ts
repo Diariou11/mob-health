@@ -1,5 +1,5 @@
 
-// Data for health facilities focusing on 5 main hospitals
+// Data for health facilities focusing on Guinea hospitals and clinics
 export const healthFacilities = [
   {
     id: 1,
@@ -80,5 +80,85 @@ export const healthFacilities = [
     hasEmergency: false,
     hasBloodBank: false,
     languages: ["français", "guerze", "malinké"]
+  },
+  {
+    id: 6,
+    name: "Clinique Ambroise Paré",
+    type: "Clinique",
+    category: "private",
+    specialty: ["general", "cardiologie", "gynecologie"],
+    coordinates: [-13.6513, 9.5280] as [number, number],
+    address: "Dixinn, Conakry",
+    phone: "+224 625 89 01 23",
+    beds: 12,
+    doctors: 10,
+    services: ["urgences", "chirurgie", "scanner"],
+    hasEmergency: true,
+    hasBloodBank: true,
+    languages: ["français", "anglais", "soussou"]
+  },
+  {
+    id: 7,
+    name: "Centre Médical de Matam",
+    type: "Centre de Santé",
+    category: "public",
+    specialty: ["general", "pediatrie"],
+    coordinates: [-13.6316, 9.5510] as [number, number],
+    address: "Matam, Conakry",
+    phone: "+224 626 90 12 34",
+    beds: 5,
+    doctors: 4,
+    services: ["consultation", "vaccination", "soins prénataux"],
+    hasEmergency: false,
+    hasBloodBank: false,
+    languages: ["français", "soussou", "peul"]
+  },
+  {
+    id: 8,
+    name: "Hôpital de l'Amitié Sino-Guinéenne",
+    type: "Hôpital",
+    category: "public",
+    specialty: ["general", "traumatologie", "ophtalmologie"],
+    coordinates: [-13.5673, 9.6021] as [number, number],
+    address: "Kipé, Conakry",
+    phone: "+224 627 01 23 45",
+    beds: 25,
+    doctors: 15,
+    services: ["urgences", "chirurgie", "radiologie"],
+    hasEmergency: true,
+    hasBloodBank: true,
+    languages: ["français", "soussou", "malinké"]
+  },
+  {
+    id: 9,
+    name: "Clinique Pasteur",
+    type: "Clinique",
+    category: "private",
+    specialty: ["general", "cardiologie", "diabétologie"],
+    coordinates: [-13.6890, 9.5612] as [number, number],
+    address: "Camayenne, Conakry",
+    phone: "+224 628 12 34 56",
+    beds: 10,
+    doctors: 8,
+    services: ["consultation", "cardiologie", "endocrinologie"],
+    hasEmergency: false,
+    hasBloodBank: false,
+    languages: ["français", "anglais"]
+  },
+  {
+    id: 10,
+    name: "Centre de Santé de Matoto",
+    type: "Centre de Santé",
+    category: "public",
+    specialty: ["general", "vaccination"],
+    coordinates: [-13.6102, 9.5825] as [number, number],
+    address: "Matoto, Conakry",
+    phone: "+224 629 23 45 67",
+    beds: 4,
+    doctors: 3,
+    services: ["consultation", "vaccination", "planning familial"],
+    hasEmergency: false,
+    hasBloodBank: false,
+    languages: ["français", "soussou"]
   }
 ];

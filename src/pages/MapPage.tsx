@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapContainer from '@/components/map/MapContainer';
@@ -8,6 +7,7 @@ import FilterPanel from '@/components/map/FilterPanel';
 import SearchBar from '@/components/map/SearchBar';
 import { healthFacilities } from '@/data/healthFacilities';
 import { HealthFacility, FilterState } from '@/types/facility';
+import { toast } from "sonner";
 
 const MapPage = () => {
   const [selectedFacility, setSelectedFacility] = useState<HealthFacility | null>(null);
@@ -53,10 +53,18 @@ const MapPage = () => {
     }));
   };
 
-  // Apply filters and search
+  // Apply filters and search whenever searchTerm changes
   useEffect(() => {
     applyFiltersAndSearch();
   }, [searchTerm]);
+
+  // Show toast when page loads to inform user about the map
+  useEffect(() => {
+    toast.info("Carte des établissements de santé", {
+      description: "Cliquez sur un marqueur pour voir les détails de l'établissement.",
+      duration: 5000,
+    });
+  }, []);
 
   const handleSearchChange = (value: string) => {
     setSearchTerm(value);
@@ -141,6 +149,7 @@ const MapPage = () => {
 
     // Update the state with filtered facilities
     setFacilitiesShown(filtered);
+    console.log(`Showing ${filtered.length} facilities after filtering`);
   };
 
   const handleApplyFilters = () => {
@@ -148,6 +157,7 @@ const MapPage = () => {
   };
 
   const zoomToFacility = (facility: HealthFacility) => {
+    console.log("Selected facility:", facility.name);
     setSelectedFacility(facility);
   };
 
