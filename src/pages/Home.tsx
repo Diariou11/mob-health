@@ -141,13 +141,18 @@ const Home = () => {
           <span className="text-clinic-green">partenaires potentiels</span>
         </h2>
         
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 justify-items-center">
-          {partners.map((partner) => (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 justify-items-center">
+          {partnerLogos.map((partner) => (
             <div 
-              key={partner} 
-              className="bg-white/20 backdrop-blur-md p-4 rounded-lg h-24 w-full flex items-center justify-center"
+              key={partner.name} 
+              className="bg-white/20 backdrop-blur-md p-4 rounded-lg h-24 w-full flex flex-col items-center justify-center"
             >
-              <p className="text-white font-medium text-center">{partner}</p>
+              <img 
+                src={partner.logo} 
+                alt={`Logo ${partner.name}`} 
+                className="h-12 object-contain mb-2"
+              />
+              <p className="text-white text-xs font-medium text-center">{partner.name}</p>
             </div>
           ))}
         </div>
@@ -179,13 +184,32 @@ const FeatureCard = ({
   </motion.div>
 );
 
-// List of partners
-const partners = [
-  "Orange Guinée",
-  "MTN",
-  "UNICEF",
-  "Croix Rouge",
-  "Médecins Sans Frontières"
+// Updated partners with logo information
+const partnerLogos = [
+  {
+    name: "Orange Guinée",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Orange_logo.svg/1200px-Orange_logo.svg.png"
+  },
+  {
+    name: "MTN",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/New-MTN-logo.png/800px-New-MTN-logo.png"
+  },
+  {
+    name: "UNICEF",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/UNICEF_logo.svg/1200px-UNICEF_logo.svg.png"
+  },
+  {
+    name: "Croix Rouge",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Flag_of_the_Red_Cross.svg/1200px-Flag_of_the_Red_Cross.svg.png"
+  },
+  {
+    name: "Médecins Sans Frontières",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Medecins_Sans_Frontieres_logo.svg/1200px-Medecins_Sans_Frontieres_logo.svg.png"
+  },
+  {
+    name: "PNUD",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/UNDP_logo.svg/1200px-UNDP_logo.svg.png"
+  }
 ];
 
 export default Home;
