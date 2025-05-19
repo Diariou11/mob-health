@@ -3,8 +3,26 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { User, Heart, Phone, Clock, MapPin, UserPlus } from 'lucide-react';
+import { useState } from 'react';
+import { 
+  Card, 
+  CardContent, 
+  CardDescription, 
+  CardFooter, 
+  CardHeader, 
+  CardTitle 
+} from "@/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const Home = () => {
+  const [activeDoctor, setActiveDoctor] = useState<number | null>(null);
+
   return <div className="container max-w-screen-xl py-8 md:py-12 backdrop-blur-sm bg-black/20">
       {/* Hero Section */}
       <section className="flex flex-col-reverse md:flex-row items-center gap-8 md:gap-12">
@@ -100,6 +118,75 @@ const Home = () => {
         </div>
       </section>
       
+      {/* Doctors Section */}
+      <section className="py-12 bg-black/30 backdrop-blur-md rounded-lg p-8 mb-12">
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-white drop-shadow-lg">
+          <span className="text-white">Nos </span>
+          <span className="text-clinic-green">médecins</span>
+        </h2>
+        
+        <Carousel className="w-full">
+          <CarouselContent>
+            {doctors.map((doctor, index) => (
+              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                <div className="p-2">
+                  <Card className="bg-white/10 backdrop-blur-sm border-white/20">
+                    <CardHeader>
+                      <div className="flex items-center gap-4">
+                        <div className="rounded-full bg-white/20 h-16 w-16 overflow-hidden">
+                          <img 
+                            src={doctor.avatar} 
+                            alt={doctor.name} 
+                            className="object-cover h-full w-full"
+                          />
+                        </div>
+                        <div>
+                          <CardTitle className="text-white">{doctor.name}</CardTitle>
+                          <CardDescription className="text-white/70">{doctor.specialty}</CardDescription>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-white/80 text-sm">{doctor.shortBio}</p>
+                    </CardContent>
+                    <CardFooter>
+                      <Button 
+                        variant="outline" 
+                        className="w-full border-white/30 text-white hover:bg-white/20"
+                        onClick={() => setActiveDoctor(activeDoctor === index ? null : index)}
+                      >
+                        {activeDoctor === index ? "Masquer le profil" : "Voir profil"}
+                      </Button>
+                    </CardFooter>
+                    
+                    {activeDoctor === index && (
+                      <div className="px-6 pb-6 mt-2 border-t border-white/20 pt-4">
+                        <h4 className="font-medium text-white mb-2">Biographie</h4>
+                        <p className="text-white/80 text-sm mb-3">{doctor.fullBio}</p>
+                        
+                        <h4 className="font-medium text-white mb-2">Éducation</h4>
+                        <ul className="list-disc list-inside text-white/80 text-sm mb-3">
+                          {doctor.education.map((edu, i) => (
+                            <li key={i}>{edu}</li>
+                          ))}
+                        </ul>
+                        
+                        <h4 className="font-medium text-white mb-2">Disponibilité</h4>
+                        <p className="text-white/80 text-sm">{doctor.availability}</p>
+                      </div>
+                    )}
+                  </Card>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <div className="flex justify-center mt-4 gap-4">
+            <CarouselPrevious className="static translate-y-0 bg-white/10 hover:bg-white/20 border-white/30" />
+            <CarouselNext className="static translate-y-0 bg-white/10 hover:bg-white/20 border-white/30" />
+          </div>
+        </Carousel>
+      </section>
+      
       {/* Access Offline Section */}
       <section className="py-12 bg-black/40 backdrop-blur-md rounded-lg p-8">
         <div className="flex flex-col md:flex-row items-center gap-8">
@@ -184,6 +271,49 @@ const FeatureCard = ({
   </motion.div>
 );
 
+// Fictional doctor data
+const doctors = [
+  {
+    name: "Dr. Amadou Barry",
+    specialty: "Cardiologue",
+    shortBio: "Spécialiste en cardiologie interventionnelle avec plus de 15 ans d'expérience.",
+    fullBio: "Le Dr. Amadou Barry est un cardiologue de renom en Guinée, avec une expertise particulière dans le traitement des maladies cardiaques congénitales et les procédures interventionnelles. Il a traité plus de 5000 patients tout au long de sa carrière et a contribué à plusieurs publications médicales internationales.",
+    education: [
+      "Doctorat en Médecine, Université de Conakry, 2005",
+      "Spécialisation en Cardiologie, Université Paris-Descartes, 2010",
+      "Fellowship en Cardiologie Interventionnelle, Hôpital Johns Hopkins, 2012"
+    ],
+    availability: "Consultations: Lundi, Mercredi et Vendredi, 9h - 17h",
+    avatar: "https://i.pravatar.cc/150?img=52"
+  },
+  {
+    name: "Dr. Fatoumata Diallo",
+    specialty: "Pédiatre",
+    shortBio: "Pédiatre dévouée avec une spécialisation en néonatologie et médecine des adolescents.",
+    fullBio: "Le Dr. Diallo a consacré sa carrière à améliorer la santé des enfants en Guinée. Elle est reconnue pour son approche holistique qui prend en compte non seulement la santé physique mais aussi le bien-être émotionnel et social des enfants. Elle est également active dans plusieurs programmes d'éducation sanitaire communautaire.",
+    education: [
+      "Doctorat en Médecine, Université Gamal Abdel Nasser de Conakry, 2008",
+      "Résidence en Pédiatrie, CHU de Donka, 2012",
+      "Certification en Néonatologie, Université de Dakar, 2014"
+    ],
+    availability: "Consultations: Mardi, Jeudi et Samedi, 8h - 16h",
+    avatar: "https://i.pravatar.cc/150?img=45"
+  },
+  {
+    name: "Dr. Mohamed Camara",
+    specialty: "Chirurgien",
+    shortBio: "Chirurgien général avec expertise en chirurgie traumatologique et laparoscopique.",
+    fullBio: "Le Dr. Camara est l'un des chirurgiens les plus expérimentés de Guinée, ayant pratiqué plus de 3000 interventions chirurgicales. Il est pionnier dans l'introduction de techniques chirurgicales mini-invasives dans le pays et forme activement la prochaine génération de chirurgiens guinéens.",
+    education: [
+      "Doctorat en Médecine, Université de Conakry, 2003",
+      "Résidence en Chirurgie Générale, Hôpital National Ignace Deen, 2008",
+      "Fellowship en Chirurgie Laparoscopique, Hôpital Pitié-Salpêtrière, Paris, 2010"
+    ],
+    availability: "Consultations: Lundi à Vendredi, 10h - 15h",
+    avatar: "https://i.pravatar.cc/150?img=68"
+  }
+];
+
 // Updated partners with logo information
 const partnerLogos = [
   {
@@ -192,7 +322,7 @@ const partnerLogos = [
   },
   {
     name: "MTN",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/New-MTN-logo.png/800px-New-MTN-logo.png"
+    logo: "/lovable-uploads/e0118b32-222b-4d8f-b46f-47e7eba892d8.png"
   },
   {
     name: "UNICEF",
