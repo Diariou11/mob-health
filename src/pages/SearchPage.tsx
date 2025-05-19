@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,8 +11,9 @@ import { MapPin, Phone, Clock, User, Search, Mic, Heart, Stethoscope, Pill, Cale
 import { useToast } from '@/components/ui/use-toast';
 import { motion } from 'framer-motion';
 import FacilityDetailCard from '@/components/facilities/FacilityDetailCard';
+import DoctorProfileModal from '@/components/doctors/DoctorProfileModal';
 
-// Sample data for doctors
+// Sample data for doctors - Enhanced with more details
 const doctors = [
   {
     id: 1,
@@ -23,7 +23,26 @@ const doctors = [
     experience: "15 ans",
     languages: ["français", "peul"],
     available: true,
-    image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=250&h=250&q=80"
+    image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=250&h=250&q=80",
+    fullBio: "Le Dr. Mamadou Diallo est un cardiologue renommé spécialisé dans les maladies cardiovasculaires avec plus de 15 années d'expérience. Expert en cardiologie interventionnelle, il a traité plus de 2000 patients et a introduit plusieurs techniques novatrices dans le domaine de la cardiologie en Guinée.",
+    phone: "+224 621-45-67-89",
+    email: "m.diallo@hopitaldonka.gn",
+    address: "Service de Cardiologie, Hôpital National Donka, Conakry",
+    consultationHours: "Lun-Jeu: 9h-17h",
+    education: [
+      "Doctorat en Médecine, Université Gamal Abdel Nasser de Conakry (2005)",
+      "Spécialisation en Cardiologie, CHU de Bordeaux, France (2009)",
+      "Fellowship en Cardiologie Interventionnelle, Hôpital La Pitié-Salpêtrière, Paris (2011)"
+    ],
+    certifications: [
+      "Certification en Échocardiographie, Société Européenne de Cardiologie",
+      "Diplôme de Cardiologie Interventionnelle",
+      "Membre du Collège Africain de Cardiologie"
+    ],
+    publications: [
+      "Diallo M, et al. \"Prévalence de l'hypertension artérielle en Guinée\", Revue Africaine de Cardiologie, 2018",
+      "Diallo M, Camara S. \"Facteurs de risque cardiovasculaire en Afrique de l'Ouest\", Journal de Médecine Tropicale, 2020"
+    ]
   },
   {
     id: 2,
@@ -33,7 +52,22 @@ const doctors = [
     experience: "8 ans",
     languages: ["français", "soussou", "anglais"],
     available: true,
-    image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=250&h=250&q=80"
+    image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=250&h=250&q=80",
+    fullBio: "Le Dr. Fatoumata Camara est pédiatre spécialisée en néonatologie et maladies infantiles. Elle a effectué sa formation en Guinée et au Sénégal avant de perfectionner ses compétences en France. Elle est reconnue pour son approche attentionnée avec les enfants et son expertise en maladies respiratoires pédiatriques.",
+    phone: "+224 622-33-44-55",
+    email: "f.camara@clinique-ap.gn",
+    address: "Clinique Ambroise Paré, Camayenne, Conakry",
+    consultationHours: "Mar, Jeu, Sam: 8h-16h",
+    education: [
+      "Doctorat en Médecine, Université de Conakry (2013)",
+      "Spécialisation en Pédiatrie, CHU de Dakar, Sénégal (2016)",
+      "Formation en Néonatologie, Hôpital Necker-Enfants Malades, Paris (2018)"
+    ],
+    certifications: [
+      "Certificat de Pédiatrie d'Urgence",
+      "Diplôme de Néonatologie",
+      "Formation en Réanimation Pédiatrique"
+    ]
   },
   {
     id: 3,
@@ -293,6 +327,7 @@ const SearchPage = () => {
   const [specialty, setSpecialty] = useState('');
   const [distance, setDistance] = useState([10]);
   const [selectedFacility, setSelectedFacility] = useState<any>(null);
+  const [selectedDoctor, setSelectedDoctor] = useState<any>(null);
   const { toast } = useToast();
 
   const handleVoiceSearch = () => {
@@ -316,6 +351,10 @@ const SearchPage = () => {
 
   const handleViewDetails = (facility: any) => {
     setSelectedFacility(facility);
+  };
+
+  const handleViewDoctorProfile = (doctor: any) => {
+    setSelectedDoctor(doctor);
   };
 
   return (
@@ -610,7 +649,10 @@ const SearchPage = () => {
                     </CardContent>
                     
                     <CardFooter>
-                      <Button className="w-full bg-health-blue hover:bg-health-blue/90">
+                      <Button 
+                        className="w-full bg-health-blue hover:bg-health-blue/90" 
+                        onClick={() => handleViewDoctorProfile(doctor)}
+                      >
                         Voir profil
                       </Button>
                     </CardFooter>
@@ -622,6 +664,7 @@ const SearchPage = () => {
         </TabsContent>
       </Tabs>
       
+      {/* Facility Detail Dialog */}
       {selectedFacility && (
         <Dialog open={!!selectedFacility} onOpenChange={() => setSelectedFacility(null)}>
           <DialogContent className="max-w-4xl p-0">
@@ -650,6 +693,18 @@ const SearchPage = () => {
               ]}
               image={selectedFacility.image}
               onClose={() => setSelectedFacility(null)}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
+      
+      {/* Doctor Profile Dialog */}
+      {selectedDoctor && (
+        <Dialog open={!!selectedDoctor} onOpenChange={() => setSelectedDoctor(null)}>
+          <DialogContent className="max-w-4xl p-0">
+            <DoctorProfileModal 
+              doctor={selectedDoctor}
+              onClose={() => setSelectedDoctor(null)}
             />
           </DialogContent>
         </Dialog>

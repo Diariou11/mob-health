@@ -14,6 +14,7 @@ interface MapContainerProps {
 const MapContainer = ({ facilities, onFacilitySelect }: MapContainerProps) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
+  const markers = useRef<mapboxgl.Marker[]>([]);
 
   useEffect(() => {
     if (!mapContainer.current) return;
@@ -56,8 +57,9 @@ const MapContainer = ({ facilities, onFacilitySelect }: MapContainerProps) => {
   useEffect(() => {
     // If map is loaded, update markers
     if (map.current && map.current.loaded()) {
-      // Remove existing markers
-      document.querySelectorAll('.mapboxgl-marker').forEach(el => el.remove());
+      // Clear existing markers
+      markers.current.forEach(marker => marker.remove());
+      markers.current = [];
       
       // Add new markers based on filtered facilities
       addMarkers();
@@ -65,6 +67,20 @@ const MapContainer = ({ facilities, onFacilitySelect }: MapContainerProps) => {
   }, [facilities]);
 
   const addMarkers = () => {
+    if (!map.current) return;
+    
+    // If no facilities, center map on Conakry
+    if (facilities.length === 0) {
+      map.current.flyTo({
+        center: [-13.6773, 9.5370], // Conakry, Guinea
+        zoom: 12
+      });
+      return;
+    }
+
+    // Create bounds object to fit all markers
+    const bounds = new mapboxgl.LngLatBounds();
+
     facilities.forEach(facility => {
       const el = document.createElement('div');
       el.className = 'marker';
@@ -74,27 +90,44 @@ const MapContainer = ({ facilities, onFacilitySelect }: MapContainerProps) => {
         ? `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ef4444' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z'%3E%3C/path%3E%3Ccircle cx='12' cy='10' r='3'%3E%3C/circle%3E%3C/svg%3E")` 
         : `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230057A3' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z'%3E%3C/path%3E%3Ccircle cx='12' cy='10' r='3'%3E%3C/circle%3E%3C/svg%3E")`;
       el.style.backgroundSize = '100%';
+      el.style.cursor = 'pointer';
       
       el.addEventListener('click', () => {
         onFacilitySelect(facility);
       });
       
-      if (map.current) {
-        new mapboxgl.Marker(el)
-          .setLngLat(facility.coordinates as mapboxgl.LngLatLike)
-          .addTo(map.current);
-      }
+      // Add popup on hover
+      const popup = new mapboxgl.Popup({ 
+        offset: 25,
+        closeButton: false,
+        closeOnClick: false
+      }).setHTML(
+        `<strong>${facility.name}</strong><br>${facility.type}`
+      );
+      
+      // Create and store marker
+      const marker = new mapboxgl.Marker(el)
+        .setLngLat(facility.coordinates as mapboxgl.LngLatLike)
+        .setPopup(popup)
+        .addTo(map.current!);
+        
+      markers.current.push(marker);
+      
+      // Add marker position to bounds
+      bounds.extend(facility.coordinates as mapboxgl.LngLatLike);
+      
+      // Add hover events for popup
+      el.addEventListener('mouseenter', () => marker.togglePopup());
+      el.addEventListener('mouseleave', () => marker.togglePopup());
     });
-  };
-
-  const flyToFacility = (facility: HealthFacility) => {
-    if (!map.current) return;
     
-    map.current.flyTo({
-      center: facility.coordinates as mapboxgl.LngLatLike,
-      zoom: 15,
-      essential: true
-    });
+    // If we have facilities, fit the map to show all markers
+    if (facilities.length > 0) {
+      map.current.fitBounds(bounds, {
+        padding: 50,
+        maxZoom: 15
+      });
+    }
   };
 
   return (
