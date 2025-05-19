@@ -14,6 +14,13 @@ export interface HealthFacility {
   hasEmergency: boolean;
   hasBloodBank: boolean;
   languages: string[];
+  imageUrl?: string; // Optional image URL
+  status: string;    // Facility status (Open, Closed, etc.)
+  hours: {
+    weekday: string;
+    saturday: string;
+    sunday: string;
+  };
 }
 
 export interface FilterState {

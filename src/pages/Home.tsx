@@ -150,7 +150,7 @@ const Home = () => {
                     <CardFooter>
                       <Button 
                         variant="outline" 
-                        className="w-full border-white/30 text-white hover:bg-white/20"
+                        className="w-full bg-health-blue text-white border-none hover:bg-health-blue/80 font-medium shadow-md"
                         onClick={() => setActiveDoctor(activeDoctor === index ? null : index)}
                       >
                         {activeDoctor === index ? "Masquer le profil" : "Voir profil"}

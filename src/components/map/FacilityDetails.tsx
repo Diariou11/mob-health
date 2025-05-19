@@ -1,11 +1,12 @@
+
 import React from 'react';
-import { X, Phone, Clock, layers, stethoscope } from 'lucide-react';
+import { X, Phone, Clock, Layers, Stethoscope } from 'lucide-react';
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 
-import { HealthFacility } from "@/types";
+import { HealthFacility } from "@/types/facility";
 
 interface FacilityDetailsProps {
   facility: HealthFacility;
@@ -69,7 +70,7 @@ const FacilityDetails: React.FC<FacilityDetailsProps> = ({ facility, onClose }) 
         
         <div>
           <div className="flex items-center gap-1 mb-2">
-            <layers className="h-4 w-4 text-clinic-green" />
+            <Layers className="h-4 w-4 text-clinic-green" />
             <h3 className="font-medium">Services</h3>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -99,7 +100,7 @@ const FacilityDetails: React.FC<FacilityDetailsProps> = ({ facility, onClose }) 
         
         <div>
           <div className="flex items-center gap-1 mb-2">
-            <stethoscope className="h-4 w-4 text-health-blue" />
+            <Stethoscope className="h-4 w-4 text-health-blue" />
             <h3 className="font-medium">Spécialités</h3>
           </div>
           <div className="flex flex-wrap gap-2">

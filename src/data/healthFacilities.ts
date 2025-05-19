@@ -15,7 +15,14 @@ export const healthFacilities = [
     services: ["urgences", "chirurgie", "maternité"],
     hasEmergency: true,
     hasBloodBank: true,
-    languages: ["français", "soussou", "peul"]
+    languages: ["français", "soussou", "peul"],
+    imageUrl: "https://info224.net/wp-content/uploads/2022/02/donka-750x430.jpg",
+    status: "Open",
+    hours: {
+      weekday: "7:30 - 16:30",
+      saturday: "8:00 - 12:00",
+      sunday: "Fermé"
+    }
   },
   {
     id: 2,
@@ -31,7 +38,14 @@ export const healthFacilities = [
     services: ["urgences", "radiologie", "laboratoire"],
     hasEmergency: true,
     hasBloodBank: true,
-    languages: ["français", "peul", "soussou", "malinké"]
+    languages: ["français", "peul", "soussou", "malinké"],
+    imageUrl: "https://guinee114.com/wp-content/uploads/2019/09/IMG_0263.jpg",
+    status: "Open",
+    hours: {
+      weekday: "8:00 - 16:00",
+      saturday: "8:00 - 12:00",
+      sunday: "Fermé"
+    }
   },
   {
     id: 3,
@@ -47,7 +61,13 @@ export const healthFacilities = [
     services: ["urgences", "maternité", "pédiatrie"],
     hasEmergency: true,
     hasBloodBank: false,
-    languages: ["français", "soussou"]
+    languages: ["français", "soussou"],
+    status: "Open",
+    hours: {
+      weekday: "8:00 - 16:00",
+      saturday: "8:00 - 12:00",
+      sunday: "Fermé"
+    }
   },
   {
     id: 4,
@@ -63,7 +83,13 @@ export const healthFacilities = [
     services: ["consultation", "chirurgie", "pédiatrie"],
     hasEmergency: true,
     hasBloodBank: false,
-    languages: ["français", "malinké"]
+    languages: ["français", "malinké"],
+    status: "Open",
+    hours: {
+      weekday: "8:00 - 16:00",
+      saturday: "9:00 - 12:00",
+      sunday: "Urgences uniquement"
+    }
   },
   {
     id: 5,
@@ -79,7 +105,13 @@ export const healthFacilities = [
     services: ["consultation", "vaccination", "planning familial"],
     hasEmergency: false,
     hasBloodBank: false,
-    languages: ["français", "guerze", "malinké"]
+    languages: ["français", "guerze", "malinké"],
+    status: "Open",
+    hours: {
+      weekday: "8:00 - 15:00",
+      saturday: "8:00 - 12:00",
+      sunday: "Fermé"
+    }
   },
   {
     id: 6,
@@ -95,7 +127,14 @@ export const healthFacilities = [
     services: ["urgences", "chirurgie", "scanner"],
     hasEmergency: true,
     hasBloodBank: true,
-    languages: ["français", "anglais", "soussou"]
+    languages: ["français", "anglais", "soussou"],
+    imageUrl: "https://www.clinique-ambroisepare.fr/sites/default/files/styles/image_full_width/public/2022-06/entree_clinique_ambroise_pare_marseille.jpg",
+    status: "Open",
+    hours: {
+      weekday: "7:00 - 20:00",
+      saturday: "8:00 - 18:00",
+      sunday: "8:00 - 12:00"
+    }
   },
   {
     id: 7,
@@ -111,7 +150,13 @@ export const healthFacilities = [
     services: ["consultation", "vaccination", "soins prénataux"],
     hasEmergency: false,
     hasBloodBank: false,
-    languages: ["français", "soussou", "peul"]
+    languages: ["français", "soussou", "peul"],
+    status: "Open",
+    hours: {
+      weekday: "8:00 - 16:00",
+      saturday: "8:00 - 12:00",
+      sunday: "Fermé"
+    }
   },
   {
     id: 8,
@@ -127,7 +172,14 @@ export const healthFacilities = [
     services: ["urgences", "chirurgie", "radiologie"],
     hasEmergency: true,
     hasBloodBank: true,
-    languages: ["français", "soussou", "malinké"]
+    languages: ["français", "soussou", "malinké"],
+    imageUrl: "https://guineematin.com/wp-content/uploads/2015/02/hopital-de-lamitie-sino-guineenne_article.jpg",
+    status: "Open",
+    hours: {
+      weekday: "8:00 - 17:00",
+      saturday: "8:00 - 13:00",
+      sunday: "Urgences uniquement"
+    }
   },
   {
     id: 9,
@@ -143,7 +195,13 @@ export const healthFacilities = [
     services: ["consultation", "cardiologie", "endocrinologie"],
     hasEmergency: false,
     hasBloodBank: false,
-    languages: ["français", "anglais"]
+    languages: ["français", "anglais"],
+    status: "Open",
+    hours: {
+      weekday: "8:00 - 18:00",
+      saturday: "9:00 - 15:00",
+      sunday: "Fermé"
+    }
   },
   {
     id: 10,
@@ -159,6 +217,342 @@ export const healthFacilities = [
     services: ["consultation", "vaccination", "planning familial"],
     hasEmergency: false,
     hasBloodBank: false,
-    languages: ["français", "soussou"]
+    languages: ["français", "soussou"],
+    status: "Open",
+    hours: {
+      weekday: "8:00 - 15:00",
+      saturday: "8:00 - 12:00",
+      sunday: "Fermé"
+    }
+  },
+  {
+    id: 11,
+    name: "Centre Médical Communal de Ratoma",
+    type: "Centre de Santé",
+    category: "public",
+    specialty: ["general", "pédiatrie", "soins prénataux"],
+    coordinates: [-13.6346, 9.6012] as [number, number],
+    address: "Ratoma, Conakry",
+    phone: "+224 628 45 67 89",
+    beds: 6,
+    doctors: 4,
+    services: ["consultation", "vaccination", "planning familial"],
+    hasEmergency: false,
+    hasBloodBank: false,
+    languages: ["français", "soussou", "peul"],
+    status: "Open",
+    hours: {
+      weekday: "8:00 - 16:00",
+      saturday: "8:00 - 12:00",
+      sunday: "Fermé"
+    }
+  },
+  {
+    id: 12,
+    name: "Hôpital Jean Paul II",
+    type: "Hôpital",
+    category: "private",
+    specialty: ["general", "cardiologie", "gastroenterologie"],
+    coordinates: [-13.6196, 9.5498] as [number, number],
+    address: "Conakry, Guinée",
+    phone: "+224 622 89 01 23",
+    beds: 15,
+    doctors: 10,
+    services: ["urgences", "chirurgie", "scanner"],
+    hasEmergency: true,
+    hasBloodBank: true,
+    languages: ["français", "anglais"],
+    status: "Open",
+    hours: {
+      weekday: "8:00 - 18:00",
+      saturday: "9:00 - 15:00",
+      sunday: "9:00 - 12:00"
+    }
+  },
+  {
+    id: 13,
+    name: "Centre Hospitalier Régional de Labé",
+    type: "Hôpital",
+    category: "public",
+    specialty: ["general", "gynecologie", "pediatrie"],
+    coordinates: [-12.2883, 11.3186] as [number, number],
+    address: "Labé, Guinée",
+    phone: "+224 623 56 78 90",
+    beds: 12,
+    doctors: 6,
+    services: ["urgences", "maternité", "pédiatrie"],
+    hasEmergency: true,
+    hasBloodBank: false,
+    languages: ["français", "peul"],
+    status: "Open",
+    hours: {
+      weekday: "7:30 - 15:30",
+      saturday: "8:00 - 12:00",
+      sunday: "Urgences uniquement"
+    }
+  },
+  {
+    id: 14,
+    name: "Hôpital Préfectoral de Siguiri",
+    type: "Hôpital",
+    category: "public",
+    specialty: ["general", "traumatologie", "maladies infectieuses"],
+    coordinates: [-9.1667, 11.4167] as [number, number],
+    address: "Siguiri, Guinée",
+    phone: "+224 624 67 89 01",
+    beds: 8,
+    doctors: 4,
+    services: ["urgences", "maternité", "consultation"],
+    hasEmergency: true,
+    hasBloodBank: false,
+    languages: ["français", "malinké"],
+    status: "Open",
+    hours: {
+      weekday: "8:00 - 16:00",
+      saturday: "8:00 - 12:00",
+      sunday: "Urgences uniquement"
+    }
+  },
+  {
+    id: 15,
+    name: "Centre de Santé de Faranah",
+    type: "Centre de Santé",
+    category: "public",
+    specialty: ["general", "maladies tropicales", "vaccination"],
+    coordinates: [-10.7434, 10.0404] as [number, number],
+    address: "Faranah, Guinée",
+    phone: "+224 625 78 90 12",
+    beds: 6,
+    doctors: 3,
+    services: ["consultation", "vaccination", "soins prénataux"],
+    hasEmergency: false,
+    hasBloodBank: false,
+    languages: ["français", "malinké"],
+    status: "Open",
+    hours: {
+      weekday: "8:00 - 15:00",
+      saturday: "8:00 - 12:00",
+      sunday: "Fermé"
+    }
+  },
+  {
+    id: 16,
+    name: "Clinique Les Flamants",
+    type: "Clinique",
+    category: "private",
+    specialty: ["general", "gynecologie", "urologie"],
+    coordinates: [-13.6542, 9.5364] as [number, number],
+    address: "Kaloum, Conakry",
+    phone: "+224 626 89 01 23",
+    beds: 14,
+    doctors: 12,
+    services: ["urgences", "chirurgie", "obstétrique"],
+    hasEmergency: true,
+    hasBloodBank: true,
+    languages: ["français", "anglais", "soussou"],
+    status: "Open",
+    hours: {
+      weekday: "7:00 - 20:00",
+      saturday: "8:00 - 18:00",
+      sunday: "9:00 - 13:00"
+    }
+  },
+  {
+    id: 17,
+    name: "Centre Médical Communal de Coyah",
+    type: "Centre de Santé",
+    category: "public",
+    specialty: ["general", "pediatrie", "vaccination"],
+    coordinates: [-13.3847, 9.7062] as [number, number],
+    address: "Coyah, Guinée",
+    phone: "+224 627 90 12 34",
+    beds: 5,
+    doctors: 3,
+    services: ["consultation", "vaccination", "planning familial"],
+    hasEmergency: false,
+    hasBloodBank: false,
+    languages: ["français", "soussou"],
+    status: "Open",
+    hours: {
+      weekday: "8:00 - 15:30",
+      saturday: "8:00 - 12:00",
+      sunday: "Fermé"
+    }
+  },
+  {
+    id: 18,
+    name: "Hôpital Préfectoral de Mamou",
+    type: "Hôpital",
+    category: "public",
+    specialty: ["general", "pediatrie", "chirurgie"],
+    coordinates: [-12.0878, 10.3755] as [number, number],
+    address: "Mamou, Guinée",
+    phone: "+224 628 01 23 45",
+    beds: 10,
+    doctors: 5,
+    services: ["urgences", "maternité", "pédiatrie"],
+    hasEmergency: true,
+    hasBloodBank: false,
+    languages: ["français", "peul", "malinké"],
+    status: "Open",
+    hours: {
+      weekday: "7:30 - 16:00",
+      saturday: "8:00 - 12:00",
+      sunday: "Urgences uniquement"
+    }
+  },
+  {
+    id: 19,
+    name: "Centre de Santé de Boké",
+    type: "Centre de Santé",
+    category: "public",
+    specialty: ["general", "soins prénataux", "vaccination"],
+    coordinates: [-14.2906, 10.9322] as [number, number],
+    address: "Boké, Guinée",
+    phone: "+224 629 12 34 56",
+    beds: 6,
+    doctors: 4,
+    services: ["consultation", "vaccination", "planning familial"],
+    hasEmergency: false,
+    hasBloodBank: false,
+    languages: ["français", "soussou"],
+    status: "Open",
+    hours: {
+      weekday: "8:00 - 15:00",
+      saturday: "8:00 - 12:00",
+      sunday: "Fermé"
+    }
+  },
+  {
+    id: 20,
+    name: "Centre Hospitalier Régional de Kissidougou",
+    type: "Hôpital",
+    category: "public",
+    specialty: ["general", "gynecologie", "pédiatrie"],
+    coordinates: [-10.1114, 9.1894] as [number, number],
+    address: "Kissidougou, Guinée",
+    phone: "+224 621 23 45 67",
+    beds: 12,
+    doctors: 6,
+    services: ["urgences", "maternité", "pédiatrie"],
+    hasEmergency: true,
+    hasBloodBank: false,
+    languages: ["français", "kissi", "malinké"],
+    status: "Open",
+    hours: {
+      weekday: "8:00 - 16:00",
+      saturday: "8:00 - 12:00",
+      sunday: "Urgences uniquement"
+    }
+  },
+  {
+    id: 21,
+    name: "Polyclinique Médical Plus",
+    type: "Clinique",
+    category: "private",
+    specialty: ["general", "ophtalmologie", "dermatologie"],
+    coordinates: [-13.6510, 9.5420] as [number, number],
+    address: "Taouyah, Conakry",
+    phone: "+224 622 34 56 78",
+    beds: 15,
+    doctors: 14,
+    services: ["urgences", "imagerie médicale", "consultation spécialisée"],
+    hasEmergency: true,
+    hasBloodBank: true,
+    languages: ["français", "anglais", "soussou"],
+    status: "Open",
+    hours: {
+      weekday: "8:00 - 20:00",
+      saturday: "9:00 - 18:00",
+      sunday: "10:00 - 16:00"
+    }
+  },
+  {
+    id: 22,
+    name: "Centre de Santé de Guéckédou",
+    type: "Centre de Santé",
+    category: "public",
+    specialty: ["general", "maladies infectieuses", "vaccination"],
+    coordinates: [-10.1311, 8.5616] as [number, number],
+    address: "Guéckédou, Guinée",
+    phone: "+224 623 45 67 89",
+    beds: 8,
+    doctors: 3,
+    services: ["consultation", "vaccination", "soins prénataux"],
+    hasEmergency: false,
+    hasBloodBank: false,
+    languages: ["français", "kissi", "malinké"],
+    status: "Open",
+    hours: {
+      weekday: "8:00 - 15:30",
+      saturday: "8:00 - 12:00",
+      sunday: "Fermé"
+    }
+  },
+  {
+    id: 23,
+    name: "Hôpital Préfectoral de Dalaba",
+    type: "Hôpital",
+    category: "public",
+    specialty: ["general", "pediatrie", "pneumologie"],
+    coordinates: [-12.2494, 10.6975] as [number, number],
+    address: "Dalaba, Guinée",
+    phone: "+224 624 56 78 90",
+    beds: 9,
+    doctors: 4,
+    services: ["urgences", "maternité", "pédiatrie"],
+    hasEmergency: true,
+    hasBloodBank: false,
+    languages: ["français", "peul"],
+    status: "Open",
+    hours: {
+      weekday: "8:00 - 16:00",
+      saturday: "8:00 - 12:00",
+      sunday: "Urgences uniquement"
+    }
+  },
+  {
+    id: 24,
+    name: "Centre Médical Spécialisé de Kipe",
+    type: "Centre de Santé",
+    category: "private",
+    specialty: ["general", "cardiologie", "endocrinologie"],
+    coordinates: [-13.5620, 9.6050] as [number, number],
+    address: "Kipé, Conakry",
+    phone: "+224 625 67 89 01",
+    beds: 12,
+    doctors: 10,
+    services: ["consultation", "imagerie médicale", "analyses médicales"],
+    hasEmergency: false,
+    hasBloodBank: true,
+    languages: ["français", "anglais"],
+    status: "Open",
+    hours: {
+      weekday: "8:00 - 18:00",
+      saturday: "9:00 - 15:00",
+      sunday: "Fermé"
+    }
+  },
+  {
+    id: 25,
+    name: "Centre Hospitalier Régional de Macenta",
+    type: "Hôpital",
+    category: "public",
+    specialty: ["general", "gynecologie", "maladies tropicales"],
+    coordinates: [-9.4710, 8.5414] as [number, number],
+    address: "Macenta, Guinée",
+    phone: "+224 626 78 90 12",
+    beds: 14,
+    doctors: 7,
+    services: ["urgences", "maternité", "pédiatrie"],
+    hasEmergency: true,
+    hasBloodBank: false,
+    languages: ["français", "toma", "malinké"],
+    status: "Open",
+    hours: {
+      weekday: "7:30 - 16:00",
+      saturday: "8:00 - 12:00",
+      sunday: "Urgences uniquement"
+    }
   }
 ];
