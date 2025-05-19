@@ -326,7 +326,7 @@ const partnerLogos = [
   },
   {
     name: "UNICEF",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/UNICEF_logo.svg/1200px-UNICEF_logo.svg.png"
+    logo: "/lovable-uploads/13761787-71b9-4473-99a6-3eec92b534ec.png"
   },
   {
     name: "Croix Rouge",
@@ -334,11 +334,11 @@ const partnerLogos = [
   },
   {
     name: "Médecins Sans Frontières",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Medecins_Sans_Frontieres_logo.svg/1200px-Medecins_Sans_Frontieres_logo.svg.png"
+    logo: "/lovable-uploads/a50dd1df-4862-4a7a-aaff-9b8008f89a64.png"
   },
   {
     name: "PNUD",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/UNDP_logo.svg/1200px-UNDP_logo.svg.png"
+    logo: "/lovable-uploads/10ecbc84-7958-455d-b92e-09801d6ef5a7.png"
   }
 ];
 
