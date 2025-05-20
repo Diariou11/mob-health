@@ -130,6 +130,29 @@ const doctors = [
     languages: ["français", "malinké", "anglais"],
     available: true,
     image: "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?ixlib=rb-4.0.3&auto=format&fit=crop&w=250&h=250&q=80"
+  },
+  {
+    id: 9,
+    name: "Dr. Moussa Camara",
+    specialty: "Médecin de famille",
+    hospital: "Centre de Santé de Ditinn",
+    experience: "9 ans",
+    languages: ["français", "peul", "soussou"],
+    available: true,
+    image: "https://images.unsplash.com/photo-1622902046580-2b47f47f5471?ixlib=rb-4.0.3&auto=format&fit=crop&w=250&h=250&q=80",
+    fullBio: "Le Dr. Moussa Camara est un médecin de famille dédié qui travaille depuis près d'une décennie dans les zones rurales de la Guinée. Il est particulièrement engagé dans la médecine préventive et les soins de santé primaires pour les communautés isolées.",
+    phone: "+224 628-76-55-33",
+    email: "m.camara@sante.gov.gn",
+    address: "Centre de Santé de Ditinn, Dalaba, Guinée",
+    consultationHours: "Lun-Ven: 8h-16h",
+    education: [
+      "Doctorat en Médecine, Université de Conakry (2014)",
+      "Formation en Médecine Rurale, OMS (2016)"
+    ],
+    certifications: [
+      "Certificat de Médecine Tropicale",
+      "Diplôme en Santé Publique"
+    ]
   }
 ];
 
@@ -320,6 +343,24 @@ const localFacilities = [
     distance: 3.2,
     image: "https://images.unsplash.com/photo-1576602976047-174e57a47881?ixlib=rb-4.0.3&auto=format&fit=crop&w=350&h=200&q=80",
     description: "La Pharmacie Centrale de Kaloum est l'une des plus grandes pharmacies de Conakry. Elle propose une large gamme de médicaments et produits de santé, ainsi que des conseils professionnels."
+  },
+  {
+    id: 11,
+    name: "Centre de Santé de Ditinn",
+    type: "Centre de Santé",
+    category: "public",
+    address: "Ditinn, Dalaba, Guinée",
+    phone: "+224 628 76 54 32",
+    email: "cs.ditinn@sante.gov.gn",
+    openingHours: "8h-16h, Lun-Sam",
+    beds: 8,
+    doctors: 5,
+    services: ["consultation", "vaccination", "soins prénataux", "pédiatrie"],
+    doctorsList: [doctors[9]],
+    hasEmergency: false,
+    distance: 320,
+    image: "https://images.unsplash.com/photo-1613918108466-292b78a8ef95?ixlib=rb-4.0.3&auto=format&fit=crop&w=350&h=200&q=80",
+    description: "Le Centre de Santé de Ditinn est un établissement de santé situé dans la localité de Ditinn, préfecture de Dalaba. Il dessert les communautés rurales de la région montagneuse du Fouta-Djalon et offre des services de santé de base essentiels pour la population locale."
   }
 ];
 
