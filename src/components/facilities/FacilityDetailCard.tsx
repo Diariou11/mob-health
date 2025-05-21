@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Phone, Clock, User, Mail, Globe, Heart, Stethoscope } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface Doctor {
   name: string;
@@ -52,7 +53,7 @@ const FacilityDetailCard = ({
   };
 
   return (
-    <Card className="w-full max-w-4xl mx-auto overflow-hidden bg-white shadow-xl">
+    <Card className="w-full max-w-4xl mx-auto overflow-hidden bg-white shadow-xl max-h-[90vh]">
       <div className="relative h-48 overflow-hidden">
         <img 
           src={image} 
@@ -69,84 +70,86 @@ const FacilityDetailCard = ({
         </div>
       </div>
 
-      <CardContent className="p-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h2 className="font-bold text-lg flex items-center">
-              <Stethoscope className="w-5 h-5 mr-2 text-health-blue" />
-              À propos
-            </h2>
-            <p className="mt-2 text-gray-700">{description}</p>
-            
-            <div className="space-y-3 mt-4">
-              <div className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-health-blue flex-shrink-0 mt-0.5" />
-                <span>{address}</span>
-              </div>
+      <ScrollArea className="max-h-[calc(90vh-48px-70px)]">
+        <CardContent className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h2 className="font-bold text-lg flex items-center">
+                <Stethoscope className="w-5 h-5 mr-2 text-health-blue" />
+                À propos
+              </h2>
+              <p className="mt-2 text-gray-700">{description}</p>
               
-              <div className="flex items-start gap-3">
-                <Phone className="w-5 h-5 text-health-blue flex-shrink-0 mt-0.5" />
-                <span>{phone}</span>
-              </div>
-              
-              {email && (
+              <div className="space-y-3 mt-4">
                 <div className="flex items-start gap-3">
-                  <Mail className="w-5 h-5 text-health-blue flex-shrink-0 mt-0.5" />
-                  <span>{email}</span>
+                  <MapPin className="w-5 h-5 text-health-blue flex-shrink-0 mt-0.5" />
+                  <span>{address}</span>
                 </div>
-              )}
-              
-              {website && (
+                
                 <div className="flex items-start gap-3">
-                  <Globe className="w-5 h-5 text-health-blue flex-shrink-0 mt-0.5" />
-                  <a href={website} target="_blank" rel="noopener noreferrer" className="text-health-blue hover:underline">
-                    {website.replace('https://', '')}
-                  </a>
+                  <Phone className="w-5 h-5 text-health-blue flex-shrink-0 mt-0.5" />
+                  <span>{phone}</span>
                 </div>
-              )}
-              
-              <div className="flex items-start gap-3">
-                <Clock className="w-5 h-5 text-health-blue flex-shrink-0 mt-0.5" />
-                <span>{openingHours}</span>
-              </div>
-            </div>
-          </div>
-          
-          <div>
-            <h2 className="font-bold text-lg flex items-center">
-              <Heart className="w-5 h-5 mr-2 text-health-blue" />
-              Services
-            </h2>
-            <div className="flex flex-wrap gap-2 mt-3">
-              {services.map((service, index) => (
-                <Badge key={index} variant="outline" className="bg-blue-50">
-                  {service}
-                </Badge>
-              ))}
-            </div>
-            
-            <h2 className="font-bold text-lg mt-6 flex items-center">
-              <User className="w-5 h-5 mr-2 text-health-blue" />
-              Médecins
-            </h2>
-            <div className="space-y-3 mt-3">
-              {doctors.map((doctor, index) => (
-                <div key={index} className="flex items-center justify-between border-b pb-2">
-                  <div>
-                    <p className="font-medium">{doctor.name}</p>
-                    <p className="text-sm text-gray-600">{doctor.specialty}</p>
+                
+                {email && (
+                  <div className="flex items-start gap-3">
+                    <Mail className="w-5 h-5 text-health-blue flex-shrink-0 mt-0.5" />
+                    <span>{email}</span>
                   </div>
-                  <Badge variant={doctor.available ? "default" : "outline"} className={doctor.available ? "bg-clinic-green" : ""}>
-                    {doctor.available ? "Disponible" : "Indisponible"}
-                  </Badge>
+                )}
+                
+                {website && (
+                  <div className="flex items-start gap-3">
+                    <Globe className="w-5 h-5 text-health-blue flex-shrink-0 mt-0.5" />
+                    <a href={website} target="_blank" rel="noopener noreferrer" className="text-health-blue hover:underline">
+                      {website.replace('https://', '')}
+                    </a>
+                  </div>
+                )}
+                
+                <div className="flex items-start gap-3">
+                  <Clock className="w-5 h-5 text-health-blue flex-shrink-0 mt-0.5" />
+                  <span>{openingHours}</span>
                 </div>
-              ))}
+              </div>
+            </div>
+            
+            <div>
+              <h2 className="font-bold text-lg flex items-center">
+                <Heart className="w-5 h-5 mr-2 text-health-blue" />
+                Services
+              </h2>
+              <div className="flex flex-wrap gap-2 mt-3">
+                {services.map((service, index) => (
+                  <Badge key={index} variant="outline" className="bg-blue-50">
+                    {service}
+                  </Badge>
+                ))}
+              </div>
+              
+              <h2 className="font-bold text-lg mt-6 flex items-center">
+                <User className="w-5 h-5 mr-2 text-health-blue" />
+                Médecins
+              </h2>
+              <div className="space-y-3 mt-3">
+                {doctors.map((doctor, index) => (
+                  <div key={index} className="flex items-center justify-between border-b pb-2">
+                    <div>
+                      <p className="font-medium">{doctor.name}</p>
+                      <p className="text-sm text-gray-600">{doctor.specialty}</p>
+                    </div>
+                    <Badge variant={doctor.available ? "default" : "outline"} className={doctor.available ? "bg-clinic-green" : ""}>
+                      {doctor.available ? "Disponible" : "Indisponible"}
+                    </Badge>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </CardContent>
+        </CardContent>
+      </ScrollArea>
       
-      <CardFooter className="flex justify-between p-6 pt-0">
+      <CardFooter className="flex justify-between p-6">
         <Button variant="outline" onClick={onClose}>
           Fermer
         </Button>
