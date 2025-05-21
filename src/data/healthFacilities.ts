@@ -204,28 +204,6 @@ export const healthFacilities = [
     }
   },
   {
-    id: 10,
-    name: "Centre de Santé de Matoto",
-    type: "Centre de Santé",
-    category: "public",
-    specialty: ["general", "vaccination"],
-    coordinates: [-13.6102, 9.5825] as [number, number],
-    address: "Matoto, Conakry",
-    phone: "+224 629 23 45 67",
-    beds: 4,
-    doctors: 3,
-    services: ["consultation", "vaccination", "planning familial"],
-    hasEmergency: false,
-    hasBloodBank: false,
-    languages: ["français", "soussou"],
-    status: "Open",
-    hours: {
-      weekday: "8:00 - 15:00",
-      saturday: "8:00 - 12:00",
-      sunday: "Fermé"
-    }
-  },
-  {
     id: 11,
     name: "Centre Médical Communal de Ratoma",
     type: "Centre de Santé",
@@ -245,28 +223,6 @@ export const healthFacilities = [
       weekday: "8:00 - 16:00",
       saturday: "8:00 - 12:00",
       sunday: "Fermé"
-    }
-  },
-  {
-    id: 12,
-    name: "Hôpital Jean Paul II",
-    type: "Hôpital",
-    category: "private",
-    specialty: ["general", "cardiologie", "gastroenterologie"],
-    coordinates: [-13.6196, 9.5498] as [number, number],
-    address: "Conakry, Guinée",
-    phone: "+224 622 89 01 23",
-    beds: 15,
-    doctors: 10,
-    services: ["urgences", "chirurgie", "scanner"],
-    hasEmergency: true,
-    hasBloodBank: true,
-    languages: ["français", "anglais"],
-    status: "Open",
-    hours: {
-      weekday: "8:00 - 18:00",
-      saturday: "9:00 - 15:00",
-      sunday: "9:00 - 12:00"
     }
   },
   {
@@ -333,28 +289,6 @@ export const healthFacilities = [
       weekday: "8:00 - 15:00",
       saturday: "8:00 - 12:00",
       sunday: "Fermé"
-    }
-  },
-  {
-    id: 16,
-    name: "Clinique Les Flamants",
-    type: "Clinique",
-    category: "private",
-    specialty: ["general", "gynecologie", "urologie"],
-    coordinates: [-13.6542, 9.5364] as [number, number],
-    address: "Kaloum, Conakry",
-    phone: "+224 626 89 01 23",
-    beds: 14,
-    doctors: 12,
-    services: ["urgences", "chirurgie", "obstétrique"],
-    hasEmergency: true,
-    hasBloodBank: true,
-    languages: ["français", "anglais", "soussou"],
-    status: "Open",
-    hours: {
-      weekday: "7:00 - 20:00",
-      saturday: "8:00 - 18:00",
-      sunday: "9:00 - 13:00"
     }
   },
   {
