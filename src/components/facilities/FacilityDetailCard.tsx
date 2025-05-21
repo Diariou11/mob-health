@@ -32,6 +32,7 @@ interface FacilityDetailProps {
   doctors: Doctor[];
   image: string;
   onClose: () => void;
+  onMakeAppointment?: () => void; // Added this property as optional
 }
 
 const FacilityDetailCard = ({ 
@@ -46,7 +47,8 @@ const FacilityDetailCard = ({
   services, 
   doctors, 
   image,
-  onClose
+  onClose,
+  onMakeAppointment
 }: FacilityDetailProps) => {
   const { toast } = useToast();
   const [showAppointmentDialog, setShowAppointmentDialog] = useState(false);
@@ -56,7 +58,11 @@ const FacilityDetailCard = ({
   const [appointmentPhone, setAppointmentPhone] = useState("");
 
   const handleAppointment = () => {
-    setShowAppointmentDialog(true);
+    if (onMakeAppointment) {
+      onMakeAppointment();
+    } else {
+      setShowAppointmentDialog(true);
+    }
   };
 
   const handleSubmitAppointment = () => {
