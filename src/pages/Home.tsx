@@ -312,15 +312,15 @@ const doctors = [
   }
 ];
 
-// Updated partners with logo information
+// Updated partners with logo information - replacing MTN with OMS
 const partnerLogos = [
   {
     name: "Orange Guinée",
     logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Orange_logo.svg/1200px-Orange_logo.svg.png"
   },
   {
-    name: "MTN",
-    logo: "/lovable-uploads/e0118b32-222b-4d8f-b46f-47e7eba892d8.png"
+    name: "OMS",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Flag_of_the_United_Nations.svg/1200px-Flag_of_the_United_Nations.svg.png"
   },
   {
     name: "UNICEF",
