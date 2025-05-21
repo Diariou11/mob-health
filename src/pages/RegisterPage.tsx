@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -6,11 +5,12 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { AlertCircle, UserPlus, Droplet } from 'lucide-react';
+import { AlertCircle, UserPlus, Droplet, AlertTriangle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const RegisterPage = () => {
   const isMobile = useIsMobile();
@@ -329,7 +329,13 @@ const RegisterPage = () => {
               )}
             </div>
           </div>
-          <DialogFooter>
+          <Alert className="mt-4 border-red-300 bg-red-50 dark:bg-red-950/30">
+            <AlertTriangle className="h-4 w-4 text-red-600" />
+            <AlertDescription className="text-red-600">
+              En soumettant ces données, vous autorisez la divulgation de ces informations aux structures de collecte de sang compétentes, qui pourront vous contacter en cas de besoin de sang compatible.
+            </AlertDescription>
+          </Alert>
+          <DialogFooter className="mt-4">
             <Button 
               variant="outline" 
               onClick={() => setShowBloodDonorDialog(false)}
