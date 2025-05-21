@@ -1,4 +1,3 @@
-
 // Data for health facilities focusing on Guinea hospitals and clinics
 export const healthFacilities = [
   {
@@ -380,6 +379,50 @@ export const healthFacilities = [
     }
   },
   {
+    id: 21,
+    name: "Polyclinique Médical Plus",
+    type: "Clinique",
+    category: "private",
+    specialty: ["general", "ophtalmologie", "dermatologie"],
+    coordinates: [-13.6510, 9.5420] as [number, number],
+    address: "Taouyah, Conakry",
+    phone: "+224 622 34 56 78",
+    beds: 15,
+    doctors: 14,
+    services: ["urgences", "imagerie médicale", "consultation spécialisée"],
+    hasEmergency: true,
+    hasBloodBank: true,
+    languages: ["français", "anglais", "soussou"],
+    status: "Open",
+    hours: {
+      weekday: "8:00 - 20:00",
+      saturday: "9:00 - 18:00",
+      sunday: "10:00 - 16:00"
+    }
+  },
+  {
+    id: 22,
+    name: "Centre de Santé de Guéckédou",
+    type: "Centre de Santé",
+    category: "public",
+    specialty: ["general", "maladies infectieuses", "vaccination"],
+    coordinates: [-10.1311, 8.5616] as [number, number],
+    address: "Guéckédou, Guinée",
+    phone: "+224 623 45 67 89",
+    beds: 8,
+    doctors: 3,
+    services: ["consultation", "vaccination", "soins prénataux"],
+    hasEmergency: false,
+    hasBloodBank: false,
+    languages: ["français", "kissi", "malinké"],
+    status: "Open",
+    hours: {
+      weekday: "8:00 - 15:30",
+      saturday: "8:00 - 12:00",
+      sunday: "Fermé"
+    }
+  },
+  {
     id: 23,
     name: "Hôpital Préfectoral de Dalaba",
     type: "Hôpital",
@@ -399,6 +442,28 @@ export const healthFacilities = [
       weekday: "8:00 - 16:00",
       saturday: "8:00 - 12:00",
       sunday: "Urgences uniquement"
+    }
+  },
+  {
+    id: 24,
+    name: "Centre Médical Spécialisé de Kipe",
+    type: "Centre de Santé",
+    category: "private",
+    specialty: ["general", "cardiologie", "endocrinologie"],
+    coordinates: [-13.5620, 9.6050] as [number, number],
+    address: "Kipé, Conakry",
+    phone: "+224 625 67 89 01",
+    beds: 12,
+    doctors: 10,
+    services: ["consultation", "imagerie médicale", "analyses médicales"],
+    hasEmergency: false,
+    hasBloodBank: true,
+    languages: ["français", "anglais"],
+    status: "Open",
+    hours: {
+      weekday: "8:00 - 18:00",
+      saturday: "9:00 - 15:00",
+      sunday: "Fermé"
     }
   },
   {
