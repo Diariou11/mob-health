@@ -1,3 +1,4 @@
+
 // Data for health facilities focusing on Guinea hospitals and clinics
 export const healthFacilities = [
   {
@@ -15,7 +16,7 @@ export const healthFacilities = [
     hasEmergency: true,
     hasBloodBank: true,
     languages: ["français", "soussou", "peul"],
-    imageUrl: "https://info224.net/wp-content/uploads/2022/02/donka-750x430.jpg",
+    imageUrl: "/lovable-uploads/fbf3b18f-e12a-4b8e-b8ed-cc4de3a2334f.png",
     status: "Open",
     hours: {
       weekday: "7:30 - 16:30",
@@ -38,7 +39,7 @@ export const healthFacilities = [
     hasEmergency: true,
     hasBloodBank: true,
     languages: ["français", "peul", "soussou", "malinké"],
-    imageUrl: "https://guinee114.com/wp-content/uploads/2019/09/IMG_0263.jpg",
+    imageUrl: "/lovable-uploads/f412ee73-3574-4201-a449-511bcd125880.png",
     status: "Open",
     hours: {
       weekday: "8:00 - 16:00",
@@ -61,6 +62,7 @@ export const healthFacilities = [
     hasEmergency: true,
     hasBloodBank: false,
     languages: ["français", "soussou"],
+    imageUrl: "/lovable-uploads/1919fdcd-d313-47d6-8174-102d464cf127.png",
     status: "Open",
     hours: {
       weekday: "8:00 - 16:00",
@@ -83,6 +85,7 @@ export const healthFacilities = [
     hasEmergency: true,
     hasBloodBank: false,
     languages: ["français", "malinké"],
+    imageUrl: "/lovable-uploads/b97c8f32-106e-4c02-96c8-c5c6584b7615.png",
     status: "Open",
     hours: {
       weekday: "8:00 - 16:00",
@@ -105,6 +108,7 @@ export const healthFacilities = [
     hasEmergency: false,
     hasBloodBank: false,
     languages: ["français", "guerze", "malinké"],
+    imageUrl: "/lovable-uploads/da5501bf-7f94-4c90-bc7e-01241b0eb502.png",
     status: "Open",
     hours: {
       weekday: "8:00 - 15:00",
@@ -127,7 +131,7 @@ export const healthFacilities = [
     hasEmergency: true,
     hasBloodBank: true,
     languages: ["français", "anglais", "soussou"],
-    imageUrl: "https://www.clinique-ambroisepare.fr/sites/default/files/styles/image_full_width/public/2022-06/entree_clinique_ambroise_pare_marseille.jpg",
+    imageUrl: "/lovable-uploads/367552d9-918a-4406-8a24-a3264d7b03db.png", 
     status: "Open",
     hours: {
       weekday: "7:00 - 20:00",
@@ -150,6 +154,7 @@ export const healthFacilities = [
     hasEmergency: false,
     hasBloodBank: false,
     languages: ["français", "soussou", "peul"],
+    imageUrl: "/lovable-uploads/0525247d-c9d9-4c17-8684-2a0704a5dcf0.png",
     status: "Open",
     hours: {
       weekday: "8:00 - 16:00",
@@ -172,7 +177,7 @@ export const healthFacilities = [
     hasEmergency: true,
     hasBloodBank: true,
     languages: ["français", "soussou", "malinké"],
-    imageUrl: "https://guineematin.com/wp-content/uploads/2015/02/hopital-de-lamitie-sino-guineenne_article.jpg",
+    imageUrl: "/lovable-uploads/29b11ec7-b95d-4744-b1cc-64bd374914fc.png",
     status: "Open",
     hours: {
       weekday: "8:00 - 17:00",
@@ -195,6 +200,7 @@ export const healthFacilities = [
     hasEmergency: false,
     hasBloodBank: false,
     languages: ["français", "anglais"],
+    imageUrl: "/lovable-uploads/14b8b734-8628-42ab-816d-b7c659a15864.png",
     status: "Open",
     hours: {
       weekday: "8:00 - 18:00",
@@ -217,6 +223,7 @@ export const healthFacilities = [
     hasEmergency: false,
     hasBloodBank: false,
     languages: ["français", "soussou", "peul"],
+    imageUrl: "/lovable-uploads/52e4f74f-b6d7-480d-a15c-0ab2c95a4ef4.png",
     status: "Open",
     hours: {
       weekday: "8:00 - 16:00",
@@ -239,6 +246,7 @@ export const healthFacilities = [
     hasEmergency: true,
     hasBloodBank: false,
     languages: ["français", "peul"],
+    imageUrl: "/lovable-uploads/246830c9-8909-4676-b5d9-63da67542971.png",
     status: "Open",
     hours: {
       weekday: "7:30 - 15:30",
@@ -261,6 +269,7 @@ export const healthFacilities = [
     hasEmergency: true,
     hasBloodBank: false,
     languages: ["français", "malinké"],
+    imageUrl: "/lovable-uploads/85568d7a-fcf6-43e6-b3c5-71deed77b74e.png",
     status: "Open",
     hours: {
       weekday: "8:00 - 16:00",
@@ -283,6 +292,7 @@ export const healthFacilities = [
     hasEmergency: false,
     hasBloodBank: false,
     languages: ["français", "malinké"],
+    imageUrl: "/lovable-uploads/b4609901-fa4a-4a5e-b8bf-b67ab781076c.png",
     status: "Open",
     hours: {
       weekday: "8:00 - 15:00",
@@ -305,6 +315,7 @@ export const healthFacilities = [
     hasEmergency: false,
     hasBloodBank: false,
     languages: ["français", "soussou"],
+    imageUrl: "/lovable-uploads/72de6175-a4e3-4afe-bb8f-67373ba05e3c.png",
     status: "Open",
     hours: {
       weekday: "8:00 - 15:30",
@@ -327,6 +338,7 @@ export const healthFacilities = [
     hasEmergency: true,
     hasBloodBank: false,
     languages: ["français", "peul", "malinké"],
+    imageUrl: "/lovable-uploads/77146d18-80b5-4069-a5df-d3820e4f9479.png",
     status: "Open",
     hours: {
       weekday: "7:30 - 16:00",
@@ -349,6 +361,7 @@ export const healthFacilities = [
     hasEmergency: false,
     hasBloodBank: false,
     languages: ["français", "soussou"],
+    imageUrl: "/lovable-uploads/5c992e38-abeb-40fb-9a9d-326baf319510.png",
     status: "Open",
     hours: {
       weekday: "8:00 - 15:00",
@@ -371,99 +384,12 @@ export const healthFacilities = [
     hasEmergency: true,
     hasBloodBank: false,
     languages: ["français", "kissi", "malinké"],
+    imageUrl: "/lovable-uploads/fa7a3f74-d07c-4ec3-8da9-cbedeee01a53.png",
     status: "Open",
     hours: {
       weekday: "8:00 - 16:00",
       saturday: "8:00 - 12:00",
       sunday: "Urgences uniquement"
-    }
-  },
-  {
-    id: 21,
-    name: "Polyclinique Médical Plus",
-    type: "Clinique",
-    category: "private",
-    specialty: ["general", "ophtalmologie", "dermatologie"],
-    coordinates: [-13.6510, 9.5420] as [number, number],
-    address: "Taouyah, Conakry",
-    phone: "+224 622 34 56 78",
-    beds: 15,
-    doctors: 14,
-    services: ["urgences", "imagerie médicale", "consultation spécialisée"],
-    hasEmergency: true,
-    hasBloodBank: true,
-    languages: ["français", "anglais", "soussou"],
-    status: "Open",
-    hours: {
-      weekday: "8:00 - 20:00",
-      saturday: "9:00 - 18:00",
-      sunday: "10:00 - 16:00"
-    }
-  },
-  {
-    id: 22,
-    name: "Centre de Santé de Guéckédou",
-    type: "Centre de Santé",
-    category: "public",
-    specialty: ["general", "maladies infectieuses", "vaccination"],
-    coordinates: [-10.1311, 8.5616] as [number, number],
-    address: "Guéckédou, Guinée",
-    phone: "+224 623 45 67 89",
-    beds: 8,
-    doctors: 3,
-    services: ["consultation", "vaccination", "soins prénataux"],
-    hasEmergency: false,
-    hasBloodBank: false,
-    languages: ["français", "kissi", "malinké"],
-    status: "Open",
-    hours: {
-      weekday: "8:00 - 15:30",
-      saturday: "8:00 - 12:00",
-      sunday: "Fermé"
-    }
-  },
-  {
-    id: 23,
-    name: "Hôpital Préfectoral de Dalaba",
-    type: "Hôpital",
-    category: "public",
-    specialty: ["general", "pediatrie", "pneumologie"],
-    coordinates: [-12.2494, 10.6975] as [number, number],
-    address: "Dalaba, Guinée",
-    phone: "+224 624 56 78 90",
-    beds: 9,
-    doctors: 4,
-    services: ["urgences", "maternité", "pédiatrie"],
-    hasEmergency: true,
-    hasBloodBank: false,
-    languages: ["français", "peul"],
-    status: "Open",
-    hours: {
-      weekday: "8:00 - 16:00",
-      saturday: "8:00 - 12:00",
-      sunday: "Urgences uniquement"
-    }
-  },
-  {
-    id: 24,
-    name: "Centre Médical Spécialisé de Kipe",
-    type: "Centre de Santé",
-    category: "private",
-    specialty: ["general", "cardiologie", "endocrinologie"],
-    coordinates: [-13.5620, 9.6050] as [number, number],
-    address: "Kipé, Conakry",
-    phone: "+224 625 67 89 01",
-    beds: 12,
-    doctors: 10,
-    services: ["consultation", "imagerie médicale", "analyses médicales"],
-    hasEmergency: false,
-    hasBloodBank: true,
-    languages: ["français", "anglais"],
-    status: "Open",
-    hours: {
-      weekday: "8:00 - 18:00",
-      saturday: "9:00 - 15:00",
-      sunday: "Fermé"
     }
   },
   {
@@ -481,6 +407,7 @@ export const healthFacilities = [
     hasEmergency: true,
     hasBloodBank: false,
     languages: ["français", "toma", "malinké"],
+    imageUrl: "/lovable-uploads/f5ee1977-aa82-4668-923e-caa0ab5fa97a.png",
     status: "Open",
     hours: {
       weekday: "7:30 - 16:00",
@@ -503,6 +430,7 @@ export const healthFacilities = [
     hasEmergency: false,
     hasBloodBank: false,
     languages: ["français", "peul"],
+    imageUrl: "/lovable-uploads/8dc22972-1916-45d8-ae63-81a2d9f10b6f.png",
     status: "Open",
     hours: {
       weekday: "8:00 - 16:00",
@@ -511,3 +439,4 @@ export const healthFacilities = [
     }
   }
 ];
+
