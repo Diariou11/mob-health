@@ -10,6 +10,7 @@ import { motion } from 'framer-motion';
 
 const Header = () => {
   const [notifications, setNotifications] = useState(2);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { toast } = useToast();
   const location = useLocation();
 
@@ -33,6 +34,11 @@ const Header = () => {
     if (path === '/' && location.pathname === '/') return true;
     if (path !== '/' && location.pathname.startsWith(path)) return true;
     return false;
+  };
+
+  const handleNavLinkClick = () => {
+    // Fermer le menu mobile lors du clic sur un lien
+    setIsSheetOpen(false);
   };
 
   return (
@@ -117,7 +123,7 @@ const Header = () => {
             )}
           </Button>
           
-          <Sheet>
+          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="md:hidden text-white hover:bg-white/10">
                 <Menu className="h-5 w-5" />
@@ -129,6 +135,7 @@ const Header = () => {
                   <Link 
                     key={link.path}
                     to={link.path}
+                    onClick={handleNavLinkClick}
                     className={cn(
                       "transition-colors px-2 py-1 rounded-md",
                       isActive(link.path)
@@ -144,6 +151,7 @@ const Header = () => {
                   <div className="pt-4 mt-4 border-t border-white/20 flex flex-col gap-2">
                     <Link 
                       to="/login"
+                      onClick={handleNavLinkClick}
                       className="flex items-center gap-2 px-2 py-2 rounded-md text-white hover:bg-white/10"
                     >
                       <LogIn className="h-4 w-4" />
@@ -151,6 +159,7 @@ const Header = () => {
                     </Link>
                     <Link 
                       to="/register"
+                      onClick={handleNavLinkClick}
                       className="flex items-center gap-2 px-2 py-2 rounded-md bg-health-blue hover:bg-health-blue/80 text-white"
                     >
                       <UserPlus className="h-4 w-4" />
