@@ -7,8 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/componen
 import { Label } from '@/components/ui/label';
 import { LogIn, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const LoginPage = () => {
+  const isMobile = useIsMobile();
   const [credentials, setCredentials] = useState({
     username: '',
     password: ''
@@ -97,7 +99,7 @@ const LoginPage = () => {
           <CardFooter className="justify-center border-t border-white/20 pt-4">
             <p className="text-center text-sm text-white/70">
               Pas encore de compte ? {' '}
-              <Link to="/register" className="text-health-blue hover:underline">
+              <Link to="/register" className={isMobile ? "block mt-2 text-health-blue hover:underline" : "text-health-blue hover:underline"}>
                 Créer un compte
               </Link>
             </p>

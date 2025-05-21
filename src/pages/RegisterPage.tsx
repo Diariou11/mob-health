@@ -6,10 +6,14 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { AlertCircle, UserPlus } from 'lucide-react';
+import { AlertCircle, UserPlus, Droplet } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
+import { Checkbox } from '@/components/ui/checkbox';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const RegisterPage = () => {
+  const isMobile = useIsMobile();
   const [formData, setFormData] = useState({
     fullName: '',
     phone: '',
@@ -19,6 +23,15 @@ const RegisterPage = () => {
     userType: 'patient'
   });
   const [error, setError] = useState('');
+  const [showBloodDonorDialog, setShowBloodDonorDialog] = useState(false);
+  const [bloodDonorData, setBloodDonorData] = useState({
+    bloodGroup: '',
+    lastDonation: '',
+    canDonateEmergency: false,
+    hasChronicDisease: false,
+    chronicDiseaseDetails: '',
+    weight: '',
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -32,6 +45,24 @@ const RegisterPage = () => {
     setFormData({
       ...formData,
       userType: value
+    });
+    
+    if (value === 'donneur') {
+      setShowBloodDonorDialog(true);
+    }
+  };
+  
+  const handleBloodDonorChange = (field: string, value: any) => {
+    setBloodDonorData({
+      ...bloodDonorData,
+      [field]: value
+    });
+  };
+  
+  const handleBloodGroupChange = (value: string) => {
+    setBloodDonorData({
+      ...bloodDonorData,
+      bloodGroup: value
     });
   };
 
@@ -50,6 +81,9 @@ const RegisterPage = () => {
 
     // Simulation d'inscription réussie
     console.log('Inscription avec:', formData);
+    if (formData.userType === 'donneur') {
+      console.log('Informations du donneur de sang:', bloodDonorData);
+    }
     // Redirection vers la page de connexion
     window.location.href = '/login';
   };
@@ -159,6 +193,13 @@ const RegisterPage = () => {
                       <RadioGroupItem value="institution" id="institution" className="text-health-blue" />
                       <Label htmlFor="institution" className="text-white">Institution sanitaire</Label>
                     </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="donneur" id="donneur" className="text-clinic-green" />
+                      <Label htmlFor="donneur" className="text-white flex items-center">
+                        <Droplet className="h-4 w-4 mr-1 text-red-500" />
+                        Donneur de Sang
+                      </Label>
+                    </div>
                   </RadioGroup>
                 </div>
                 
@@ -171,13 +212,134 @@ const RegisterPage = () => {
           <CardFooter className="justify-center border-t border-white/20 pt-4">
             <p className="text-center text-sm text-white/70">
               Déjà inscrit ? {' '}
-              <Link to="/login" className="text-health-blue hover:underline">
+              <Link to="/login" className={isMobile ? "block mt-2 text-health-blue hover:underline" : "text-health-blue hover:underline"}>
                 Se connecter
               </Link>
             </p>
           </CardFooter>
         </Card>
       </motion.div>
+      
+      <Dialog open={showBloodDonorDialog} onOpenChange={setShowBloodDonorDialog}>
+        <DialogContent className="bg-white/90 backdrop-blur-lg max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold text-health-blue flex items-center">
+              <Droplet className="h-5 w-5 mr-2 text-red-500" />
+              Information Donneur de Sang
+            </DialogTitle>
+            <DialogDescription>
+              Ces informations nous permettront de vous contacter en cas de besoin de sang compatible.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <div className="space-y-2">
+              <Label className="font-medium">Groupe sanguin (si vous le connaissez)</Label>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                {[
+                  { value: 'A+', color: 'text-red-500' },
+                  { value: 'A-', color: 'text-red-500' },
+                  { value: 'B+', color: 'text-red-600' },
+                  { value: 'B-', color: 'text-red-600' },
+                  { value: 'AB+', color: 'text-red-700' },
+                  { value: 'AB-', color: 'text-red-700' },
+                  { value: 'O+', color: 'text-red-800' },
+                  { value: 'O-', color: 'text-red-800' }
+                ].map(group => (
+                  <div 
+                    key={group.value}
+                    className={`border rounded-md px-2 py-1 flex items-center space-x-2 cursor-pointer hover:bg-gray-100 ${bloodDonorData.bloodGroup === group.value ? 'ring-2 ring-health-blue bg-blue-50' : ''}`}
+                    onClick={() => handleBloodGroupChange(group.value)}
+                  >
+                    <Checkbox 
+                      checked={bloodDonorData.bloodGroup === group.value}
+                      className={`${bloodDonorData.bloodGroup === group.value ? 'text-health-blue' : ''}`}
+                    />
+                    <span className={`text-sm font-medium ${group.color}`}>{group.value}</span>
+                  </div>
+                ))}
+                <div 
+                  className={`border rounded-md px-2 py-1 flex items-center space-x-2 cursor-pointer hover:bg-gray-100 col-span-2 ${bloodDonorData.bloodGroup === 'unknown' ? 'ring-2 ring-health-blue bg-blue-50' : ''}`}
+                  onClick={() => handleBloodGroupChange('unknown')}
+                >
+                  <Checkbox 
+                    checked={bloodDonorData.bloodGroup === 'unknown'}
+                    className={`${bloodDonorData.bloodGroup === 'unknown' ? 'text-health-blue' : ''}`}
+                  />
+                  <span className="text-sm font-medium">Je ne connais pas mon groupe</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="weight" className="font-medium">Poids approximatif (kg)</Label>
+              <Input 
+                id="weight" 
+                placeholder="Ex: 70" 
+                value={bloodDonorData.weight}
+                onChange={(e) => handleBloodDonorChange('weight', e.target.value)}
+                className="border-gray-300"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="lastDonation" className="font-medium">Dernière date de don (si applicable)</Label>
+              <Input 
+                id="lastDonation" 
+                type="date"
+                value={bloodDonorData.lastDonation}
+                onChange={(e) => handleBloodDonorChange('lastDonation', e.target.value)}
+                className="border-gray-300"
+              />
+            </div>
+            
+            <div className="flex items-center space-x-2">
+              <Checkbox 
+                id="canDonateEmergency"
+                checked={bloodDonorData.canDonateEmergency}
+                onCheckedChange={(checked) => 
+                  handleBloodDonorChange('canDonateEmergency', checked)
+                }
+              />
+              <Label htmlFor="canDonateEmergency">
+                Je suis disponible pour des dons d'urgence
+              </Label>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox 
+                  id="hasChronicDisease"
+                  checked={bloodDonorData.hasChronicDisease}
+                  onCheckedChange={(checked) => 
+                    handleBloodDonorChange('hasChronicDisease', checked)
+                  }
+                />
+                <Label htmlFor="hasChronicDisease">
+                  J'ai une maladie chronique
+                </Label>
+              </div>
+              
+              {bloodDonorData.hasChronicDisease && (
+                <Input 
+                  placeholder="Précisez la maladie" 
+                  value={bloodDonorData.chronicDiseaseDetails}
+                  onChange={(e) => handleBloodDonorChange('chronicDiseaseDetails', e.target.value)}
+                  className="border-gray-300 mt-2"
+                />
+              )}
+            </div>
+          </div>
+          <DialogFooter>
+            <Button 
+              variant="outline" 
+              onClick={() => setShowBloodDonorDialog(false)}
+              className="w-full sm:w-auto"
+            >
+              Terminer
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
