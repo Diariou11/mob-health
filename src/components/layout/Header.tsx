@@ -139,6 +139,25 @@ const Header = () => {
                     {link.name}
                   </Link>
                 ))}
+                
+                {location.pathname === '/' && (
+                  <div className="pt-4 mt-4 border-t border-white/20 flex flex-col gap-2">
+                    <Link 
+                      to="/login"
+                      className="flex items-center gap-2 px-2 py-2 rounded-md text-white hover:bg-white/10"
+                    >
+                      <LogIn className="h-4 w-4" />
+                      Se connecter
+                    </Link>
+                    <Link 
+                      to="/register"
+                      className="flex items-center gap-2 px-2 py-2 rounded-md bg-health-blue hover:bg-health-blue/80 text-white"
+                    >
+                      <UserPlus className="h-4 w-4" />
+                      S'inscrire
+                    </Link>
+                  </div>
+                )}
               </nav>
             </SheetContent>
           </Sheet>
