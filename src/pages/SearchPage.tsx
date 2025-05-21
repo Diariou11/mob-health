@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTrigger, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { MapPin, Phone, Clock, User, Search, Mic, Heart, Stethoscope, Pill, CalendarCheck, AlertCircle } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { motion } from 'framer-motion';
@@ -371,6 +372,8 @@ const SearchPage = () => {
   const [distance, setDistance] = useState([10]);
   const [selectedFacility, setSelectedFacility] = useState<any>(null);
   const [selectedDoctor, setSelectedDoctor] = useState<any>(null);
+  const [showAppointmentDialog, setShowAppointmentDialog] = useState(false);
+  const [currentFacility, setCurrentFacility] = useState<any>(null);
   const { toast } = useToast();
 
   const handleVoiceSearch = () => {
@@ -399,6 +402,19 @@ const SearchPage = () => {
 
   const handleViewDoctorProfile = (doctor: any) => {
     setSelectedDoctor(doctor);
+  };
+
+  const handleMakeAppointment = (facility: any) => {
+    setCurrentFacility(facility);
+    setShowAppointmentDialog(true);
+  };
+
+  const handleAppointmentSubmit = () => {
+    setShowAppointmentDialog(false);
+    toast({
+      title: "Rendez-vous programmé",
+      description: `Votre demande de rendez-vous à ${currentFacility?.name} a bien été enregistrée.`,
+    });
   };
 
   const mapHealthFacilityToDisplayFormat = (facility: HealthFacility) => {
@@ -616,6 +632,11 @@ const SearchPage = () => {
                           </Button>
                         </DialogTrigger>
                         <DialogContent className="max-w-4xl p-0">
+                          <DialogHeader className="sr-only">
+                            <DialogTitle>
+                              Détails de l'établissement
+                            </DialogTitle>
+                          </DialogHeader>
                           {selectedFacility && (
                             <FacilityDetailCard 
                               id={selectedFacility.id}
@@ -642,6 +663,7 @@ const SearchPage = () => {
                               ]}
                               image={selectedFacility.image}
                               onClose={() => setSelectedFacility(null)}
+                              onMakeAppointment={() => handleMakeAppointment(selectedFacility)}
                             />
                           )}
                         </DialogContent>
@@ -734,6 +756,11 @@ const SearchPage = () => {
       {selectedFacility && (
         <Dialog open={!!selectedFacility} onOpenChange={() => setSelectedFacility(null)}>
           <DialogContent className="max-w-4xl p-0">
+            <DialogHeader className="sr-only">
+              <DialogTitle>
+                Détails de l'établissement
+              </DialogTitle>
+            </DialogHeader>
             <FacilityDetailCard 
               id={selectedFacility.id}
               name={selectedFacility.name}
@@ -759,6 +786,7 @@ const SearchPage = () => {
               ]}
               image={selectedFacility.image}
               onClose={() => setSelectedFacility(null)}
+              onMakeAppointment={() => handleMakeAppointment(selectedFacility)}
             />
           </DialogContent>
         </Dialog>
@@ -768,6 +796,11 @@ const SearchPage = () => {
       {selectedDoctor && (
         <Dialog open={!!selectedDoctor} onOpenChange={() => setSelectedDoctor(null)}>
           <DialogContent className="max-w-4xl p-0">
+            <DialogHeader className="sr-only">
+              <DialogTitle>
+                Profil du médecin
+              </DialogTitle>
+            </DialogHeader>
             <DoctorProfileModal 
               doctor={selectedDoctor}
               onClose={() => setSelectedDoctor(null)}
@@ -775,6 +808,80 @@ const SearchPage = () => {
           </DialogContent>
         </Dialog>
       )}
+
+      {/* Appointment Dialog */}
+      <Dialog open={showAppointmentDialog} onOpenChange={setShowAppointmentDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="text-xl text-health-blue">
+              Prendre rendez-vous
+            </DialogTitle>
+            <DialogDescription>
+              Complétez le formulaire ci-dessous pour prendre rendez-vous à {currentFacility?.name}
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <label htmlFor="name" className="text-sm font-medium">
+                Nom complet
+              </label>
+              <Input id="name" placeholder="Votre nom et prénom" />
+            </div>
+            
+            <div className="grid gap-2">
+              <label htmlFor="phone" className="text-sm font-medium">
+                Numéro de téléphone
+              </label>
+              <Input id="phone" placeholder="+224 XX XX XX XX" />
+            </div>
+            
+            <div className="grid gap-2">
+              <label htmlFor="date" className="text-sm font-medium">
+                Date souhaitée
+              </label>
+              <Input id="date" type="date" />
+            </div>
+            
+            <div className="grid gap-2">
+              <label htmlFor="reason" className="text-sm font-medium">
+                Motif de la consultation
+              </label>
+              <Select>
+                <SelectTrigger id="reason">
+                  <SelectValue placeholder="Sélectionnez un motif" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="general">Consultation générale</SelectItem>
+                  <SelectItem value="followup">Suivi médical</SelectItem>
+                  <SelectItem value="specialist">Consultation spécialiste</SelectItem>
+                  <SelectItem value="emergency">Urgence</SelectItem>
+                  <SelectItem value="other">Autre</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="grid gap-2">
+              <label htmlFor="notes" className="text-sm font-medium">
+                Notes supplémentaires
+              </label>
+              <Input id="notes" placeholder="Informations complémentaires" />
+            </div>
+          </div>
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowAppointmentDialog(false)}>
+              Annuler
+            </Button>
+            <Button 
+              className="bg-health-blue hover:bg-health-blue/90" 
+              onClick={handleAppointmentSubmit}
+            >
+              Confirmer le rendez-vous
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
