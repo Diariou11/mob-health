@@ -437,6 +437,28 @@ export const healthFacilities = [
       saturday: "8:00 - 12:00",
       sunday: "Fermé"
     }
+  },
+  {
+    id: 27,
+    name: "Hôpital Préfectoral de Dalaba",
+    type: "Hôpital",
+    category: "public",
+    specialty: ["general", "chirurgie", "pediatrie"],
+    coordinates: [-12.2497, 10.7010] as [number, number],
+    address: "Dalaba, Guinée",
+    phone: "+224 628 45 67 89",
+    beds: 18,
+    doctors: 7,
+    services: ["urgences", "maternité", "pédiatrie", "chirurgie"],
+    hasEmergency: true,
+    hasBloodBank: false,
+    languages: ["français", "peul"],
+    imageUrl: "/lovable-uploads/84f90c3f-04ff-4fd0-9bae-48836fb7c97d.png",
+    status: "Open",
+    hours: {
+      weekday: "7:30 - 16:00",
+      saturday: "8:00 - 12:00",
+      sunday: "Urgences uniquement"
+    }
   }
 ];
-
