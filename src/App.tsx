@@ -15,6 +15,8 @@ import AboutPage from "./pages/AboutPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import NotFound from "./pages/NotFound";
+import AIDiagnosisPage from "./pages/AIDiagnosisPage";
+import { MedicalChatbot } from "./components/ai/MedicalChatbot";
 import { motion } from "framer-motion";
 
 const queryClient = new QueryClient();
@@ -36,9 +38,11 @@ const App = () => (
             <Route path="/about" element={<AboutPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/ai-diagnosis" element={<AIDiagnosisPage />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
+        <MedicalChatbot />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

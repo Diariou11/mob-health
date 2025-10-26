@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Bell, UserPlus, LogIn } from 'lucide-react';
+import { Menu, X, Bell, UserPlus, LogIn, Brain } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useToast } from '@/components/ui/use-toast';
 import { cn } from '@/lib/utils';
@@ -26,6 +26,7 @@ const Header = () => {
     { name: 'Accueil', path: '/' },
     { name: 'Carte', path: '/map' },
     { name: 'Recherche', path: '/search' },
+    { name: 'IA Diagnostic', path: '/ai-diagnosis' },
     { name: 'Urgences', path: '/emergency' },
     { name: 'Mon Espace', path: '/patient' },
   ];
