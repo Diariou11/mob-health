@@ -22,9 +22,10 @@ import {
 const Home = () => {
   const [activeDoctor, setActiveDoctor] = useState<number | null>(null);
 
-  return <div className="container max-w-screen-xl py-8 md:py-12 backdrop-blur-sm bg-black/20">
+  return <div className="container max-w-screen-xl py-8 md:py-12 backdrop-blur-sm bg-gradient-to-br from-black/30 via-health-blue/10 to-clinic-green/10 rounded-3xl">
       {/* Hero Section */}
-      <section className="flex flex-col-reverse md:flex-row items-center gap-8 md:gap-12">
+      <section className="flex flex-col-reverse md:flex-row items-center gap-8 md:gap-12 relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-health-blue/5 to-clinic-green/5 rounded-3xl blur-3xl -z-10" />
         <div className="flex-1 space-y-6">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -46,19 +47,40 @@ const Home = () => {
               Trouvez rapidement des services médicaux, gérez vos urgences, et accédez à votre dossier médical.
             </motion.p>
 
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link to="/map">
-                <Button className="bg-clinic-green hover:bg-clinic-green/90 text-white w-full sm:w-auto px-6 py-6 text-lg">
-                  Commencer
-                </Button>
+            <motion.div 
+              className="flex flex-col sm:flex-row gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+            >
+              <Link to="/map" className="w-full sm:w-auto">
+                <motion.div
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400 }}
+                  className="w-full"
+                >
+                  <Button className="bg-gradient-to-br from-clinic-green to-health-blue hover:shadow-2xl hover:shadow-clinic-green/50 text-white w-full px-8 py-6 text-lg font-semibold relative overflow-hidden group">
+                    <span className="relative z-10">Commencer</span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-health-blue to-clinic-green opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </Button>
+                </motion.div>
               </Link>
               
-              <Link to="/emergency">
-                <Button variant="outline" className="border-destructive text-destructive hover:bg-destructive/10 w-full sm:w-auto px-6 py-6 text-lg bg-white/30 backdrop-blur-sm">
-                  Urgence
-                </Button>
+              <Link to="/emergency" className="w-full sm:w-auto">
+                <motion.div
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400 }}
+                  className="w-full"
+                >
+                  <Button className="bg-gradient-to-br from-destructive to-orange-600 hover:shadow-2xl hover:shadow-destructive/50 text-white w-full px-8 py-6 text-lg font-semibold relative overflow-hidden group border-2 border-white/30">
+                    <span className="relative z-10">🚨 Urgence</span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-destructive opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </Button>
+                </motion.div>
               </Link>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
         
@@ -88,32 +110,59 @@ const Home = () => {
           Notre plateforme offre
         </h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-          <Link to="/map" className="block w-full h-full">
-            <FeatureCard 
-              title="Annuaire médical complet" 
-              description="Accédez à tous les établissements de santé en Guinée avec des informations détaillées et à jour." 
-              color="bg-health-blue"
-              icon={<MapPin className="text-white" />} 
-            />
-          </Link>
-          <Link to="/emergency" className="block w-full h-full">
-            <FeatureCard 
-              title="Services d'urgence" 
-              description="Trouvez des services d'urgence proches, demandez du sang ou une ambulance en quelques clics." 
-              color="bg-destructive"
-              icon={<Phone className="text-white" />} 
-            />
-          </Link>
-          <Link to="/patient" className="block w-full h-full">
-            <FeatureCard 
-              title="Dossier médical numérique" 
-              description="Gérez votre dossier médical et partagez-le avec les professionnels de santé autorisés." 
-              color="bg-clinic-green"
-              icon={<User className="text-white" />} 
-            />
-          </Link>
-        </div>
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, staggerChildren: 0.2 }}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+          >
+            <Link to="/map" className="block w-full h-full">
+              <FeatureCard 
+                title="Annuaire médical complet" 
+                description="Accédez à tous les établissements de santé en Guinée avec des informations détaillées et à jour." 
+                color="from-health-blue to-health-blue/80"
+                icon={<MapPin className="text-white" />} 
+              />
+            </Link>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
+            <Link to="/emergency" className="block w-full h-full">
+              <FeatureCard 
+                title="Services d'urgence" 
+                description="Trouvez des services d'urgence proches, demandez du sang ou une ambulance en quelques clics." 
+                color="from-destructive to-orange-600"
+                icon={<Phone className="text-white" />} 
+              />
+            </Link>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+          >
+            <Link to="/patient" className="block w-full h-full">
+              <FeatureCard 
+                title="Dossier médical numérique" 
+                description="Gérez votre dossier médical et partagez-le avec les professionnels de santé autorisés." 
+                color="from-clinic-green to-clinic-green/80"
+                icon={<User className="text-white" />} 
+              />
+            </Link>
+          </motion.div>
+        </motion.div>
       </section>
       
       {/* Doctors Section */}
@@ -257,15 +306,20 @@ const FeatureCard = ({
   icon: React.ReactNode;
 }) => (
   <motion.div 
-    className="border border-white/30 rounded-lg p-6 hover:shadow-md transition-shadow bg-white/20 backdrop-blur-md h-full"
-    whileHover={{ y: -5 }}
-    transition={{ type: "spring", stiffness: 300 }}
+    className="border-2 border-white/30 rounded-2xl p-8 hover:shadow-2xl transition-all bg-white/10 backdrop-blur-lg h-full relative overflow-hidden group"
+    whileHover={{ y: -8, scale: 1.02 }}
+    transition={{ type: "spring", stiffness: 300, damping: 20 }}
   >
-    <div className={`w-12 h-12 rounded-full ${color} flex items-center justify-center mb-4`}>
+    <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-0 group-hover:opacity-20 transition-opacity duration-500`} />
+    <motion.div 
+      className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${color} flex items-center justify-center mb-4 shadow-lg relative z-10`}
+      whileHover={{ rotate: 360, scale: 1.1 }}
+      transition={{ duration: 0.6 }}
+    >
       {icon}
-    </div>
-    <h3 className="text-lg font-medium mb-2 text-white drop-shadow-md">{title}</h3>
-    <p className="text-white/90">{description}</p>
+    </motion.div>
+    <h3 className="text-xl font-bold mb-3 text-white drop-shadow-lg relative z-10">{title}</h3>
+    <p className="text-white/90 leading-relaxed relative z-10">{description}</p>
   </motion.div>
 );
 

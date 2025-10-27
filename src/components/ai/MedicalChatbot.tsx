@@ -30,7 +30,7 @@ export const MedicalChatbot = () => {
     return (
       <Button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 rounded-full w-14 h-14 shadow-lg z-50"
+        className="fixed bottom-6 right-6 rounded-full w-14 h-14 shadow-lg z-50 bg-gradient-to-br from-health-blue to-clinic-green hover:shadow-2xl hover:scale-110 transition-all"
         size="icon"
       >
         <MessageCircle className="h-6 w-6" />
@@ -39,15 +39,20 @@ export const MedicalChatbot = () => {
   }
 
   return (
-    <div className="fixed inset-0 bg-background z-50 flex flex-col">
-      <div className="flex items-center justify-between p-4 border-b bg-primary text-primary-foreground">
+    <Card className="fixed bottom-6 right-6 w-[95vw] md:w-[450px] h-[85vh] md:h-[600px] shadow-2xl z-50 flex flex-col border-2 border-health-blue/30">
+      <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-health-blue to-clinic-green text-white rounded-t-lg">
         <div className="flex items-center gap-2">
           <MessageCircle className="h-5 w-5" />
           <h3 className="font-semibold">Assistant Médical IA</h3>
         </div>
-        <div className="text-xs text-primary-foreground/70">
-          Rafraîchissez la page pour fermer
-        </div>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setIsOpen(false)}
+          className="h-8 w-8 hover:bg-white/20 text-white"
+        >
+          <X className="h-5 w-5" />
+        </Button>
       </div>
 
       <ScrollArea className="flex-1 p-4">
@@ -97,7 +102,7 @@ export const MedicalChatbot = () => {
         )}
       </ScrollArea>
 
-      <div className="p-4 border-t">
+      <div className="p-4 border-t bg-muted/50 rounded-b-lg">
         <div className="flex gap-2">
           <Input
             value={inputValue}
@@ -111,6 +116,7 @@ export const MedicalChatbot = () => {
             onClick={handleSend}
             disabled={isLoading || !inputValue.trim()}
             size="icon"
+            className="bg-gradient-to-br from-health-blue to-clinic-green hover:shadow-lg"
           >
             <Send className="h-4 w-4" />
           </Button>
@@ -120,12 +126,12 @@ export const MedicalChatbot = () => {
             variant="ghost"
             size="sm"
             onClick={clearMessages}
-            className="w-full mt-2 text-xs"
+            className="w-full mt-2 text-xs hover:bg-health-blue/10"
           >
             Nouvelle conversation
           </Button>
         )}
       </div>
-    </div>
+    </Card>
   );
 };

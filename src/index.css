@@ -36,6 +36,12 @@
     --ring: 222.2 84% 4.9%;
 
     --radius: 0.5rem;
+    
+    --health-blue: 207 100% 32%;
+    --clinic-green: 122 39% 49%;
+    
+    --gradient-primary: linear-gradient(135deg, hsl(207 100% 32%), hsl(122 39% 49%));
+    --gradient-hero: linear-gradient(180deg, hsl(207 100% 32% / 0.1), hsl(122 39% 49% / 0.1));
 
     --sidebar-background: 0 0% 98%;
 

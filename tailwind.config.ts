@@ -68,8 +68,8 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
         // Custom colors for MOB-Health Africa
-        'health-blue': '#0057A3',
-        'clinic-green': '#4CAF50',
+        'health-blue': 'hsl(207 100% 32%)',
+        'clinic-green': 'hsl(122 39% 49%)',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
