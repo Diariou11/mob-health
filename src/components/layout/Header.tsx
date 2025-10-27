@@ -29,6 +29,7 @@ const Header = () => {
     { name: 'IA Diagnostic', path: '/ai-diagnosis' },
     { name: 'Urgences', path: '/emergency' },
     { name: 'Mon Espace', path: '/patient' },
+    { name: 'Admin', path: '/admin' },
   ];
 
   const isActive = (path: string) => {

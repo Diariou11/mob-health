@@ -39,20 +39,15 @@ export const MedicalChatbot = () => {
   }
 
   return (
-    <Card className="fixed bottom-6 right-6 w-96 h-[600px] shadow-2xl z-50 flex flex-col">
+    <div className="fixed inset-0 bg-background z-50 flex flex-col">
       <div className="flex items-center justify-between p-4 border-b bg-primary text-primary-foreground">
         <div className="flex items-center gap-2">
           <MessageCircle className="h-5 w-5" />
           <h3 className="font-semibold">Assistant Médical IA</h3>
         </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setIsOpen(false)}
-          className="text-primary-foreground hover:bg-primary-foreground/20"
-        >
-          <X className="h-5 w-5" />
-        </Button>
+        <div className="text-xs text-primary-foreground/70">
+          Rafraîchissez la page pour fermer
+        </div>
       </div>
 
       <ScrollArea className="flex-1 p-4">
@@ -131,6 +126,6 @@ export const MedicalChatbot = () => {
           </Button>
         )}
       </div>
-    </Card>
+    </div>
   );
 };
