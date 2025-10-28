@@ -14,16 +14,394 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ai_consultations: {
+        Row: {
+          ai_response: string
+          consultation_type: string
+          created_at: string
+          id: string
+          input_data: Json
+          model_used: string | null
+          user_id: string
+        }
+        Insert: {
+          ai_response: string
+          consultation_type: string
+          created_at?: string
+          id?: string
+          input_data: Json
+          model_used?: string | null
+          user_id: string
+        }
+        Update: {
+          ai_response?: string
+          consultation_type?: string
+          created_at?: string
+          id?: string
+          input_data?: Json
+          model_used?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      appointments: {
+        Row: {
+          appointment_date: string
+          created_at: string
+          doctor_id: string
+          facility_id: string
+          id: string
+          notes: string | null
+          patient_id: string
+          reason: string
+          status: Database["public"]["Enums"]["appointment_status"] | null
+          updated_at: string
+        }
+        Insert: {
+          appointment_date: string
+          created_at?: string
+          doctor_id: string
+          facility_id: string
+          id?: string
+          notes?: string | null
+          patient_id: string
+          reason: string
+          status?: Database["public"]["Enums"]["appointment_status"] | null
+          updated_at?: string
+        }
+        Update: {
+          appointment_date?: string
+          created_at?: string
+          doctor_id?: string
+          facility_id?: string
+          id?: string
+          notes?: string | null
+          patient_id?: string
+          reason?: string
+          status?: Database["public"]["Enums"]["appointment_status"] | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "appointments_doctor_id_fkey"
+            columns: ["doctor_id"]
+            isOneToOne: false
+            referencedRelation: "doctors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_facility_id_fkey"
+            columns: ["facility_id"]
+            isOneToOne: false
+            referencedRelation: "health_facilities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      doctors: {
+        Row: {
+          availability_schedule: Json | null
+          consultation_fee: number | null
+          created_at: string
+          email: string | null
+          facility_id: string | null
+          full_name: string
+          id: string
+          image_url: string | null
+          is_available: boolean | null
+          languages: string[]
+          phone: string | null
+          qualifications: string[] | null
+          specialty: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          availability_schedule?: Json | null
+          consultation_fee?: number | null
+          created_at?: string
+          email?: string | null
+          facility_id?: string | null
+          full_name: string
+          id?: string
+          image_url?: string | null
+          is_available?: boolean | null
+          languages?: string[]
+          phone?: string | null
+          qualifications?: string[] | null
+          specialty: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          availability_schedule?: Json | null
+          consultation_fee?: number | null
+          created_at?: string
+          email?: string | null
+          facility_id?: string | null
+          full_name?: string
+          id?: string
+          image_url?: string | null
+          is_available?: boolean | null
+          languages?: string[]
+          phone?: string | null
+          qualifications?: string[] | null
+          specialty?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "doctors_facility_id_fkey"
+            columns: ["facility_id"]
+            isOneToOne: false
+            referencedRelation: "health_facilities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      emergency_requests: {
+        Row: {
+          assigned_facility_id: string | null
+          created_at: string
+          description: string
+          id: string
+          latitude: number
+          longitude: number
+          patient_id: string
+          resolved_at: string | null
+          response_time: string | null
+          status: string | null
+          updated_at: string
+          urgency_level: Database["public"]["Enums"]["urgency_level"] | null
+        }
+        Insert: {
+          assigned_facility_id?: string | null
+          created_at?: string
+          description: string
+          id?: string
+          latitude: number
+          longitude: number
+          patient_id: string
+          resolved_at?: string | null
+          response_time?: string | null
+          status?: string | null
+          updated_at?: string
+          urgency_level?: Database["public"]["Enums"]["urgency_level"] | null
+        }
+        Update: {
+          assigned_facility_id?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          latitude?: number
+          longitude?: number
+          patient_id?: string
+          resolved_at?: string | null
+          response_time?: string | null
+          status?: string | null
+          updated_at?: string
+          urgency_level?: Database["public"]["Enums"]["urgency_level"] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "emergency_requests_assigned_facility_id_fkey"
+            columns: ["assigned_facility_id"]
+            isOneToOne: false
+            referencedRelation: "health_facilities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      facility_reviews: {
+        Row: {
+          comment: string | null
+          created_at: string
+          facility_id: string
+          id: string
+          rating: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          facility_id: string
+          id?: string
+          rating: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          facility_id?: string
+          id?: string
+          rating?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "facility_reviews_facility_id_fkey"
+            columns: ["facility_id"]
+            isOneToOne: false
+            referencedRelation: "health_facilities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      health_facilities: {
+        Row: {
+          address: string
+          beds: number | null
+          category: string
+          created_at: string
+          doctors_count: number | null
+          has_blood_bank: boolean | null
+          has_emergency: boolean | null
+          hours_saturday: string | null
+          hours_sunday: string | null
+          hours_weekday: string | null
+          id: string
+          image_url: string | null
+          languages: string[]
+          latitude: number
+          longitude: number
+          name: string
+          phone: string | null
+          services: string[]
+          specialty: string[]
+          status: Database["public"]["Enums"]["facility_status"] | null
+          type: Database["public"]["Enums"]["facility_type"]
+          updated_at: string
+        }
+        Insert: {
+          address: string
+          beds?: number | null
+          category: string
+          created_at?: string
+          doctors_count?: number | null
+          has_blood_bank?: boolean | null
+          has_emergency?: boolean | null
+          hours_saturday?: string | null
+          hours_sunday?: string | null
+          hours_weekday?: string | null
+          id?: string
+          image_url?: string | null
+          languages?: string[]
+          latitude: number
+          longitude: number
+          name: string
+          phone?: string | null
+          services?: string[]
+          specialty?: string[]
+          status?: Database["public"]["Enums"]["facility_status"] | null
+          type: Database["public"]["Enums"]["facility_type"]
+          updated_at?: string
+        }
+        Update: {
+          address?: string
+          beds?: number | null
+          category?: string
+          created_at?: string
+          doctors_count?: number | null
+          has_blood_bank?: boolean | null
+          has_emergency?: boolean | null
+          hours_saturday?: string | null
+          hours_sunday?: string | null
+          hours_weekday?: string | null
+          id?: string
+          image_url?: string | null
+          languages?: string[]
+          latitude?: number
+          longitude?: number
+          name?: string
+          phone?: string | null
+          services?: string[]
+          specialty?: string[]
+          status?: Database["public"]["Enums"]["facility_status"] | null
+          type?: Database["public"]["Enums"]["facility_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          address: string | null
+          avatar_url: string | null
+          city: string | null
+          created_at: string
+          date_of_birth: string | null
+          full_name: string
+          id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          avatar_url?: string | null
+          city?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          full_name: string
+          id: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          avatar_url?: string | null
+          city?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          full_name?: string
+          id?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "doctor" | "patient"
+      appointment_status: "pending" | "confirmed" | "cancelled" | "completed"
+      facility_status: "open" | "closed" | "emergency_only"
+      facility_type: "hopital" | "clinique" | "centre"
+      urgency_level: "low" | "medium" | "high" | "critical"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +528,12 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "doctor", "patient"],
+      appointment_status: ["pending", "confirmed", "cancelled", "completed"],
+      facility_status: ["open", "closed", "emergency_only"],
+      facility_type: ["hopital", "clinique", "centre"],
+      urgency_level: ["low", "medium", "high", "critical"],
+    },
   },
 } as const
