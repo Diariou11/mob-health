@@ -1,11 +1,21 @@
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { HealthFacility } from '@/types/facility';
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
-// Set map token - in production this should be an environment variable
-mapboxgl.accessToken = 'pk.eyJ1IjoibG92YWJsZSIsImEiOiJjbHpmaTY2czAwazdmMnFwYXI2OTR2YXd2In0.1sFkY3uEfNUDtYfZH8v6cQ';
+// Get Mapbox token from environment variable
+const getMapboxToken = async () => {
+  try {
+    const { data, error } = await supabase.functions.invoke('get-mapbox-token');
+    if (error) throw error;
+    return data?.token || '';
+  } catch (error) {
+    console.error('Error fetching Mapbox token:', error);
+    return '';
+  }
+};
 
 interface MapContainerProps {
   facilities: HealthFacility[];
@@ -16,17 +26,32 @@ const MapContainer = ({ facilities, onFacilitySelect }: MapContainerProps) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<mapboxgl.Marker[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!mapContainer.current) return;
-    
-    // Initialize map
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v12',
-      center: [-13.6773, 9.5370], // Conakry, Guinea
-      zoom: 5 // Start with a wider view to see more facilities
-    });
+    const initMap = async () => {
+      if (!mapContainer.current) return;
+      
+      try {
+        setIsLoading(true);
+        const token = await getMapboxToken();
+        
+        if (!token) {
+          setError('Impossible de charger la carte. Veuillez réessayer plus tard.');
+          setIsLoading(false);
+          return;
+        }
+        
+        mapboxgl.accessToken = token;
+        
+        // Initialize map
+        map.current = new mapboxgl.Map({
+          container: mapContainer.current,
+          style: 'mapbox://styles/mapbox/streets-v12',
+          center: [-13.6773, 9.5370], // Conakry, Guinea
+          zoom: 5 // Start with a wider view to see more facilities
+        });
 
     // Add navigation controls
     map.current.addControl(
@@ -45,15 +70,24 @@ const MapContainer = ({ facilities, onFacilitySelect }: MapContainerProps) => {
       'top-right'
     );
 
-    // When map loads, add markers
-    map.current.on('load', () => {
-      // Make sure we call addMarkers after load
-      addMarkers();
-      toast.info("Carte interactive chargée", { 
-        description: "Cliquez sur les marqueurs pour voir les détails des établissements de santé", 
-        duration: 3000 
-      });
-    });
+        // When map loads, add markers
+        map.current.on('load', () => {
+          // Make sure we call addMarkers after load
+          addMarkers();
+          setIsLoading(false);
+          toast.info("Carte interactive chargée", { 
+            description: "Cliquez sur les marqueurs pour voir les détails des établissements de santé", 
+            duration: 3000 
+          });
+        });
+      } catch (err) {
+        console.error('Error initializing map:', err);
+        setError('Erreur lors du chargement de la carte');
+        setIsLoading(false);
+      }
+    };
+    
+    initMap();
 
     return () => {
       map.current?.remove();
@@ -183,20 +217,43 @@ const MapContainer = ({ facilities, onFacilitySelect }: MapContainerProps) => {
   };
 
   return (
-    <div ref={mapContainer} className="h-full w-full">
-      {/* Color legend for map markers */}
-      <div className="absolute bottom-4 right-4 bg-white p-2 rounded-md shadow-md z-10 text-xs">
-        <div className="flex items-center mb-1">
-          <div className="w-3 h-3 bg-[#0057A3] rounded-full mr-1"></div>
-          <span>Hôpitaux</span>
+    <div className="h-full w-full relative">
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-20">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-2"></div>
+            <p className="text-sm text-muted-foreground">Chargement de la carte...</p>
+          </div>
         </div>
-        <div className="flex items-center mb-1">
-          <div className="w-3 h-3 bg-[#4CAF50] rounded-full mr-1"></div>
-          <span>Cliniques</span>
+      )}
+      {error && (
+        <div className="absolute inset-0 flex items-center justify-center bg-background z-20">
+          <div className="text-center p-4">
+            <p className="text-destructive mb-2">{error}</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="text-sm text-primary hover:underline"
+            >
+              Réessayer
+            </button>
+          </div>
         </div>
-        <div className="flex items-center">
-          <div className="w-3 h-3 bg-[#ef4444] rounded-full mr-1"></div>
-          <span>Urgences</span>
+      )}
+      <div ref={mapContainer} className="h-full w-full">
+        {/* Color legend for map markers */}
+        <div className="absolute bottom-4 right-4 bg-white p-2 rounded-md shadow-md z-10 text-xs">
+          <div className="flex items-center mb-1">
+            <div className="w-3 h-3 bg-[#0057A3] rounded-full mr-1"></div>
+            <span>Hôpitaux</span>
+          </div>
+          <div className="flex items-center mb-1">
+            <div className="w-3 h-3 bg-[#4CAF50] rounded-full mr-1"></div>
+            <span>Cliniques</span>
+          </div>
+          <div className="flex items-center">
+            <div className="w-3 h-3 bg-[#ef4444] rounded-full mr-1"></div>
+            <span>Urgences</span>
+          </div>
         </div>
       </div>
     </div>
