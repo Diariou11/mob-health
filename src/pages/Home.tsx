@@ -17,10 +17,19 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { AppointmentForm } from '@/components/appointments/AppointmentForm';
+import Autoplay from "embla-carousel-autoplay";
+import doctorAmadouBarry from '@/assets/doctor-amadou-barry.jpg';
+import doctorFatoumataDiallo from '@/assets/doctor-fatoumata-diallo.jpg';
+import doctorMohamedCamara from '@/assets/doctor-mohamed-camara.jpg';
 
 const Home = () => {
   const [activeDoctor, setActiveDoctor] = useState<number | null>(null);
+  const [appointmentDialogOpen, setAppointmentDialogOpen] = useState(false);
+  const [selectedDoctor, setSelectedDoctor] = useState<string>('');
 
   return <div className="container max-w-screen-xl py-8 md:py-12 backdrop-blur-sm bg-gradient-to-br from-black/30 via-health-blue/10 to-clinic-green/10 rounded-3xl">
       {/* Hero Section */}
@@ -172,7 +181,18 @@ const Home = () => {
           <span className="text-clinic-green">médecins</span>
         </h2>
         
-        <Carousel className="w-full">
+        <Carousel 
+          className="w-full"
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          plugins={[
+            Autoplay({
+              delay: 3000,
+            }),
+          ]}
+        >
           <CarouselContent>
             {doctors.map((doctor, index) => (
               <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
@@ -196,18 +216,43 @@ const Home = () => {
                     <CardContent>
                       <p className="text-white/80 text-sm">{doctor.shortBio}</p>
                     </CardContent>
-                    <CardFooter>
+                    <CardFooter className="flex gap-2">
                       <Button 
                         variant="outline" 
-                        className="w-full bg-health-blue text-white border-none hover:bg-health-blue/80 font-medium shadow-md"
+                        className="flex-1 bg-white/10 text-white border-white/30 hover:bg-white/20 font-medium"
                         onClick={() => setActiveDoctor(activeDoctor === index ? null : index)}
                       >
-                        {activeDoctor === index ? "Masquer le profil" : "Voir profil"}
+                        {activeDoctor === index ? "Masquer" : "Voir profil"}
                       </Button>
+                      <Dialog open={appointmentDialogOpen && selectedDoctor === doctor.name} onOpenChange={(open) => {
+                        setAppointmentDialogOpen(open);
+                        if (!open) setSelectedDoctor('');
+                      }}>
+                        <DialogTrigger asChild>
+                          <Button 
+                            className="flex-1 bg-clinic-green text-white hover:bg-clinic-green/80 font-medium"
+                            onClick={() => {
+                              setSelectedDoctor(doctor.name);
+                              setAppointmentDialogOpen(true);
+                            }}
+                          >
+                            Prendre RDV
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[500px]">
+                          <DialogHeader>
+                            <DialogTitle>Prendre rendez-vous avec {doctor.name}</DialogTitle>
+                          </DialogHeader>
+                          <AppointmentForm 
+                            doctorName={doctor.name}
+                            onSuccess={() => setAppointmentDialogOpen(false)}
+                          />
+                        </DialogContent>
+                      </Dialog>
                     </CardFooter>
                     
                     {activeDoctor === index && (
-                      <div className="px-6 pb-6 mt-2 border-t border-white/20 pt-4">
+                      <div className="px-6 pb-6 mt-2 border-t border-white/20 pt-4 animate-fade-in">
                         <h4 className="font-medium text-white mb-2">Biographie</h4>
                         <p className="text-white/80 text-sm mb-3">{doctor.fullBio}</p>
                         
@@ -336,7 +381,7 @@ const doctors = [
       "Fellowship en Cardiologie Interventionnelle, Hôpital Johns Hopkins, 2012"
     ],
     availability: "Consultations: Lundi, Mercredi et Vendredi, 9h - 17h",
-    avatar: "https://i.pravatar.cc/150?img=52"
+    avatar: doctorAmadouBarry
   },
   {
     name: "Dr. Fatoumata Diallo",
@@ -349,7 +394,7 @@ const doctors = [
       "Certification en Néonatologie, Université de Dakar, 2014"
     ],
     availability: "Consultations: Mardi, Jeudi et Samedi, 8h - 16h",
-    avatar: "https://i.pravatar.cc/150?img=45"
+    avatar: doctorFatoumataDiallo
   },
   {
     name: "Dr. Mohamed Camara",
@@ -362,7 +407,7 @@ const doctors = [
       "Fellowship en Chirurgie Laparoscopique, Hôpital Pitié-Salpêtrière, Paris, 2010"
     ],
     availability: "Consultations: Lundi à Vendredi, 10h - 15h",
-    avatar: "https://i.pravatar.cc/150?img=68"
+    avatar: doctorMohamedCamara
   }
 ];
 

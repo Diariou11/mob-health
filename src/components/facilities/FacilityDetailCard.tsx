@@ -6,11 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import { MapPin, Phone, Clock, User, Mail, Globe, Heart, Stethoscope, Calendar } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { AppointmentForm } from '@/components/appointments/AppointmentForm';
 
 interface Doctor {
   name: string;
@@ -50,28 +47,7 @@ const FacilityDetailCard = ({
   onClose,
   onMakeAppointment
 }: FacilityDetailProps) => {
-  const { toast } = useToast();
   const [showAppointmentDialog, setShowAppointmentDialog] = useState(false);
-  const [appointmentDoctor, setAppointmentDoctor] = useState("");
-  const [appointmentDate, setAppointmentDate] = useState("");
-  const [appointmentReason, setAppointmentReason] = useState("");
-  const [appointmentPhone, setAppointmentPhone] = useState("");
-
-  const handleAppointment = () => {
-    if (onMakeAppointment) {
-      onMakeAppointment();
-    } else {
-      setShowAppointmentDialog(true);
-    }
-  };
-
-  const handleSubmitAppointment = () => {
-    setShowAppointmentDialog(false);
-    toast({
-      title: "Rendez-vous demandé",
-      description: `Votre demande de rendez-vous à ${name} a été enregistrée. Nous vous contacterons pour confirmer.`,
-    });
-  };
 
   return (
     <>
@@ -135,13 +111,32 @@ const FacilityDetailCard = ({
                   </div>
                 </div>
 
-                <Button 
-                  onClick={handleAppointment} 
-                  className="w-full mt-6 bg-health-blue hover:bg-health-blue/90 flex items-center justify-center"
-                >
-                  <Calendar className="mr-2 h-4 w-4" />
-                  Prendre rendez-vous
-                </Button>
+                <Dialog open={showAppointmentDialog} onOpenChange={setShowAppointmentDialog}>
+                  <DialogTrigger asChild>
+                    <Button 
+                      className="w-full mt-6 bg-health-blue hover:bg-health-blue/90 flex items-center justify-center"
+                      onClick={() => {
+                        if (onMakeAppointment) {
+                          onMakeAppointment();
+                        } else {
+                          setShowAppointmentDialog(true);
+                        }
+                      }}
+                    >
+                      <Calendar className="mr-2 h-4 w-4" />
+                      Prendre rendez-vous
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[500px]">
+                    <DialogHeader>
+                      <DialogTitle>Prendre rendez-vous à {name}</DialogTitle>
+                    </DialogHeader>
+                    <AppointmentForm 
+                      facilityName={name}
+                      onSuccess={() => setShowAppointmentDialog(false)}
+                    />
+                  </DialogContent>
+                </Dialog>
               </div>
               
               <div>
@@ -183,84 +178,8 @@ const FacilityDetailCard = ({
           <Button variant="outline" onClick={onClose}>
             Fermer
           </Button>
-          <Button className="bg-health-blue hover:bg-health-blue/90" onClick={handleAppointment}>
-            <Calendar className="mr-2 h-4 w-4" />
-            Prendre rendez-vous
-          </Button>
         </CardFooter>
       </Card>
-
-      <Dialog open={showAppointmentDialog} onOpenChange={setShowAppointmentDialog}>
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle>Prendre rendez-vous à {name}</DialogTitle>
-            <DialogDescription>
-              Remplissez les informations ci-dessous pour demander un rendez-vous médical.
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="doctor">Médecin</Label>
-              <Select value={appointmentDoctor} onValueChange={setAppointmentDoctor}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Sélectionnez un médecin" />
-                </SelectTrigger>
-                <SelectContent>
-                  {doctors.filter(d => d.available).map((doctor, i) => (
-                    <SelectItem key={i} value={doctor.name}>
-                      {doctor.name} - {doctor.specialty}
-                    </SelectItem>
-                  ))}
-                  <SelectItem value="aucune-preference">Aucune préférence</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="grid gap-2">
-              <Label htmlFor="date">Date souhaitée</Label>
-              <Input 
-                type="date"
-                id="date"
-                min={new Date().toISOString().split('T')[0]}
-                value={appointmentDate}
-                onChange={(e) => setAppointmentDate(e.target.value)}
-              />
-            </div>
-            
-            <div className="grid gap-2">
-              <Label htmlFor="reason">Motif de consultation</Label>
-              <Input 
-                id="reason" 
-                placeholder="Raison de votre visite"
-                value={appointmentReason}
-                onChange={(e) => setAppointmentReason(e.target.value)}
-              />
-            </div>
-            
-            <div className="grid gap-2">
-              <Label htmlFor="phone">Numéro de téléphone</Label>
-              <Input 
-                id="phone" 
-                placeholder="+224 6XX XX XX XX"
-                value={appointmentPhone}
-                onChange={(e) => setAppointmentPhone(e.target.value)}
-              />
-            </div>
-          </div>
-          
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowAppointmentDialog(false)}>Annuler</Button>
-            <Button 
-              onClick={handleSubmitAppointment}
-              className="bg-health-blue hover:bg-health-blue/90"
-              disabled={!appointmentDate || !appointmentPhone}
-            >
-              Confirmer la demande
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </>
   );
 };

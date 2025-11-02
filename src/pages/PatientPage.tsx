@@ -9,8 +9,9 @@ import { Badge } from '@/components/ui/badge';
 import { 
   User, Calendar, FileText, AlarmClock, 
   Pill, Heart, Activity, Stethoscope, 
-  ClipboardCheck, MapPin, Phone, AlertCircle 
+  ClipboardCheck, MapPin, Phone, AlertCircle, Shield as ShieldIcon
 } from 'lucide-react';
+import { AppointmentForm } from '@/components/appointments/AppointmentForm';
 
 // Type définition pour les données médicales
 interface MedicalData {
@@ -167,6 +168,7 @@ const PatientPage = () => {
   const [selectedAntecedent, setSelectedAntecedent] = useState<Antecedent | null>(null);
   const [selectedVaccination, setSelectedVaccination] = useState<Vaccination | null>(null);
   const [selectedMetric, setSelectedMetric] = useState<Metric | null>(null);
+  const [appointmentDialogOpen, setAppointmentDialogOpen] = useState(false);
 
   return (
     <div className="container max-w-screen-xl py-8">
@@ -208,8 +210,23 @@ const PatientPage = () => {
               </div>
             </CardContent>
             
-            <CardFooter>
+            <CardFooter className="flex flex-col gap-2">
               <Button variant="outline" className="w-full">Modifier profil</Button>
+              <Dialog open={appointmentDialogOpen} onOpenChange={setAppointmentDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button className="w-full bg-clinic-green hover:bg-clinic-green/80">
+                    Prendre un nouveau rendez-vous
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[500px]">
+                  <DialogHeader>
+                    <DialogTitle>Prendre un nouveau rendez-vous</DialogTitle>
+                  </DialogHeader>
+                  <AppointmentForm 
+                    onSuccess={() => setAppointmentDialogOpen(false)}
+                  />
+                </DialogContent>
+              </Dialog>
             </CardFooter>
           </Card>
         </div>
@@ -274,7 +291,7 @@ const PatientPage = () => {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center">
-                    <Shield className="mr-2 h-5 w-5 text-health-blue" />
+                    <ShieldIcon className="mr-2 h-5 w-5 text-health-blue" />
                     Assurance Maladie
                   </CardTitle>
                 </CardHeader>

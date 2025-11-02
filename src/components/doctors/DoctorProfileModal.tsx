@@ -1,9 +1,10 @@
-
+import { useState } from 'react';
 import { X, Phone, MapPin, Clock, CalendarCheck, Mail, Globe, UserCheck, Award, Languages } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AppointmentForm } from '@/components/appointments/AppointmentForm';
 
 interface Doctor {
   id: number;
@@ -31,6 +32,8 @@ interface DoctorProfileModalProps {
 }
 
 const DoctorProfileModal = ({ doctor, onClose }: DoctorProfileModalProps) => {
+  const [showAppointmentForm, setShowAppointmentForm] = useState(false);
+
   return (
     <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-xl">
       {/* Header with close button */}
@@ -93,8 +96,11 @@ const DoctorProfileModal = ({ doctor, onClose }: DoctorProfileModalProps) => {
 
           {/* Contact buttons */}
           <div className="shrink-0 flex md:flex-col gap-3 justify-end md:pt-2">
-            <Button className="bg-health-blue hover:bg-health-blue/90">
-              Prendre RDV
+            <Button 
+              className="bg-health-blue hover:bg-health-blue/90"
+              onClick={() => setShowAppointmentForm(!showAppointmentForm)}
+            >
+              {showAppointmentForm ? 'Annuler' : 'Prendre RDV'}
             </Button>
             {doctor.phone && (
               <Button variant="outline" className="border-health-blue text-health-blue hover:bg-health-blue/10">
@@ -104,6 +110,20 @@ const DoctorProfileModal = ({ doctor, onClose }: DoctorProfileModalProps) => {
             )}
           </div>
         </div>
+
+        {/* Appointment Form */}
+        {showAppointmentForm && (
+          <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg animate-fade-in">
+            <h3 className="text-lg font-semibold mb-4">Prendre rendez-vous</h3>
+            <AppointmentForm 
+              doctorName={doctor.name}
+              onSuccess={() => {
+                setShowAppointmentForm(false);
+                onClose();
+              }}
+            />
+          </div>
+        )}
 
         {/* Tabs for more information */}
         <Tabs defaultValue="info" className="mt-6">
