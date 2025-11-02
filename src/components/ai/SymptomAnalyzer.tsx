@@ -40,25 +40,47 @@ export const SymptomAnalyzer = () => {
 
     try {
       const reader = new FileReader();
-      reader.onloadend = async () => {
-        const base64Image = reader.result as string;
-
-        const { data, error } = await supabase.functions.invoke('analyze-symptom-image', {
-          body: {
-            imageBase64: base64Image,
-            description: description || "Analyser cette image de symptôme"
-          }
+      
+      const readFileAsDataURL = () => {
+        return new Promise<string>((resolve, reject) => {
+          reader.onloadend = () => {
+            if (reader.result) {
+              resolve(reader.result as string);
+            } else {
+              reject(new Error("Impossible de lire l'image"));
+            }
+          };
+          reader.onerror = () => reject(reader.error);
+          reader.readAsDataURL(imageFile);
         });
-
-        if (error) throw error;
-
-        setAnalysis(data.analysis);
-        toast.success("Analyse terminée");
       };
-      reader.readAsDataURL(imageFile);
+
+      const base64Image = await readFileAsDataURL();
+      
+      console.log('Calling analyze-symptom-image function...');
+      const { data, error } = await supabase.functions.invoke('analyze-symptom-image', {
+        body: {
+          imageBase64: base64Image,
+          description: description || "Analyser cette image de symptôme"
+        }
+      });
+
+      if (error) {
+        console.error('Supabase function error:', error);
+        throw error;
+      }
+
+      if (!data?.analysis) {
+        throw new Error("Aucune analyse reçue");
+      }
+
+      console.log('Analysis completed successfully');
+      setAnalysis(data.analysis);
+      toast.success("Analyse terminée");
     } catch (error) {
       console.error('Error analyzing image:', error);
-      toast.error("Erreur lors de l'analyse de l'image");
+      const errorMessage = error instanceof Error ? error.message : "Erreur lors de l'analyse de l'image";
+      toast.error(errorMessage);
     } finally {
       setIsAnalyzing(false);
     }

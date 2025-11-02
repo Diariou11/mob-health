@@ -242,16 +242,18 @@ const UssdPage = () => {
                       </div>
                       
                       {screen !== 'result' && (
-                        <div className="p-2 border-t">
-                          <div className="flex gap-1">
+                        <div className="p-3 border-t bg-white">
+                          <div className="flex gap-2">
                             <Input
-                              className="flex-1 h-7 px-2 text-xs"
+                              className="flex-1 h-10 px-3 text-sm"
                               value={input}
                               onChange={(e) => setInput(e.target.value)}
+                              onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
                               maxLength={1}
+                              placeholder="Entrez votre choix"
                             />
-                            <Button size="icon" className="h-7 w-7" onClick={handleSubmit}>
-                              <ChevronRight className="h-3 w-3" />
+                            <Button size="icon" className="h-10 w-10" onClick={handleSubmit}>
+                              <ChevronRight className="h-4 w-4" />
                             </Button>
                           </div>
                         </div>
