@@ -3,13 +3,15 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { ArrowLeft, Check, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Check, ChevronRight, Delete } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@/lib/utils';
 
 const UssdPage = () => {
   const [screen, setScreen] = useState<'intro' | 'menu' | 'hospitals' | 'emergency' | 'result'>('intro');
   const [input, setInput] = useState('');
   const [response, setResponse] = useState('');
+  const [showKeypad, setShowKeypad] = useState(true);
   const isMobile = useIsMobile();
   
   const handleSubmit = () => {
@@ -69,6 +71,14 @@ const UssdPage = () => {
     }
     setInput('');
     setResponse('');
+  };
+
+  const handleKeypadPress = (value: string) => {
+    if (value === 'delete') {
+      setInput('');
+    } else if (input.length < 1) {
+      setInput(value);
+    }
   };
 
   return (
@@ -162,7 +172,7 @@ const UssdPage = () => {
                 {/* USSD Screen */}
                 <div className="flex-1 bg-slate-50 flex flex-col">
                   {screen === 'intro' ? (
-                    <div className="flex flex-col items-center justify-center h-full p-4">
+                    <div className="flex flex-col items-center justify-center h-full p-4 animate-fade-in">
                       <div className="text-center space-y-3">
                         <div className="text-base font-semibold">MOB-Health USSD</div>
                         <div className="text-sm">Composez:</div>
@@ -173,9 +183,9 @@ const UssdPage = () => {
                       </div>
                     </div>
                   ) : (
-                    <div className="flex flex-col h-full">
+                    <div className="flex flex-col h-full animate-fade-in">
                       <div className="flex items-center p-2 bg-gray-100 border-b">
-                        <Button variant="ghost" size="icon" onClick={goBack} className="h-6 w-6">
+                        <Button variant="ghost" size="icon" onClick={goBack} className="h-6 w-6" aria-label="Retour">
                           <ArrowLeft className="h-3 w-3" />
                         </Button>
                         <div className="text-xs font-medium ml-2">MOB-Health USSD</div>
@@ -242,20 +252,68 @@ const UssdPage = () => {
                       </div>
                       
                       {screen !== 'result' && (
-                        <div className="p-3 border-t bg-white">
-                          <div className="flex gap-2">
-                            <Input
-                              className="flex-1 h-10 px-3 text-sm"
-                              value={input}
-                              onChange={(e) => setInput(e.target.value)}
-                              onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
-                              maxLength={1}
-                              placeholder="Entrez votre choix"
-                            />
-                            <Button size="icon" className="h-10 w-10" onClick={handleSubmit}>
-                              <ChevronRight className="h-4 w-4" />
-                            </Button>
+                        <div className="space-y-2">
+                          <div className="p-3 border-t bg-white">
+                            <div className="flex gap-2">
+                              <Input
+                                className="flex-1 h-10 px-3 text-sm text-center font-mono text-lg"
+                                value={input}
+                                onChange={(e) => setInput(e.target.value.slice(0, 1))}
+                                onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
+                                maxLength={1}
+                                placeholder="0-9"
+                                aria-label="Saisir votre choix"
+                              />
+                              <Button size="icon" className="h-10 w-10" onClick={handleSubmit} aria-label="Valider">
+                                <ChevronRight className="h-4 w-4" />
+                              </Button>
+                            </div>
                           </div>
+                          
+                          {/* Virtual Keypad */}
+                          {showKeypad && (
+                            <div className="p-2 bg-gray-100 border-t animate-fade-in">
+                              <div className="grid grid-cols-3 gap-1">
+                                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+                                  <Button
+                                    key={num}
+                                    variant="outline"
+                                    size="sm"
+                                    className="h-9 bg-white hover:bg-primary hover:text-primary-foreground transition-colors"
+                                    onClick={() => handleKeypadPress(num.toString())}
+                                  >
+                                    {num}
+                                  </Button>
+                                ))}
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="h-9 bg-white hover:bg-destructive hover:text-destructive-foreground transition-colors"
+                                  onClick={() => handleKeypadPress('delete')}
+                                  aria-label="Effacer"
+                                >
+                                  <Delete className="h-3 w-3" />
+                                </Button>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="h-9 bg-white hover:bg-primary hover:text-primary-foreground transition-colors"
+                                  onClick={() => handleKeypadPress('0')}
+                                >
+                                  0
+                                </Button>
+                                <Button
+                                  variant="default"
+                                  size="sm"
+                                  className="h-9 transition-colors"
+                                  onClick={handleSubmit}
+                                  aria-label="Envoyer"
+                                >
+                                  OK
+                                </Button>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>

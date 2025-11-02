@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
-import { Upload, Camera, AlertCircle } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import { Upload, Camera, AlertCircle, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -12,6 +13,7 @@ export const SymptomAnalyzer = () => {
   const [description, setDescription] = useState('');
   const [analysis, setAnalysis] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisProgress, setAnalysisProgress] = useState(0);
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -37,8 +39,20 @@ export const SymptomAnalyzer = () => {
 
     setIsAnalyzing(true);
     setAnalysis(null);
+    setAnalysisProgress(0);
 
     try {
+      // Simulate progress for better UX
+      const progressInterval = setInterval(() => {
+        setAnalysisProgress(prev => {
+          if (prev >= 90) {
+            clearInterval(progressInterval);
+            return 90;
+          }
+          return prev + 10;
+        });
+      }, 200);
+
       const reader = new FileReader();
       
       const readFileAsDataURL = () => {
@@ -65,6 +79,9 @@ export const SymptomAnalyzer = () => {
         }
       });
 
+      clearInterval(progressInterval);
+      setAnalysisProgress(100);
+
       if (error) {
         console.error('Supabase function error:', error);
         throw error;
@@ -83,6 +100,7 @@ export const SymptomAnalyzer = () => {
       toast.error(errorMessage);
     } finally {
       setIsAnalyzing(false);
+      setTimeout(() => setAnalysisProgress(0), 1000);
     }
   };
 
@@ -91,6 +109,7 @@ export const SymptomAnalyzer = () => {
     setImagePreview(null);
     setDescription('');
     setAnalysis(null);
+    setAnalysisProgress(0);
   };
 
   return (
@@ -115,13 +134,14 @@ export const SymptomAnalyzer = () => {
           </div>
 
           {!imagePreview ? (
-            <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
+            <div className="border-2 border-dashed border-border rounded-lg p-8 text-center transition-colors hover:border-primary/50">
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleImageSelect}
                 className="hidden"
                 id="image-upload"
+                aria-label="Télécharger une image de symptôme"
               />
               <label htmlFor="image-upload" className="cursor-pointer">
                 <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
@@ -134,11 +154,11 @@ export const SymptomAnalyzer = () => {
               </label>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-4 animate-fade-in">
               <div className="relative rounded-lg overflow-hidden border">
                 <img
                   src={imagePreview}
-                  alt="Preview"
+                  alt="Prévisualisation de l'image de symptôme à analyser"
                   className="w-full h-64 object-cover"
                 />
               </div>
@@ -148,19 +168,40 @@ export const SymptomAnalyzer = () => {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 rows={3}
+                aria-label="Description des symptômes"
               />
+
+              {isAnalyzing && (
+                <div className="space-y-2 animate-fade-in">
+                  <div className="flex items-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                    <span className="text-sm text-muted-foreground">Analyse en cours...</span>
+                  </div>
+                  <Progress value={analysisProgress} className="h-2" />
+                </div>
+              )}
 
               <div className="flex gap-2">
                 <Button
                   onClick={handleAnalyze}
                   disabled={isAnalyzing}
                   className="flex-1"
+                  aria-label="Lancer l'analyse de l'image"
                 >
-                  {isAnalyzing ? 'Analyse en cours...' : 'Analyser l\'image'}
+                  {isAnalyzing ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Analyse en cours...
+                    </>
+                  ) : (
+                    "Analyser l'image"
+                  )}
                 </Button>
                 <Button
                   onClick={handleReset}
                   variant="outline"
+                  disabled={isAnalyzing}
+                  aria-label="Réinitialiser l'analyse"
                 >
                   Réinitialiser
                 </Button>
@@ -169,7 +210,7 @@ export const SymptomAnalyzer = () => {
           )}
 
           {analysis && (
-            <Card className="bg-muted/50">
+            <Card className="bg-muted/50 animate-fade-in" role="region" aria-label="Résultats de l'analyse">
               <CardHeader>
                 <CardTitle className="text-lg">Résultat de l'Analyse</CardTitle>
               </CardHeader>
