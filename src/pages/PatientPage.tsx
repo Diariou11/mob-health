@@ -12,6 +12,10 @@ import {
   ClipboardCheck, MapPin, Phone, AlertCircle, Shield as ShieldIcon
 } from 'lucide-react';
 import { AppointmentForm } from '@/components/appointments/AppointmentForm';
+import { MedicalHistory } from '@/components/medical/MedicalHistory';
+import { Allergies } from '@/components/medical/Allergies';
+import { Vaccinations } from '@/components/medical/Vaccinations';
+import { MedicalDocuments } from '@/components/medical/MedicalDocuments';
 
 // Type définition pour les données médicales
 interface MedicalData {
@@ -234,9 +238,10 @@ const PatientPage = () => {
         {/* Content */}
         <div className="lg:col-span-3">
           <Tabs defaultValue="medical-record" className="space-y-6" value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid grid-cols-3 w-full">
+            <TabsList className="grid grid-cols-4 w-full">
               <TabsTrigger value="profile">Mon Profil</TabsTrigger>
-              <TabsTrigger value="medical-record">Dossier Médical</TabsTrigger>
+              <TabsTrigger value="medical-record">Historique</TabsTrigger>
+              <TabsTrigger value="health-data">Données de santé</TabsTrigger>
               <TabsTrigger value="appointments">Rendez-vous</TabsTrigger>
             </TabsList>
             
@@ -329,16 +334,16 @@ const PatientPage = () => {
               </Card>
             </TabsContent>
             
-            {/* Medical Record Tab */}
+            {/* Medical Record Tab - Ancien historique */}
             <TabsContent value="medical-record">
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center">
                     <FileText className="mr-2 h-5 w-5 text-health-blue" />
-                    Dossier Médical Électronique
+                    Historique des Consultations
                   </CardTitle>
                   <CardDescription>
-                    Consultez votre historique médical et vos informations de santé
+                    Consultez l'historique de vos consultations médicales
                   </CardDescription>
                 </CardHeader>
                 
@@ -649,6 +654,14 @@ const PatientPage = () => {
                   </Tabs>
                 </CardContent>
               </Card>
+            </TabsContent>
+
+            {/* Nouvelles données de santé - Allergies, Vaccinations, Documents */}
+            <TabsContent value="health-data" className="space-y-6">
+              <MedicalHistory />
+              <Allergies />
+              <Vaccinations />
+              <MedicalDocuments />
             </TabsContent>
             
             {/* Appointments Tab */}
