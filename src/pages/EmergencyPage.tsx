@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { QuickEmergencyButton } from '@/components/emergency/QuickEmergencyButton';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
@@ -114,7 +115,23 @@ const EmergencyPage = () => {
   const [successDialogOpen, setSuccessDialogOpen] = useState(false);
   const [selectedBloodGroups, setSelectedBloodGroups] = useState<string[]>([]);
   const [unknownBloodGroup, setUnknownBloodGroup] = useState(false);
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    // Get user location on mount
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          });
+        },
+        (error) => console.error('Geolocation error:', error)
+      );
+    }
+  }, []);
   
   const handleSubmitAmbulance = (e: React.FormEvent) => {
     e.preventDefault();
@@ -174,7 +191,10 @@ const EmergencyPage = () => {
         
         <Alert className="mb-8 border-red-300 bg-red-50 dark:bg-red-950/30">
           <AlertTriangle className="h-4 w-4 text-red-600" />
-          <AlertTitle className="text-red-600">En cas d'urgence vitale</AlertTitle>
+          <AlertTitle className="text-red-600 flex items-center justify-between">
+            <span>En cas d'urgence vitale</span>
+            <QuickEmergencyButton />
+          </AlertTitle>
           <AlertDescription>
             Appelez directement les services d'urgence au <span className="font-bold">115</span> ou le SAMU au <span className="font-bold">629 13 13 13</span>
           </AlertDescription>

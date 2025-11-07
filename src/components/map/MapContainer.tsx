@@ -4,6 +4,9 @@ import mapboxgl from 'mapbox-gl';
 import { HealthFacility } from '@/types/facility';
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { GeolocationButton } from './GeolocationButton';
+import { Button } from '@/components/ui/button';
+import { Moon, Sun } from 'lucide-react';
 
 // Get Mapbox token from environment variable
 const getMapboxToken = async () => {
@@ -26,8 +29,10 @@ const MapContainer = ({ facilities, onFacilitySelect }: MapContainerProps) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<mapboxgl.Marker[]>([]);
+  const userMarker = useRef<mapboxgl.Marker | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     const initMap = async () => {
@@ -48,7 +53,7 @@ const MapContainer = ({ facilities, onFacilitySelect }: MapContainerProps) => {
         // Initialize map
         map.current = new mapboxgl.Map({
           container: mapContainer.current,
-          style: 'mapbox://styles/mapbox/streets-v12',
+          style: isDarkMode ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/streets-v12',
           center: [-13.6773, 9.5370], // Conakry, Guinea
           zoom: 5 // Start with a wider view to see more facilities
         });
@@ -93,6 +98,13 @@ const MapContainer = ({ facilities, onFacilitySelect }: MapContainerProps) => {
       map.current?.remove();
     };
   }, []);
+
+  useEffect(() => {
+    // Update map style when dark mode changes
+    if (map.current && map.current.loaded()) {
+      map.current.setStyle(isDarkMode ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/streets-v12');
+    }
+  }, [isDarkMode]);
 
   useEffect(() => {
     // If map is loaded, update markers whenever facilities change
@@ -216,6 +228,41 @@ const MapContainer = ({ facilities, onFacilitySelect }: MapContainerProps) => {
     }
   };
 
+  const handleUserLocation = (coords: [number, number]) => {
+    if (!map.current) return;
+
+    // Remove previous user marker if exists
+    if (userMarker.current) {
+      userMarker.current.remove();
+    }
+
+    // Create user location marker
+    const el = document.createElement('div');
+    el.className = 'user-location-marker';
+    el.style.width = '20px';
+    el.style.height = '20px';
+    el.style.borderRadius = '50%';
+    el.style.backgroundColor = '#3b82f6';
+    el.style.border = '3px solid white';
+    el.style.boxShadow = '0 0 10px rgba(59, 130, 246, 0.5)';
+
+    userMarker.current = new mapboxgl.Marker(el)
+      .setLngLat(coords)
+      .setPopup(new mapboxgl.Popup().setHTML('<div class="p-2"><strong>Votre position</strong></div>'))
+      .addTo(map.current);
+
+    // Fly to user location
+    map.current.flyTo({
+      center: coords,
+      zoom: 13,
+      duration: 2000
+    });
+  };
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
   return (
     <div className="h-full w-full relative">
       {isLoading && (
@@ -240,8 +287,22 @@ const MapContainer = ({ facilities, onFacilitySelect }: MapContainerProps) => {
         </div>
       )}
       <div ref={mapContainer} className="h-full w-full">
+        {/* Map controls */}
+        <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
+          <GeolocationButton onLocationFound={handleUserLocation} />
+          <Button
+            onClick={toggleDarkMode}
+            variant="outline"
+            size="sm"
+            className="gap-2 shadow-md"
+          >
+            {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            {isDarkMode ? 'Clair' : 'Sombre'}
+          </Button>
+        </div>
+        
         {/* Color legend for map markers */}
-        <div className="absolute bottom-4 right-4 bg-white p-2 rounded-md shadow-md z-10 text-xs">
+        <div className="absolute bottom-4 right-4 bg-white dark:bg-slate-800 p-2 rounded-md shadow-md z-10 text-xs">
           <div className="flex items-center mb-1">
             <div className="w-3 h-3 bg-[#0057A3] rounded-full mr-1"></div>
             <span>Hôpitaux</span>

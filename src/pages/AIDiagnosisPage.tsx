@@ -1,6 +1,8 @@
 import { SymptomAnalyzer } from '@/components/ai/SymptomAnalyzer';
+import { ConversationalChat } from '@/components/ai/ConversationalChat';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Brain, Shield, Clock } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Brain, Shield, Clock, MessageSquare, Camera } from 'lucide-react';
 
 const AIDiagnosisPage = () => {
   return (
@@ -53,9 +55,28 @@ const AIDiagnosisPage = () => {
           </Card>
         </div>
 
-        <SymptomAnalyzer />
+        <Tabs defaultValue="chat" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="chat" className="gap-2">
+              <MessageSquare className="h-4 w-4" />
+              Chat Médical
+            </TabsTrigger>
+            <TabsTrigger value="image" className="gap-2">
+              <Camera className="h-4 w-4" />
+              Analyse d'Image
+            </TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="chat" className="mt-6">
+            <ConversationalChat />
+          </TabsContent>
+          
+          <TabsContent value="image" className="mt-6">
+            <SymptomAnalyzer />
+          </TabsContent>
+        </Tabs>
 
-        <Card className="bg-blue-50 border-blue-200">
+        <Card className="bg-blue-50 border-blue-200 mt-8">
           <CardHeader>
             <CardTitle className="text-blue-900">Comment ça marche ?</CardTitle>
           </CardHeader>

@@ -1,1 +1,10 @@
 project_id = "wajqhwcagpysplxmxmhh"
+
+[functions.chat-medical]
+verify_jwt = false
+
+[functions.analyze-symptom-image]
+verify_jwt = false
+
+[functions.get-mapbox-token]
+verify_jwt = false
