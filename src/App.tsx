@@ -17,6 +17,7 @@ import RegisterPage from "./pages/RegisterPage";
 import NotFound from "./pages/NotFound";
 import AIDiagnosisPage from "./pages/AIDiagnosisPage";
 import AdminDashboard from "./pages/AdminDashboard";
+import InstallPWA from "./pages/InstallPWA";
 import { MedicalChatbot } from "./components/ai/MedicalChatbot";
 import { motion } from "framer-motion";
 
@@ -41,6 +42,7 @@ const App = () => (
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/ai-diagnosis" element={<AIDiagnosisPage />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/install" element={<InstallPWA />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
